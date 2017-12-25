@@ -12,4 +12,3 @@ include(cmake/AddSolarusExecutable.cmake)
 include(cmake/AddInstallTargets.cmake)
 include(cmake/AddUnitTests.cmake)
 include(cmake/AddGui.cmake)
-

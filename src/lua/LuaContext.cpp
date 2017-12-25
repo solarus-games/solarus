@@ -34,9 +34,11 @@
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
 #include "solarus/AbilityInfo.h"
+#include "solarus/CurrentQuest.h"
 #include "solarus/Equipment.h"
 #include "solarus/EquipmentItem.h"
 #include "solarus/Map.h"
+#include "solarus/QuestProperties.h"
 #include "solarus/Timer.h"
 #include "solarus/Treasure.h"
 #include <sstream>
@@ -429,25 +431,37 @@ void LuaContext::notify_dialog_finished(
 }
 
 /**
- * \brief Shows a warning message for a deprecated function of the Lua API.
+ * \brief Shows a deprecation warning message if the quest format is recent enough.
  *
+ * Does nothing if the quest format is older than the given version.
  * Does nothing if the message for this function was already shown once.
  *
+ * \param version Solarus version (major and minor numbers) where the function
+ *   becomes deprecated.
  * \param function_name A deprecated Lua function.
  * \param message A warning message explaining how to replace the call.
  */
 void LuaContext::warning_deprecated(
+    const std::pair<int, int>& version_deprecating,
     const std::string& function_name,
     const std::string& message
 ) {
+
   if (warning_deprecated_functions.find(function_name) !=
       warning_deprecated_functions.end()) {
     return;
   }
-  Logger::warning("The function " + function_name +
-                  " is deprecated and may be removed in a future version. " +
-                  message);
-  warning_deprecated_functions.insert(function_name);
+
+  if (CurrentQuest::is_format_at_least(version_deprecating)) {
+    std::ostringstream oss;
+    oss << "The function "<< function_name <<
+           " is deprecated since Solarus " <<
+           version_deprecating.first << "." <<
+           version_deprecating.second << ". " <<
+           message;
+    Logger::warning(oss.str());
+    warning_deprecated_functions.insert(function_name);
+  }
 }
 
 /**
@@ -829,16 +843,16 @@ void LuaContext::print_lua_version() {
  * \brief Defines some C++ functions into a Lua table.
  * \param module_name name of the table that will contain the functions
  * (e.g. "sol.main").
- * \param functions list of functions to define in the table
- * (must end with {nullptr, nullptr}).
+ * \param functions List of functions to define in the table.
  */
 void LuaContext::register_functions(
     const std::string& module_name,
-    const luaL_Reg* functions
+    std::vector<luaL_Reg> functions
 ) {
 
-  // create a table and fill it with the functions
-  luaL_register(l, module_name.c_str(), functions);
+  // Create a table and fill it with the functions.
+  functions.push_back({ nullptr, nullptr });
+  luaL_register(l, module_name.c_str(), functions.data());
   lua_pop(l, 1);
 }
 
@@ -847,19 +861,16 @@ void LuaContext::register_functions(
  * \param module_name name of the table that will contain the functions
  * (e.g. "sol.game"). It may already exist or not.
  * This string will also identify the type.
- * \param functions List of functions to define in the module table or nullptr.
- * Must end with {nullptr, nullptr}.
- * \param methods List of methods to define in the type or nullptr.
- * Must end with {nullptr, nullptr}.
+ * \param functions List of functions to define in the module table.
+ * \param methods List of methods to define in the type.
  * \param metamethods List of metamethods to define in the metatable of the
- * type or nullptr.
- * Must end with {nullptr, nullptr}.
+ * type.
  */
 void LuaContext::register_type(
     const std::string& module_name,
-    const luaL_Reg* functions,
-    const luaL_Reg* methods,
-    const luaL_Reg* metamethods
+    std::vector<luaL_Reg> functions,
+    std::vector<luaL_Reg> methods,
+    std::vector<luaL_Reg> metamethods
 ) {
 
   // Check that this type does not already exist.
@@ -876,8 +887,9 @@ void LuaContext::register_type(
                                   // module
 
   // Add the functions to the module.
-  if (functions != nullptr) {
-    luaL_register(l, nullptr, functions);
+  if (!functions.empty()) {
+    functions.push_back({ nullptr, nullptr});
+    luaL_register(l, nullptr, functions.data());
                                   // module
   }
   lua_pop(l, 1);
@@ -894,14 +906,16 @@ void LuaContext::register_type(
                                   // meta
 
   // Add the methods to the metatable.
-  if (methods != nullptr) {
-    luaL_register(l, nullptr, methods);
+  if (!methods.empty()) {
+    methods.push_back({ nullptr, nullptr });
+    luaL_register(l, nullptr, methods.data());
   }
                                   // meta
 
   // Add the metamethods to the metatable.
-  if (metamethods != nullptr) {
-    luaL_register(l, nullptr, metamethods);
+  if (!metamethods.empty()) {
+    metamethods.push_back({ nullptr, nullptr });
+    luaL_register(l, nullptr, metamethods.data());
                                   // meta
   }
 
@@ -941,6 +955,7 @@ void LuaContext::register_modules() {
   register_item_module();
   register_input_module();
   register_video_module();
+  register_shader_module();
   register_file_module();
   register_menu_module();
   register_language_module();

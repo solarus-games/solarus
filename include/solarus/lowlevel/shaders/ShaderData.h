@@ -14,28 +14,40 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_GL_CONTEXT_H
-#define SOLARUS_GL_CONTEXT_H
+#ifndef SOLARUS_SHADER_DATA_H
+#define SOLARUS_SHADER_DATA_H
 
 #include "solarus/Common.h"
-
-#include <SDL.h>
-#include <SDL_opengl.h>
-#include <string>
+#include "solarus/lua/LuaData.h"
 
 namespace Solarus {
 
-namespace GLContext {
+/**
+ * \brief Stores the content of a shader data file.
+ */
+class SOLARUS_API ShaderData : public LuaData {
 
+  public:
 
-  bool initialize();
-  void quit();
+    ShaderData();
 
-  const std::string& get_opengl_version();
-  const std::string& get_shading_language_version();
+    const std::string& get_vertex_source() const;
+    void set_vertex_source(const std::string& vertex_source);
 
-}  // namespace GLContext
+    const std::string& get_fragment_source() const;
+    void set_fragment_source(const std::string& fragment_source);
 
-}  // namespace Solarus
+    bool import_from_lua(lua_State* l) override;
+    bool export_to_lua(std::ostream& out) const override;
+
+  private:
+
+    static int l_shader(lua_State* l);
+
+    std::string vertex_source;    /**< Source code of the vertex shader. */
+    std::string fragment_source;  /**< Source code of the fragment shader. */
+};
+
+}
 
 #endif

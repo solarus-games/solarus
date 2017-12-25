@@ -314,12 +314,8 @@ bool DialogResources::export_to_lua(std::ostream& out) const {
       out << "  " << pkvp.first << " = \"" << pkvp.second << "\",\n";
     }
     const std::string& text = dialog.get_text();
-    out << "  text = [[\n" << escape_multiline_string(text);
-    if (!text.empty() && text[text.size() - 1] != '\n') {
-      // Make sure that the closing ]] is always on a new line.
-      out << '\n';
-    }
-    out << "]]\n}\n\n";
+    export_multiline_string("text", text, out);
+    out << "}\n\n";
   }
   return true;
 }

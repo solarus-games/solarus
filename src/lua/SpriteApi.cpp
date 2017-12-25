@@ -19,6 +19,7 @@
 #include "solarus/Sprite.h"
 #include "solarus/SpriteAnimationSet.h"
 #include "solarus/SpriteAnimation.h"
+#include "solarus/CurrentQuest.h"
 #include <sstream>
 
 namespace Solarus {
@@ -33,12 +34,11 @@ const std::string LuaContext::sprite_module_name = "sol.sprite";
  */
 void LuaContext::register_sprite_module() {
 
-  static const luaL_Reg functions[] = {
-      { "create", sprite_api_create },
-      { nullptr, nullptr }
+  const std::vector<luaL_Reg> functions = {
+      { "create", sprite_api_create }
   };
 
-  static const luaL_Reg methods[] = {
+  std::vector<luaL_Reg> methods = {
       { "get_animation_set", sprite_api_get_animation_set },
       { "get_animation", sprite_api_get_animation },
       { "set_animation", sprite_api_set_animation },
@@ -53,7 +53,6 @@ void LuaContext::register_sprite_module() {
       { "set_frame_delay", sprite_api_set_frame_delay },
       { "get_size", sprite_api_get_size },
       { "get_origin", sprite_api_get_origin },
-      { "get_frame_src_xy", sprite_api_get_frame_src_xy },
       { "is_paused", sprite_api_is_paused },
       { "set_paused", sprite_api_set_paused },
       { "set_ignore_suspend", sprite_api_set_ignore_suspend },
@@ -67,15 +66,18 @@ void LuaContext::register_sprite_module() {
       { "get_xy", drawable_api_get_xy },
       { "set_xy", drawable_api_set_xy },
       { "get_movement", drawable_api_get_movement },
-      { "stop_movement", drawable_api_stop_movement },
-      { nullptr, nullptr }
+      { "stop_movement", drawable_api_stop_movement }
   };
 
-  static const luaL_Reg metamethods[] = {
+  if (CurrentQuest::is_format_at_least({ 1, 6 })) {
+    methods.insert(methods.end(), {
+        { "get_frame_src_xy", sprite_api_get_frame_src_xy }
+    });
+  }
+  const std::vector<luaL_Reg> metamethods = {
       { "__gc", drawable_meta_gc },
       { "__newindex", userdata_meta_newindex_as_table },
-      { "__index", userdata_meta_index_as_table },
-      { nullptr, nullptr }
+      { "__index", userdata_meta_index_as_table }
   };
   register_type(sprite_module_name, functions, methods, metamethods);
 }
@@ -329,9 +331,11 @@ int LuaContext::sprite_api_get_num_frames(lua_State* l) {
     const Sprite& sprite = *check_sprite(l, 1);
     std::string animation_name = sprite.get_current_animation();
     int direction = sprite.get_current_direction();
-    if (lua_gettop(l) > 1) {
-      animation_name = LuaTools::check_string(l, 2);
-      direction = LuaTools::check_int(l, 3);
+    if (CurrentQuest::is_format_at_least({ 1, 6 })) {
+      if (lua_gettop(l) > 1) {
+        animation_name = LuaTools::check_string(l, 2);
+        direction = LuaTools::check_int(l, 3);
+      }
     }
 
     if (!sprite.has_animation(animation_name)) {
@@ -363,7 +367,11 @@ int LuaContext::sprite_api_get_frame_delay(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     const Sprite& sprite = *check_sprite(l, 1);
-    const std::string& animation_name = LuaTools::opt_string(l, 2, sprite.get_current_animation());
+    std::string animation_name = sprite.get_current_animation();
+
+    if (CurrentQuest::is_format_at_least({ 1, 6 })) {
+      animation_name = LuaTools::opt_string(l, 2, sprite.get_current_animation());
+    }
     if (!sprite.has_animation(animation_name)) {
       LuaTools::arg_error(l, 2,
           std::string("Animation '") + animation_name
@@ -415,9 +423,11 @@ int LuaContext::sprite_api_get_size(lua_State* l) {
     const Sprite& sprite = *check_sprite(l, 1);
     std::string animation_name = sprite.get_current_animation();
     int direction = sprite.get_current_direction();
-    if (lua_gettop(l) > 1) {
-      animation_name = LuaTools::check_string(l, 2);
-      direction = LuaTools::check_int(l, 3);
+    if (CurrentQuest::is_format_at_least({ 1, 6 })) {
+      if (lua_gettop(l) > 1) {
+        animation_name = LuaTools::check_string(l, 2);
+        direction = LuaTools::check_int(l, 3);
+      }
     }
 
     if (!sprite.has_animation(animation_name)) {
@@ -454,9 +464,11 @@ int LuaContext::sprite_api_get_origin(lua_State* l) {
     const Sprite& sprite = *check_sprite(l, 1);
     std::string animation_name = sprite.get_current_animation();
     int direction = sprite.get_current_direction();
-    if (lua_gettop(l) > 1) {
-      animation_name = LuaTools::check_string(l, 2);
-      direction = LuaTools::check_int(l, 3);
+    if (CurrentQuest::is_format_at_least({ 1, 6 })) {
+      if (lua_gettop(l) > 1) {
+        animation_name = LuaTools::check_string(l, 2);
+        direction = LuaTools::check_int(l, 3);
+      }
     }
 
     if (!sprite.has_animation(animation_name)) {

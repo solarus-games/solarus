@@ -45,38 +45,45 @@ namespace {
 /**
  * \brief Checks that the quest is compatible with the current version of
  * Solarus.
- * \param solarus_required_version Version of the quest.
+ * \param quest_version Solarus sersion of the quest (major and minor number).
  */
-void check_version_compatibility(const std::string& solarus_required_version) {
+void check_version_compatibility(const std::pair<int, int>& quest_version) {
 
-  if (solarus_required_version.empty()) {
+  const int quest_major_version = quest_version.first;
+  const int quest_minor_version = quest_version.second;
+
+  if (quest_version.first == 0) {
     Debug::die("No Solarus version is specified in your quest.dat file!");
   }
-
-  // TODO check the syntax of the version string
-
-  int dot_index_1 = solarus_required_version.find('.');
-  std::istringstream iss(solarus_required_version.substr(0, dot_index_1));
-  int required_major_version = 0;
-  iss >> required_major_version;
-
-  int dot_index_2 = solarus_required_version.find('.', dot_index_1 + 1);
-  std::istringstream iss2(solarus_required_version.substr(dot_index_1 + 1, dot_index_2));
-  int required_minor_version = 0;
-  iss2 >> required_minor_version;
 
   // The third digit of the version (patch) is ignored because compatibility
   // is not broken by patches.
 
-  // For now, we assume that any mismatch of major or minor version (first
-  // and second digits) breaks compatibility and we just die.
-  // This may change in the future, because all minor versions won't
-  // necessarily break compatibility.
-  if (required_major_version != SOLARUS_MAJOR_VERSION ||
-      required_minor_version != SOLARUS_MINOR_VERSION) {
+  bool compatible = true;
+  if (quest_major_version != SOLARUS_MAJOR_VERSION) {
+    // Assume that changes of major versions break compatibility.
+    compatible = false;
+  }
+  else {
+    if (quest_minor_version > SOLARUS_MINOR_VERSION) {
+      // The quest is too recent for this engine.
+      compatible = false;
+    }
+    else {
+      // 1.5 quests can be run by Solarus 1.6.
+      if (quest_minor_version < SOLARUS_MINOR_VERSION &&
+          quest_major_version == 1 &&
+          quest_minor_version < 5
+      ) {
+        compatible = false;
+      }
+    }
+  }
+
+  if (!compatible) {
     std::ostringstream oss;
-    oss << "This quest is made for Solarus " << required_major_version << "."
-        << required_minor_version << ".x but you are running Solarus "
+    oss << "This quest is made for Solarus " << quest_major_version << "."
+        << quest_minor_version << ".x but you are running Solarus "
         << SOLARUS_VERSION;
     Debug::die(oss.str());
   }
@@ -148,13 +155,6 @@ MainLoop::MainLoop(const Arguments& args):
   // Initialize engine features (audio, video...).
   System::initialize(args);
 
-  if (turbo) {
-    Logger::info("Turbo mode: yes");
-  }
-  else {
-    Logger::info("Turbo mode: no");
-  }
-
   // Read the quest resource list from data.
   CurrentQuest::initialize();
   TilePattern::initialize();
@@ -166,7 +166,6 @@ MainLoop::MainLoop(const Arguments& args):
   root_surface = Surface::create(
       Video::get_quest_size()
   );
-  root_surface->set_software_destination(false);  // Accelerate this surface.
 
   // Run the Lua world.
   // Do this after the creation of the window, but before showing the window,
@@ -183,6 +182,13 @@ MainLoop::MainLoop(const Arguments& args):
   }
   else {
     Logger::info("Lua console: no");
+  }
+
+  if (turbo) {
+    Logger::info("Turbo mode: yes");
+  }
+  else {
+    Logger::info("Turbo mode: no");
   }
 
   // Finally show the window.
@@ -513,9 +519,13 @@ void MainLoop::load_quest_properties() {
 
   const QuestProperties& properties = CurrentQuest::get_properties();
 
-  check_version_compatibility(properties.get_solarus_version());
+  check_version_compatibility(properties.get_solarus_version_major_minor());
+
+  Logger::info("Quest format: " + properties.get_solarus_version());
+
   const std::string& title = properties.get_title();
   const std::string& quest_version = properties.get_quest_version();
+
   if (!title.empty()) {
     std::string window_title = title;
     if (!quest_version.empty()) {

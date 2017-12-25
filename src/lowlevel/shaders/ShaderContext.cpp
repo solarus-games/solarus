@@ -24,17 +24,13 @@ namespace Solarus {
 
 bool ShaderContext::shader_supported = false;
 
-
 /**
  * \brief Initializes the shader system.
  * \return \c true if any shader system is supported.
  */
 bool ShaderContext::initialize() {
 
-  //TODO try to initialize DX shaders before GL ones.
-#if SOLARUS_HAVE_OPENGL == 1
   shader_supported = GLContext::initialize();
-#endif
 
   return shader_supported;
 }
@@ -45,38 +41,24 @@ bool ShaderContext::initialize() {
 void ShaderContext::quit() {
 
   if (shader_supported) {
-#if SOLARUS_HAVE_OPENGL == 1
     GLContext::quit();
-#endif
   }
 }
 
 /**
  * \brief Construct a shader from a name.
- * \param shader_name The name of the shader to load.
- * \return The created shader, or nullptr if the shader fails to compile.
+ * \param shader_id The id of the shader to load.
+ * \return The created shader.
  */
-std::unique_ptr<Shader> ShaderContext::create_shader(const std::string& shader_name) {
+ShaderPtr ShaderContext::create_shader(const std::string& shader_id) {
 
-  std::unique_ptr<Shader> shader = nullptr;
-  bool error = false;
+  ShaderPtr shader = nullptr;
 
-#if SOLARUS_HAVE_OPENGL == 1
-  if (Shader::get_sampler_type() == "sampler2DRect") {
-    shader = std::unique_ptr<Shader>(new GL_ARBShader(shader_name));
+  if (true) {  // TODO
+    shader = std::make_shared<GL_ARBShader>(shader_id);
   }
   else {
-    shader = std::unique_ptr<Shader>(new GL_2DShader(shader_name));
-  }
-
-  if (glGetError() != GL_NO_ERROR) {
-    error = true;
-  }
-#endif
-
-  if (error) {
-    Debug::warning("Can't compile shader '" + shader_name + "'");
-    shader = nullptr;
+    shader = std::make_shared<GL_2DShader>(shader_id);
   }
 
   return shader;

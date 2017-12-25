@@ -27,7 +27,7 @@ namespace {
  * \brief Constructor.
  */
 Hq4xFilter::Hq4xFilter():
-  PixelFilter() {
+  SoftwarePixelFilter() {
 }
 
 /**

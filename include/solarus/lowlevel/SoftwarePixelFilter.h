@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_PIXEL_FILTER_H
-#define SOLARUS_PIXEL_FILTER_H
+#ifndef SOLARUS_SOFTWARE_PIXEL_FILTER_H
+#define SOLARUS_SOFTWARE_PIXEL_FILTER_H
 
 #include "solarus/Common.h"
 #include <cstdint>
@@ -23,14 +23,17 @@
 namespace Solarus {
 
 /**
- * \brief Abstract class for pixel filtering algorithms.
+ * \brief Abstract class for software pixel filtering algorithms.
+ *
+ * \deprecated Software pixel filters are deprecated since Solarus 1.6.
+ * The new recommended way is to use shaders instead.
  */
-class PixelFilter {
+class SoftwarePixelFilter {
 
   public:
 
-    PixelFilter();
-    virtual ~PixelFilter();
+    SoftwarePixelFilter();
+    virtual ~SoftwarePixelFilter();
 
     /**
      * \brief Returns the scaling factor of this algorithm.

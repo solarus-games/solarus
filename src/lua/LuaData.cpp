@@ -255,4 +255,23 @@ std::string LuaData::unescape_multiline_string(std::string value) {
   return value;
 }
 
+/**
+ * \brief Exports a multiline string field to an output stream.
+ * \param field_name Name of the field to put.
+ * \param value Possibly multiline string value.
+ * \param out The stream to write.
+ */
+void LuaData::export_multiline_string(
+    const std::string& field_name,
+    const std::string& value,
+    std::ostream& out) const {
+
+  out << "  " << field_name << " = [[\n" << escape_multiline_string(value);
+  if (!value.empty() && value[value.size() - 1] != '\n') {
+    // Make sure that the closing ]] is always on a new line.
+    out << '\n';
+  }
+  out << "]],\n";
+}
+
 }

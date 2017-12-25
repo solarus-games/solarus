@@ -22,6 +22,7 @@
 #include "solarus/lua/LuaTools.h"
 #include <lua.hpp>
 #include <ostream>
+#include <sstream>
 
 namespace Solarus {
 
@@ -167,6 +168,33 @@ bool QuestProperties::export_to_lua(std::ostream& out) const {
       << "}\n\n";
 
   return true;
+}
+
+/**
+ * \brief Returns the Solarus compatibility version of the quest.
+ * \return The major and minor Solarus version number of the quest.
+ * Returns \c { 0, 0 } if unset.
+ */
+std::pair<int, int> QuestProperties::get_solarus_version_major_minor() const {
+
+  const std::string& quest_version = get_solarus_version();
+  if (quest_version.empty()) {
+    return { 0, 0 };
+  }
+
+  // TODO check the syntax of the version string
+
+  int dot_index_1 = quest_version.find('.');
+  std::istringstream iss(quest_version.substr(0, dot_index_1));
+  int quest_major_version = 0;
+  iss >> quest_major_version;
+
+  int dot_index_2 = quest_version.find('.', dot_index_1 + 1);
+  std::istringstream iss2(quest_version.substr(dot_index_1 + 1, dot_index_2));
+  int quest_minor_version = 0;
+  iss2 >> quest_minor_version;
+
+  return { quest_major_version, quest_minor_version };
 }
 
 /**

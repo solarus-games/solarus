@@ -71,12 +71,21 @@ E name_to_enum(const std::string& name) {
 template <typename E>
 E name_to_enum(const std::string& name, E default_value) {
 
+  bool success = false;
+  return name_to_enum(name, default_value, success);
+}
+
+template <typename E>
+E name_to_enum(const std::string& name, E default_value, bool& success) {
+
   for (const auto& kvp : EnumInfoTraits<E>::names) {
     if (kvp.second == name) {
+      success = true;
       return kvp.first;
     }
   }
 
+  success = false;
   return default_value;
 }
 

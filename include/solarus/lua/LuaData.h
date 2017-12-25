@@ -52,6 +52,11 @@ class SOLARUS_API LuaData {
     static std::string escape_multiline_string(std::string value);
     static std::string unescape_multiline_string(std::string value);
 
+    void export_multiline_string(
+        const std::string& field_name,
+        const std::string& value,
+        std::ostream& out) const;
+
 };
 
 }

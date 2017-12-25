@@ -14,44 +14,35 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/lowlevel/VideoMode.h"
-#include "solarus/lowlevel/PixelFilter.h"
+#include "solarus/lowlevel/SoftwareVideoMode.h"
+#include "solarus/lowlevel/SoftwarePixelFilter.h"
 #include "solarus/lowlevel/Debug.h"
-#include "solarus/lowlevel/shaders/ShaderContext.h"
 #include <utility>
 
 namespace Solarus {
 
 /**
  * \brief Creates a video mode with the specified properties.
- *
- * \c software_filter and \c hardware_filter cannot be both set.
- *
  * \param name Lua name of the video mode.
  * \param initial_window_size Default size of the window when selecting this video mode.
  * \param software_filter Software filter to apply to the quest image or nullptr.
- * \param hardware_filter Scaling shader to apply to the quest image or nullptr.
  */
-VideoMode::VideoMode(
+SoftwareVideoMode::SoftwareVideoMode(
     const std::string& name,
     const Size& initial_window_size,
-    std::unique_ptr<PixelFilter> software_filter,
-    std::unique_ptr<Shader> hardware_filter
+    std::unique_ptr<SoftwarePixelFilter> software_filter
 ):
    name(name),
    initial_window_size(initial_window_size),
-   software_filter(std::move(software_filter)),
-   hardware_filter(std::move(hardware_filter)) {
+   software_filter(std::move(software_filter)) {
 
-   Debug::check_assertion(software_filter == nullptr || hardware_filter == nullptr,
-       "Video mode can have at most one filter");
 }
 
 /**
  * \brief Returns the Lua name of this video mode.
  * \return The video mode name.
  */
-const std::string& VideoMode::get_name() const {
+const std::string& SoftwareVideoMode::get_name() const {
   return name;
 }
 
@@ -59,7 +50,7 @@ const std::string& VideoMode::get_name() const {
  * \brief Returns the default size of the window when selecting this mode.
  * \return Default size of the window when selecting this video mode.
  */
-const Size& VideoMode::get_initial_window_size() const {
+const Size& SoftwareVideoMode::get_initial_window_size() const {
   return initial_window_size;
 }
 
@@ -67,16 +58,8 @@ const Size& VideoMode::get_initial_window_size() const {
  * \brief Returns the software filter applied to the quest image in this mode.
  * \return Software filter or nullptr.
  */
-const PixelFilter* VideoMode::get_software_filter() const {
+const SoftwarePixelFilter* SoftwareVideoMode::get_software_filter() const {
   return software_filter.get();
-}
-
-/**
- * \brief Returns the hardware filter applied to the quest image in this mode.
- * \return Hardware filter or nullptr.
- */
-const Shader* VideoMode::get_hardware_filter() const {
-  return hardware_filter.get();
 }
 
 }

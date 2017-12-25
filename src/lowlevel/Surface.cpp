@@ -14,14 +14,14 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/Color.h"
-#include "solarus/lowlevel/Size.h"
-#include "solarus/lowlevel/Rectangle.h"
-#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Debug.h"
+#include "solarus/lowlevel/QuestFiles.h"
+#include "solarus/lowlevel/Rectangle.h"
+#include "solarus/lowlevel/Surface.h"
+#include "solarus/lowlevel/Size.h"
+#include "solarus/lowlevel/SoftwarePixelFilter.h"
 #include "solarus/lowlevel/Video.h"
-#include "solarus/lowlevel/PixelFilter.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/Transition.h"
 #include <algorithm>
@@ -31,89 +31,33 @@
 namespace Solarus {
 
 /**
- * \brief Stores the tree of what surfaces have to be drawn on other surfaces.
- *
- * When a drawing is requested, if the destination surface is in GPU, no
- * drawing actually occurs: instead, the information is stored into this tree.
- * At rendering time, the tree is traversed to perform all drawings
- * accelerated in GPU.
- *
- * The root node of the tree is the screen, and the children nodes are the
- * surfaces drawn on it.
- *
- * Each node represents a source surface drawn somewhere, and the list of
- * surfaces drawn on itself.
- */
-class Surface::SubSurfaceNode {
-
-  public:
-
-    /**
-     * Creates a subsurface node.
-     * \param src_surface The surface to draw.
-     * \param src_rect Region of the surface to draw.
-     * \param dst_rect The rectangle where to draw the surface, relative to
-     * the parent surface.
-     * \param subsurfaces Surfaces drawn onto src_surface.
-     */
-    SubSurfaceNode(
-        SurfacePtr src_surface,
-        const Rectangle& src_rect,
-        const Rectangle& dst_rect,
-        const std::vector<SubSurfaceNodePtr>& subsurfaces
-    ):
-      src_surface(src_surface),
-      src_rect(src_rect),
-      dst_rect(dst_rect),
-      subsurfaces(subsurfaces) {
-
-      // Clip the source rectangle to the size of the source surface.
-      // Otherwise, SDL_RenderCopy() will stretch the image.
-      // FIXME still buggy with software renderer for now but should be fixed soon :
-      // https://bugzilla.libsdl.org/show_bug.cgi?id=1968
-      if (this->src_rect.get_x() < 0) {
-        this->src_rect.set_x(0);
-        this->src_rect.set_width(this->src_rect.get_width() + src_rect.get_x());
-        this->dst_rect.add_x(-src_rect.get_x());
-      }
-      if (this->src_rect.get_x() + this->src_rect.get_width() > src_surface->get_width()) {
-        this->src_rect.set_width(src_surface->get_width() - this->src_rect.get_x());
-      }
-      if (src_rect.get_y() < 0) {
-        this->src_rect.set_y(0);
-        this->src_rect.set_height(this->src_rect.get_height() + src_rect.get_y());
-        this->dst_rect.add_y(-src_rect.get_y());
-      }
-      if (this->src_rect.get_y() + this->src_rect.get_height() > src_surface->get_height()) {
-        this->src_rect.set_height(src_surface->get_height() - this->src_rect.get_y());
-      }
-
-    }
-
-    SurfacePtr src_surface;                      /**< Surface to draw. */
-    Rectangle src_rect;                          /**< Region of the surface to draw. */
-    Rectangle dst_rect;                          /**< The rectangle where to draw the surface, relative to the parent surface. */
-    std::vector<SubSurfaceNodePtr> subsurfaces;  /**< Subsurfaces drawn onto src_surface. */
-};
-
-/**
  * \brief Creates a surface with the specified size.
  * \param width The width in pixels.
  * \param height The height in pixels.
  */
 Surface::Surface(int width, int height):
   Drawable(),
-  software_destination(true),
   internal_surface(nullptr),
-  internal_texture(nullptr),
-  internal_color(nullptr),
-  is_rendered(false),
   opacity(255),
-  width(width),
-  height(height) {
+  opengl_texture(0) {
 
   Debug::check_assertion(width > 0 && height > 0,
       "Attempt to create a surface with an empty size");
+
+  SDL_PixelFormat* format = Video::get_pixel_format();
+  internal_surface = SDL_Surface_UniquePtr(SDL_CreateRGBSurface(
+      0,
+      width,
+      height,
+      32,
+      format->Rmask,
+      format->Gmask,
+      format->Bmask,
+      format->Amask
+  ));
+
+  Debug::check_assertion(internal_surface != nullptr,
+      std::string("Failed to create SDL surface: ") + SDL_GetError());
 }
 
 /**
@@ -127,15 +71,9 @@ Surface::Surface(int width, int height):
  */
 Surface::Surface(SDL_Surface* internal_surface):
   Drawable(),
-  software_destination(true),
   internal_surface(internal_surface),
-  internal_texture(nullptr),
-  internal_color(nullptr),
-  is_rendered(false),
-  opacity(255) {
-
-  width = internal_surface->w;
-  height = internal_surface->h;
+  opacity(255),
+  opengl_texture(0) {
 
   // Convert to the preferred pixel format.
   SDL_PixelFormat* pixel_format = Video::get_pixel_format();
@@ -151,6 +89,15 @@ Surface::Surface(SDL_Surface* internal_surface):
     this->internal_surface = SDL_Surface_UniquePtr(converted_surface);
   }
 }
+
+/**
+ * \brief Destructor.
+ */
+Surface::~Surface() {
+
+  glDeleteTextures(1, &opengl_texture);
+}
+
 
 /**
  * \brief Creates a surface with the specified size.
@@ -232,29 +179,29 @@ SDL_Surface* Surface::get_surface_from_file(
   const std::string& buffer = QuestFiles::data_file_read(prefixed_file_name, language_specific);
   SDL_RWops* rw = SDL_RWFromMem(const_cast<char*>(buffer.data()), (int) buffer.size());
 
-  SDL_Surface* software_surface = IMG_Load_RW(rw, 0);
+  SDL_Surface* surface = IMG_Load_RW(rw, 0);
 
   SDL_RWclose(rw);
 
-  Debug::check_assertion(software_surface != nullptr,
+  Debug::check_assertion(surface != nullptr,
       std::string("Cannot load image '") + prefixed_file_name + "'");
 
   SDL_PixelFormat* pixel_format = Video::get_pixel_format();
-  if (software_surface->format->format == pixel_format->format) {
-    return software_surface;
+  if (surface->format->format == pixel_format->format) {
+    return surface;
   }
 
   // Convert to the preferred pixel format.
   uint8_t opacity;
-  SDL_GetSurfaceAlphaMod(software_surface, &opacity);
+  SDL_GetSurfaceAlphaMod(surface, &opacity);
   SDL_Surface* converted_surface = SDL_ConvertSurface(
-        software_surface,
+        surface,
         pixel_format,
         0
         );
   Debug::check_assertion(converted_surface != nullptr,
                          std::string("Failed to convert software surface: ") + SDL_GetError());
-  SDL_FreeSurface(software_surface);
+  SDL_FreeSurface(surface);
 
   SDL_SetSurfaceAlphaMod(converted_surface, opacity);  // Re-apply the alpha.
   SDL_SetSurfaceBlendMode(converted_surface, SDL_BLENDMODE_BLEND);
@@ -263,42 +210,11 @@ SDL_Surface* Surface::get_surface_from_file(
 }
 
 /**
- * \brief Creates a hardware texture from the software surface.
- *
- * Also converts the software surface to a preferred format if necessary.
- */
-void Surface::create_texture_from_surface() {
-
-  SDL_Renderer* main_renderer = Video::get_renderer();
-  if (main_renderer != nullptr) {
-
-    Debug::check_assertion(internal_surface != nullptr,
-        "Missing software surface to create texture from");
-
-    // Create the texture.
-    internal_texture = SDL_Texture_UniquePtr(
-        SDL_CreateTexture(
-            main_renderer,
-            Video::get_pixel_format()->format,
-            SDL_TEXTUREACCESS_STATIC,
-            internal_surface->w,
-            internal_surface->h
-        )
-    );
-    SDL_SetTextureBlendMode(internal_texture.get(), get_sdl_blend_mode());
-
-    // Copy the pixels of the software surface to the GPU texture.
-    SDL_UpdateTexture(internal_texture.get(), nullptr, internal_surface->pixels, internal_surface->pitch);
-    SDL_GetSurfaceAlphaMod(internal_surface.get(), &opacity);
-  }
-}
-
-/**
  * \brief Returns the width of the surface.
  * \return the width in pixels
  */
 int Surface::get_width() const {
-  return width;
+  return internal_surface->w;
 }
 
 /**
@@ -306,7 +222,7 @@ int Surface::get_width() const {
  * \return the height in pixels
  */
 int Surface::get_height() const {
-  return height;
+  return internal_surface->h;
 }
 
 /**
@@ -332,22 +248,10 @@ uint8_t Surface::get_opacity() const {
 void Surface::set_opacity(uint8_t opacity) {
 
   this->opacity = opacity;
-
-  if (software_destination  // The destination surface is in RAM.
-      || !Video::is_acceleration_enabled()  // The rendering is in RAM.
-  ) {
-    if (internal_surface == nullptr) {
-      create_software_surface();
-    }
-
-    int error = SDL_SetSurfaceAlphaMod(internal_surface.get(), opacity);
-    if (error != 0) {
-      Debug::error(SDL_GetError());
-    }
-    is_rendered = false;  // The surface has changed.
+  int error = SDL_SetSurfaceAlphaMod(internal_surface.get(), opacity);
+  if (error != 0) {
+    Debug::error(SDL_GetError());
   }
-
-  // If this is a hardware surface, the opacity is applied later.
 }
 
 /**
@@ -359,34 +263,7 @@ void Surface::set_opacity(uint8_t opacity) {
  */
 std::string Surface::get_pixels() const {
 
-  if (!software_destination &&
-      Video::is_acceleration_enabled()) {
-    // The surface is in GPU.
-    return "";  // TODO
-  }
-
   const int num_pixels = get_width() * get_height();
-  if (internal_surface == nullptr) {
-    // No surface: this may be a color.
-
-    if (internal_color == nullptr) {
-      // No color either: fully transparent surface.
-      return std::string(num_pixels * 4, (size_t) 0);
-    }
-
-    uint8_t r, g, b, a;
-    internal_color->get_components(r, g, b, a);
-    std::string pixel;
-    pixel += r;
-    pixel += g;
-    pixel += b;
-    pixel += a;
-    std::ostringstream oss;
-    for (int i = 0; i < num_pixels; ++i) {
-      oss << pixel;
-    }
-    return oss.str();
-  }
 
   if (internal_surface->format->format == SDL_PIXELFORMAT_ABGR8888) {
     // No conversion needed.
@@ -409,82 +286,6 @@ std::string Surface::get_pixels() const {
 }
 
 /**
- * When this surface is used as the destination of a drawing operation,
- * returns whether the drawing operation is performed in RAM or by the GPU.
- *
- * By default, this setting is true and all drawing operations are performed
- * in RAM.
- * Otherwise, when 2D acceleration is active, drawing operations are delayed
- * and performed by the GPU at rendering time.
- *
- * \return Whether this surface is a software destination surface.
- */
-bool Surface::is_software_destination() const {
-  return software_destination;
-}
-
-/**
- * When this surface is used as the destination of a drawing operation,
- * sets whether the drawing operation is performed immediately in RAM or later
- * by the GPU.
- *
- * By default, this setting is true and all drawing operations are performed
- * in RAM.
- * Otherwise, when 2D acceleration is active, drawing operations are delayed
- * and performed by the GPU at rendering time.
- *
- * You should leave this to \c true if your surface is built from lots of source
- * surfaces that don't change often.
- *
- * Hardware destinations are intended to be used for internal optimizations of
- * the engine. They do not support all operations that software ones do.
- * In particular, a hardware surface can never be drawn on a software surface.
- * Also, when you draw on a hardware surface after it was rendered, previous
- * drawings on this surface get automatically cleared.
- *
- * Use hardware surfaces only if you know what you are doing.
- * If in doubt, leave this to \c true.
- *
- * \param software_destination Whether this surface is a software destination
- * surface.
- */
-void Surface::set_software_destination(bool software_destination) {
-
-  this->software_destination = software_destination;
-  // The software surface if any will be created lazily.
-}
-
-/**
- * \brief Creates an internal surface in software mode for this surface.
- */
-void Surface::create_software_surface() {
-
-  Debug::check_assertion(internal_surface == nullptr,
-      "Software surface already exists");
-
-  // Create a surface with the appropriate pixel format.
-  SDL_PixelFormat* format = Video::get_pixel_format();
-  internal_surface = SDL_Surface_UniquePtr(
-      SDL_CreateRGBSurface(
-          0,
-          width,
-          height,
-          32,
-          format->Rmask,
-          format->Gmask,
-          format->Bmask,
-          format->Amask
-      )
-  );
-
-  Debug::check_assertion(internal_surface != nullptr,
-      std::string("Failed to create software surface: ") + SDL_GetError());
-
-  SDL_SetSurfaceBlendMode(internal_surface.get(), get_sdl_blend_mode());
-  is_rendered = false;
-}
-
-/**
  * \brief Clears this surface.
  *
  * The surface becomes fully transparent and its size remains unchanged.
@@ -492,26 +293,11 @@ void Surface::create_software_surface() {
  */
 void Surface::clear() {
 
-  clear_subsurfaces();
-
-  internal_color = nullptr;
-
-  if (internal_texture != nullptr) {
-    internal_texture = nullptr;
-  }
-
-  if (internal_surface != nullptr) {
-    if (software_destination) {
-      SDL_FillRect(
-          internal_surface.get(),
-          nullptr,
-          get_color_value(Color::transparent)
-      );
-    }
-    else {
-      internal_surface = nullptr;
-    }
-  }
+  SDL_FillRect(
+      internal_surface.get(),
+      nullptr,
+      get_color_value(Color::transparent)
+  );
 }
 
 /**
@@ -524,20 +310,11 @@ void Surface::clear() {
  */
 void Surface::clear(const Rectangle& where) {
 
-  Debug::check_assertion(software_destination,
-      "Partial surface clear is only supported with software surfaces");
-
-  if (internal_surface == nullptr) {
-    // Nothing to do.
-    return;
-  }
-
   SDL_FillRect(
       internal_surface.get(),
       where.get_internal_rect(),
       get_color_value(Color::transparent)
   );
-  is_rendered = false;  // The surface has changed.
 }
 
 /**
@@ -550,7 +327,7 @@ void Surface::clear(const Rectangle& where) {
  */
 void Surface::fill_with_color(const Color& color) {
 
-  fill_with_color(color, Rectangle(0, 0, width, height));
+  SDL_FillRect(internal_surface.get(), nullptr, get_color_value(color));
 }
 
 /**
@@ -564,45 +341,7 @@ void Surface::fill_with_color(const Color& color) {
  */
 void Surface::fill_with_color(const Color& color, const Rectangle& where) {
 
-  // Create a surface with the requested size and color and draw it.
-  SurfacePtr colored_surface = Surface::create(where.get_size());
-  colored_surface->set_software_destination(false);
-  colored_surface->internal_color = std::unique_ptr<Color>(new Color(color));
-  colored_surface->raw_draw_region(Rectangle(colored_surface->get_size()), *this, where.get_xy());
-}
-
-/**
- * \brief Add a SubSurface to draw on this surface.
- * \param src_surface The Surface to draw.
- * \param region The subrectangle to draw in the source surface.
- * \param dst_position Coordinates on this surface.
- */
-void Surface::add_subsurface(
-    const SurfacePtr& src_surface,
-    const Rectangle& region,
-    const Point& dst_position) {
-
-  SubSurfaceNodePtr node(new SubSurfaceNode(
-      src_surface,
-      region,
-      Rectangle(dst_position),
-      src_surface->subsurfaces
-  ));
-
-  // Clear the subsurface queue if the current dst_surface has already been rendered.
-  if (is_rendered) {
-    clear_subsurfaces();
-  }
-
-  subsurfaces.push_back(node);
-}
-
-/**
- * \brief clear the internal SubSurface queue.
- */
-void Surface::clear_subsurfaces() {
-
-  subsurfaces.clear();
+  SDL_FillRect(internal_surface.get(), where.get_internal_rect(), get_color_value(color));
 }
 
 /**
@@ -612,7 +351,7 @@ void Surface::clear_subsurfaces() {
  */
 void Surface::raw_draw(Surface& dst_surface, const Point& dst_position) {
 
-  Rectangle region(0, 0, width, height);
+  Rectangle region(0, 0, get_width(), get_height());
   raw_draw_region(region, dst_surface, dst_position);
 }
 
@@ -627,97 +366,16 @@ void Surface::raw_draw_region(
     Surface& dst_surface,
     const Point& dst_position) {
 
-  if (dst_surface.software_destination  // The destination surface is in RAM.
-      || !Video::is_acceleration_enabled()  // The rendering is in RAM.
-  ) {
-
-    if (dst_surface.internal_surface == nullptr) {
-      dst_surface.create_software_surface();
-    }
-
-    // First, draw subsurfaces if any.
-    // They can exist if the video mode recently switched from an accelerated
-    // one to a software one.
-    if (!subsurfaces.empty()) {
-
-      if (this->internal_surface == nullptr) {
-        create_software_surface();
-      }
-
-      std::vector<SubSurfaceNodePtr> subsurfaces = this->subsurfaces;
-      this->subsurfaces.clear();  // Avoid infinite recursive calls if there are cycles.
-
-      for (SubSurfaceNodePtr& subsurface: subsurfaces) {
-
-        // TODO draw the subsurfaces of the whole tree recursively instead.
-        // The current version is not correct because it handles only one level
-        // (it ignores subsurface->subsurfaces).
-        // Plus it needs the workaround above to avoid a stack overflow.
-        subsurface->src_surface->raw_draw_region(
-            subsurface->src_rect,
-            *this,
-            subsurface->dst_rect.get_xy()
-        );
-        subsurface = nullptr;
-      }
-      clear_subsurfaces();
-    }
-
-    if (this->internal_surface != nullptr) {
-      // The source surface is not empty: draw it onto the destination.
-
-      SDL_SetSurfaceBlendMode(
-            this->internal_surface.get(),
-            get_sdl_blend_mode()
-      );
-      SDL_BlitSurface(
-          this->internal_surface.get(),
-          region.get_internal_rect(),
-          dst_surface.internal_surface.get(),
-          Rectangle(dst_position).get_internal_rect()
-      );
-    }
-    else if (internal_color != nullptr) { // No internal surface to draw: this may be a color.
-
-      if (get_blend_mode() == BlendMode::BLEND && internal_color->get_alpha() == 255) {
-        // Fill with opaque color: we can directly modify the destination pixels.
-        Rectangle dst_rect(
-            dst_position,
-            region.get_size()
-        );
-        SDL_FillRect(
-            dst_surface.internal_surface.get(),
-            dst_rect.get_internal_rect(),
-            get_color_value(*internal_color)
-        );
-      }
-      else {
-        // Fill with semi-transparent pixels: perform alpha-blending.
-        create_software_surface();
-        SDL_FillRect(
-            this->internal_surface.get(),
-            nullptr,
-            get_color_value(*internal_color)
-        );
-        SDL_BlitSurface(
-            this->internal_surface.get(),
-            region.get_internal_rect(),
-            dst_surface.internal_surface.get(),
-            Rectangle(dst_position).get_internal_rect()
-        );
-      }
-    }
-  }
-  else {
-    // The destination is a GPU surface (a texture).
-    // Do not draw anything, just store the operation in the tree instead.
-    // The actual drawing will be done at rendering time in GPU.
-
-    SurfacePtr src_surface = std::static_pointer_cast<Surface>(shared_from_this());
-    dst_surface.add_subsurface(src_surface, region, dst_position);
-  }
-
-  dst_surface.is_rendered = false;
+  SDL_SetSurfaceBlendMode(
+        this->internal_surface.get(),
+        get_sdl_blend_mode()
+  );
+  SDL_BlitSurface(
+      this->internal_surface.get(),
+      region.get_internal_rect(),
+      dst_surface.internal_surface.get(),
+      Rectangle(dst_position).get_internal_rect()
+  );
 }
 
 /**
@@ -736,7 +394,7 @@ void Surface::draw_transition(Transition& transition) {
  * this surface multiplied by the scaling factor of the filter.
  */
 void Surface::apply_pixel_filter(
-    const PixelFilter& pixel_filter, Surface& dst_surface) {
+    const SoftwarePixelFilter& pixel_filter, Surface& dst_surface) {
 
   const int factor = pixel_filter.get_scaling_factor();
   Debug::check_assertion(dst_surface.get_width() == get_width() * factor,
@@ -765,122 +423,6 @@ void Surface::apply_pixel_filter(
 
   SDL_UnlockSurface(dst_internal_surface);
   SDL_UnlockSurface(src_internal_surface);
-
-  // The destination surface has changed.
-  dst_surface.is_rendered = false;
-}
-
-/**
- * \brief Draws the internal texture if any, and all subtextures on the
- * renderer.
- * \param renderer The renderer where to draw.
- */
-void Surface::render(SDL_Renderer* renderer) {
-
-  const Rectangle size(get_size());
-  render(renderer, size, size, size, 255, subsurfaces);
-}
-
-/**
- * \brief Renders the internal texture if any, and all subsurfaces that are
- * drawn onto it.
- * \param renderer The renderer where to draw.
- * \param src_rect The subrectangle of the texture to draw.
- * \param dst_rect The position where to draw on the renderer.
- * \param clip_rect A portion of the renderer where to restrict the drawing.
- * \param opacity The opacity of the parent surface.
- * \param subsurfaces The subsurfaces drawn onto this texture. They will be
- * renderered recursively.
- */
-void Surface::render(
-    SDL_Renderer* renderer,
-    const Rectangle& src_rect,
-    const Rectangle& dst_rect,
-    const Rectangle& clip_rect,
-    uint8_t opacity,
-    const std::vector<SubSurfaceNodePtr>& subsurfaces
-) {
-
-  //FIXME SDL_RenderSetClipRect is buggy for now, but should be fixed soon.
-  // It means that software and hardware surface doesn't have the exact same behavior for now.
-  // Uncomment the two lines using it when https://bugzilla.libsdl.org/show_bug.cgi?id=2336 will be solved.
-
-  // Accelerate the internal software surface.
-  if (internal_surface != nullptr) {
-
-    if (internal_texture == nullptr) {
-      create_texture_from_surface();
-    }
-
-    // If the software surface has changed, update the hardware texture.
-    else if (
-        (software_destination || !Video::is_acceleration_enabled())
-         && !is_rendered) {
-      SDL_UpdateTexture(
-          internal_texture.get(),
-          nullptr,
-          internal_surface->pixels,
-          internal_surface->pitch
-      );
-      SDL_GetSurfaceAlphaMod(internal_surface.get(), &this->opacity);
-    }
-  }
-
-  const uint8_t current_opacity = std::min(this->opacity, opacity);
-
-  // Draw the internal color as background color.
-  if (internal_color != nullptr) {
-    uint8_t r, g, b, a;
-    internal_color->get_components(r, g, b, a);
-
-    SDL_SetRenderDrawColor(renderer, r, g, b, std::min((uint8_t) a, current_opacity));
-    //SDL_RenderSetClipRect(renderer, clip_rect.get_internal_rect());
-    SDL_RenderFillRect(renderer, clip_rect.get_internal_rect());
-  }
-
-  // Draw the internal texture.
-  if (internal_texture != nullptr) {
-    SDL_SetTextureAlphaMod(internal_texture.get(), current_opacity);
-    //SDL_RenderSetClipRect(renderer, clip_rect.get_internal_rect());
-
-    SDL_RenderCopy(
-        renderer,
-        internal_texture.get(),
-        src_rect.get_internal_rect(),
-        dst_rect.get_internal_rect()
-    );
-  }
-
-  // The surface is rendered. Now draw all subtextures.
-  for (const SubSurfaceNodePtr& subsurface: subsurfaces) {
-
-    // subsurface has to be drawn on this surface
-
-    // Calculate absolute destination subrectangle position on screen.
-    Rectangle subsurface_dst_rect(
-        dst_rect.get_xy() + subsurface->dst_rect.get_xy() - src_rect.get_xy(),
-        subsurface->src_rect.get_size()
-    );
-
-    // Set the intersection of the subsurface destination and this surface's clip as clipping rectangle.
-    Rectangle superimposed_clip_rect;
-    if (SDL_IntersectRect(subsurface_dst_rect.get_internal_rect(),
-        clip_rect.get_internal_rect(),
-        superimposed_clip_rect.get_internal_rect())) {
-
-      // If there is an intersection, render the subsurface.
-      subsurface->src_surface->render(
-          renderer,
-          subsurface->src_rect,
-          subsurface_dst_rect,
-          superimposed_clip_rect,
-          current_opacity,
-          subsurface->subsurfaces
-      );
-    }
-  }
-
-  is_rendered = true;
 }
 
 /**
@@ -902,9 +444,6 @@ Surface& Surface::get_transition_surface() {
  * \return The value of this pixel.
  */
 uint32_t Surface::get_pixel(int index) const {
-
-  SOLARUS_ASSERT(internal_surface != nullptr,
-    "Attempt to read a pixel on a hardware or a buffer surface.");
 
   SDL_PixelFormat* format = internal_surface->format;
 
@@ -1007,8 +546,96 @@ SDL_BlendMode Surface::get_sdl_blend_mode() const {
 }
 
 /**
+ * \brief Renders this surface onto a hardware texture.
+ */
+void Surface::render(SDL_Texture& render_target) {
+
+  SDL_UpdateTexture(
+      &render_target,
+      nullptr,
+      internal_surface->pixels,
+      internal_surface->pitch
+  );
+}
+
+/**
+ * \brief Returns an OpenGL texture with the same pixel data as this surface.
+ *
+ * Only works for software surfaces.
+ * Returns the same OpenGL texture for the same surface.
+ *
+ * \return The OpenGL texture or \c 0 in case of failure.
+ */
+GLuint Surface::to_opengl_texture() {
+
+  if (opengl_texture != 0) {
+    // TODO update if it has changed
+    return opengl_texture;
+  }
+
+  // Create the OpenGL texture.
+  glGenTextures(1, &opengl_texture);
+  glBindTexture(GL_TEXTURE_2D, opengl_texture);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  glBindTexture(GL_TEXTURE_2D, 0);
+
+  // Use the surface width and height expanded to powers of 2.
+  int width = internal_surface->w;
+  int height = internal_surface->h;
+
+  // TODO Don't copy to an intermediate surface if the format is already RGBA or ABGR.
+  SDL_Surface_UniquePtr rgba_surface;
+#if SDL_BYTEORDER == SDL_LIL_ENDIAN     // OpenGL RGBA masks.
+  rgba_surface = SDL_Surface_UniquePtr(SDL_CreateRGBSurface(
+      0, width, height, 32,
+      0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000
+  ));
+#else
+  rgba_surface = SDL_Surface_UniquePtr(SDL_CreateRGBSurface(
+      0, width, height, 32,
+      0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF
+  ));
+#endif
+
+  if (rgba_surface == nullptr) {
+    return 0;
+  }
+
+  // Save the alpha blending attributes.
+  SDL_BlendMode saved_mode;
+  SDL_GetSurfaceBlendMode(internal_surface.get(), &saved_mode);
+  SDL_SetSurfaceBlendMode(internal_surface.get(), SDL_BLENDMODE_NONE);
+
+  // Copy the original surface into the power-of-two surface.
+  SDL_Rect area;
+  area.x = 0;
+  area.y = 0;
+  area.w = internal_surface->w;
+  area.h = internal_surface->h;
+  SDL_BlitSurface(internal_surface.get(), &area, rgba_surface.get(), &area);
+
+  // Restore the alpha blending attributes.
+  SDL_SetSurfaceBlendMode(internal_surface.get(), saved_mode);
+
+  // Copy the image to the OpenGL texture.
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);  // Restore default pixel alignment settings.
+  glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+  glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
+  glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
+  glBindTexture(GL_TEXTURE_2D, opengl_texture);
+  glTexImage2D(GL_TEXTURE_2D,
+               0,
+               GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba_surface->pixels);
+
+  glBindTexture(GL_TEXTURE_2D, 0);
+
+  return opengl_texture;
+}
+
+/**
  * \brief Returns the name identifying this type in Lua.
- * \return the name identifying this type in Lua
+ * \return The name identifying this type in Lua.
  */
 const std::string& Surface::get_lua_type_name() const {
   return LuaContext::surface_module_name;

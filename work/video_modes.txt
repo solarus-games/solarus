@@ -1,0 +1,41 @@
+Retrocompatibility:
+
+Running a 1.5 quest with Solarus 1.6:
+- Keep built-in video mode implementations unchanged,
+  including with their automatic window resizing factors.
+- Keep sol.video.set_mode() and friends working correctly,
+  without deprecation warnings.
+- Keep applying the video mode in settings.
+- The launcher GUI menu should show built-in video modes.
+
+Running a 1.6 quest with Solarus 1.6:
+- The recommended way is now to use shaders.
+- sol.video.set_mode() and friends are now deprecated but still work,
+  including their automatic window resizing factors.
+- Shaders are not applied if the video mode is not "normal".
+- The video mode from settings is replaced by the corresponding shader id.
+- Initial window size: quest size x2.
+- Changing the shader does not resize the window.
+- The launcher GUI menu should show shader names.
+
+Converting a 1.5 quest to 1.6 with the quest editor:
+- Create shaders equivalent to the old built-in video modes.
+
+Deprecated functions:
+- sol.video.get_mode()
+- sol.video.set_mode(video_mode_name)
+- sol.video.switch_mode()
+- sol.video.is_mode_supported(video_mode_name)
+
+New API:
+- sol.video.get_shader()
+- sol.video.set_shader(shader)
+- sol.shader.create(shader_id)
+- shader:get_id()
+- shader:is_valid()
+- shader:set_uniform(uniform_name, value: bool/number/surface)
+- shader:get_vertex_file()
+- shader:set_vertex_file()
+- shader:get_fragment_file()
+- shader:set_fragment_file()
+

@@ -18,7 +18,7 @@
 #define SOLARUS_SCALE2X_FILTER_H
 
 #include "solarus/Common.h"
-#include "solarus/lowlevel/PixelFilter.h"
+#include "solarus/lowlevel/SoftwarePixelFilter.h"
 #include <cstdint>
 
 namespace Solarus {
@@ -28,7 +28,7 @@ namespace Solarus {
  *
  * See http://scale2x.sourceforge.net/algorithm.html
  */
-class Scale2xFilter: public PixelFilter {
+class Scale2xFilter: public SoftwarePixelFilter {
 
   public:
 

@@ -23,19 +23,15 @@
 
 namespace Solarus {
 
-std::string Shader::sampler_type = "";
-std::string Shader::shading_language_version = "";
-int Shader::display_time = 0;
-
-
 /**
  * \brief Constructor.
- * \param shader_name The name of the shader to load.
+ * \param shader_id The id of the shader to load (filename without extension).
  */
-Shader::Shader(const std::string& shader_name):
-    shader_name(shader_name),
-    default_window_scale(1.0),
-    is_shader_valid(true) {
+Shader::Shader(const std::string& shader_id):
+    shader_id(shader_id),
+    data(),
+    valid(true),
+    error() {
 }
 
 /**
@@ -45,121 +41,190 @@ Shader::~Shader() {
 }
 
 /**
- * \brief Set the shading language version string.
- * \param version The shading language version.
+ * \brief Returns whether this shader is valid.
+ * \return \c true if the shader was successfully loaded.
  */
-void Shader::set_shading_language_version(const std::string& version) {
-
-  shading_language_version = version;
+bool Shader::is_valid() const {
+  return valid;
 }
 
 /**
- * \brief Get the sampler type as string.
- * \return The sampler type.
+ * \brief Sets whether this shader is valid.
+ * \param valid \c true to indicate that the shader was successfully loaded.
  */
-const std::string& Shader::get_sampler_type() {
-
-  return sampler_type;
+void Shader::set_valid(bool valid) {
+  this->valid = valid;
 }
 
 /**
- * \brief Reset the displaying time.
+ * \brief Returns the error message of the last operation if any.
+ * \return The error message or an empty string.
  */
-void Shader::reset_time() {
-
-  display_time = 0;
+std::string Shader::get_error() const {
+  return error;
 }
 
 /**
- * \brief Get the name of the shader, which is also the name of the related video mode.
- * \return The name of the shader.
+ * \brief Sets the error message of the last operation.
+ *
+ * There should be an error message when \c is_valid() returns \c false.
+ *
+ * \return The error message or an empty string.
  */
-const std::string& Shader::get_name() {
-
-  return shader_name;
+void Shader::set_error(const std::string& error) {
+  this->error = error;
 }
 
 /**
- * \brief Get the scale to apply on the quest size to get the final default size of the related video mode.
- * \return The window scale.
+ * \brief Returns the id of the shader.
+ * \return The id of the shader.
  */
-double Shader::get_default_window_scale() {
+const std::string& Shader::get_id() const {
 
-  return default_window_scale;
+  return shader_id;
 }
 
 /**
- * \brief Check if the engine shader context is marked as compatible by the shader script.
- * \return True if the engine shader context is not been explicitly set as not compatible with the shader script .
+ * \brief Returns the shader information loaded from the data file.
+ * \return The shader data.
  */
-bool Shader::is_valid() {
-
-  return is_shader_valid;
+const ShaderData& Shader::get_data() const {
+  return data;
 }
 
 /**
+ * \brief Sets the shader information.
+ */
+void Shader::set_data(const ShaderData& data) {
+  this->data = data;
+}
+
+/**
+ * \fn Shader::set_uniform_1b
+ * \brief Uploads a boolean uniform value to this shader program.
+ *
+ * Does nothing if there is no such uniform in the shader program.
+ *
+ * \param uniform_name Name of the uniform to set.
+ * \param value The boolean value to set.
+ */
+void Shader::set_uniform_1b(const std::string&, bool) {
+  // TODO make pure virtual
+}
+
+/**
+ * \fn Shader::set_uniform_1i
+ * \brief Uploads an integer uniform value to this shader program.
+ *
+ * Does nothing if there is no such uniform in the shader program.
+ *
+ * \param uniform_name Name of the uniform to set.
+ * \param value The integer value to set.
+ */
+void Shader::set_uniform_1i(const std::string&, int) {
+  // TODO make pure virtual
+}
+
+/**
+ * \fn Shader::set_uniform_1f
+ * \brief Uploads a float uniform value to this shader program.
+ *
+ * Does nothing if there is no such uniform in the shader program.
+ *
+ * \param uniform_name Name of the uniform to set.
+ * \param value The float value to set.
+ */
+void Shader::set_uniform_1f(const std::string&, float) {
+  // TODO make pure virtual
+}
+
+/**
+ * \fn Shader::set_uniform_2f
+ * \brief Uploads a vec2 uniform value to this shader program.
+ *
+ * Does nothing if there is no such uniform in the shader program.
+ *
+ * \param uniform_name Name of the uniform to set.
+ * \param value_1 The first float value to set.
+ * \param value_2 The second float value to set.
+ */
+void Shader::set_uniform_2f(const std::string&, float, float) {
+  // TODO make pure virtual
+}
+
+/**
+ * \fn Shader::set_uniform_3f
+ * \brief Uploads a vec3 uniform value to this shader program.
+ *
+ * Does nothing if there is no such uniform in the shader program.
+ *
+ * \param uniform_name Name of the uniform to set.
+ * \param value_1 The first float value to set.
+ * \param value_2 The third float value to set.
+ * \param value_3 The second float value to set.
+ */
+void Shader::set_uniform_3f(const std::string&, float, float, float) {
+  // TODO make pure virtual
+}
+
+/**
+ * \fn Shader::set_uniform_4f
+ * \brief Uploads a vec4 uniform value to this shader program.
+ *
+ * Does nothing if there is no such uniform in the shader program.
+ *
+ * \param uniform_name Name of the uniform to set.
+ * \param value_1 The first float value to set.
+ * \param value_2 The second float value to set.
+ * \param value_3 The third float value to set.
+ * \param value_4 The fourth float value to set.
+ */
+void Shader::set_uniform_4f(const std::string&, float, float, float, float) {
+  // TODO make pure virtual
+}
+
+/**
+ * \fn Shader::set_uniform_texture
+ * \brief Uploads a 2D texture uniform value to this shader program.
+ *
+ * Does nothing if there is no such uniform in the shader program.
+ *
+ * \param uniform_name Name of the uniform to set.
+ * \param value The 2D texture value value to set.
+ * \return \c true in case of success.
+ */
+bool Shader::set_uniform_texture(const std::string&, const SurfacePtr&) {
+  // TODO make pure virtual
+  return false;
+}
+
+/**
+ * \fn Shader::render()
  * \brief Draws the quest surface on the screen in a shader-allowed context.
  * It will perform the render using the OpenGL API directly.
  * \param quest_surface the surface to render on the screen
  */
-void Shader::render(const SurfacePtr& /* quest_surface */) const {
+void Shader::render(const SurfacePtr& /* quest_surface */) {
+  // TODO make pure virtual
+}
 
-  display_time += System::timestep;
+
+/**
+ * \fn Shader::load()
+ * \brief Loads this shader.
+ *
+ * Parses the shader data file and compiles GLSL shaders.
+ */
+void Shader::load() {
+  // TODO make pure virtual
 }
 
 /**
- * \brief Load all files from the corresponding shader, depending on the driver and shader names.
- * Parse the Lua file and compile GLSL others.
- * \param shader_name The name of the shader to load.
+ * \brief Returns the name identifying this type in Lua.
+ * \return The name identifying this type in Lua.
  */
-void Shader::load(const std::string& shader_name) {
-
-  const std::string shader_path =
-      "shaders/videomodes/" + shader_name;
-
-  // Parse the lua file
-  load_lua_file(shader_path);
-}
-
-/**
- * \brief Dummy method used to call the static lua callback for a specific shader implementation.
- * \param l The lua state.
- */
-void Shader::register_callback(lua_State* /* l */) {
-}
-
-/**
- * \brief Load and parse the Lua file of the requested shader.
- * \param path The path to the lua file, relative to the data folder.
- */
-void Shader::load_lua_file(const std::string& path) {
-
-  lua_State* l = luaL_newstate();
-  luaL_openlibs(l);  // FIXME don't open the libs
-
-
-  const std::string& buffer = QuestFiles::data_file_read(path);
-  int load_result = luaL_loadbuffer(l, buffer.data(), buffer.size(), path.c_str());
-
-  if (load_result != 0) {
-    // Syntax error in the lua file.
-    Debug::die(std::string("Failed to load ") + path + " : " + lua_tostring(l, -1));
-  }
-  else {
-    // Register the callback and send string parameters to the lua script.
-    register_callback(l);
-    lua_pushstring(l, Video::get_rendering_driver_name().c_str());
-    lua_pushstring(l, shading_language_version.c_str());
-    lua_pushstring(l, sampler_type.c_str());
-
-    if (lua_pcall(l, 3, 0, 0) != 0) {
-
-      // Runtime error.
-      Debug::die(std::string("Failed to parse ") + path + " : " + lua_tostring(l, -1));
-    }
-  }
-
-  lua_close(l);
+const std::string& Shader::get_lua_type_name() const {
+  return LuaContext::shader_module_name;
 }
 
 }

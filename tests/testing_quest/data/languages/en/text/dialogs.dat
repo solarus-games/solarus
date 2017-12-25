@@ -2,7 +2,7 @@ dialog{
   id = "_treasure.bomb.1",
   text = [[
 You found a bomb!
-]]
+]],
 }
 
 dialog{
@@ -10,7 +10,7 @@ dialog{
   text = [[
 You found something!
 No sprite for this treasure.
-]]
+]],
 }
 
 dialog{
@@ -19,21 +19,21 @@ dialog{
 You found something!
 A treasure sprite should
 be there.
-]]
+]],
 }
 
 dialog{
   id = "a",
   text = [[
 Simple test dialog.
-]]
+]],
 }
 
 dialog{
   id = "a.1",
   text = [[
 Simple test dialog.
-]]
+]],
 }
 
 dialog{
@@ -41,7 +41,7 @@ dialog{
   property_a = "value_a",
   text = [[
 Property test dialog.
-]]
+]],
 }
 
 dialog{
@@ -52,7 +52,7 @@ dialog{
   property_d = "-1",
   text = [[
 Properties test dialog.
-]]
+]],
 }
 
 dialog{
@@ -63,6 +63,6 @@ Multi-
 lines
 test
 dialog.
-]]
+]],
 }
 

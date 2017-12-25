@@ -37,7 +37,6 @@ class Rectangle {
 
   // low-level classes allowed to manipulate directly the internal SDL rectangle encapsulated
   friend class Surface;
-  friend class Video;
 
   public:
 
@@ -103,7 +102,7 @@ class Rectangle {
     SDL_Rect* get_internal_rect();
     const SDL_Rect* get_internal_rect() const;
 
-    SDL_Rect rect;      /**< the SDL_Rect encapsulated */
+    SDL_Rect rect;      /**< The SDL_Rect encapsulated. */
 
 };
 

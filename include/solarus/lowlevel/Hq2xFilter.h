@@ -18,7 +18,7 @@
 #define SOLARUS_HQ2X_FILTER_H
 
 #include "solarus/Common.h"
-#include "solarus/lowlevel/PixelFilter.h"
+#include "solarus/lowlevel/SoftwarePixelFilter.h"
 #include <cstdint>
 
 namespace Solarus {
@@ -26,7 +26,7 @@ namespace Solarus {
 /**
  * \brief Wrapper to the hq2x algorithm.
  */
-class Hq2xFilter: public PixelFilter {
+class Hq2xFilter: public SoftwarePixelFilter {
 
   public:
 

@@ -23,6 +23,7 @@
 #include "solarus/Drawable.h"
 #include <SDL.h>
 #include <SDL_image.h>
+#include <GL/gl.h>
 #include <cstdint>
 #include <memory>
 #include <string>
@@ -31,8 +32,8 @@
 namespace Solarus {
 
 class Color;
-class PixelFilter;
 class Size;
+class SoftwarePixelFilter;
 class Surface;
 
 /**
@@ -61,6 +62,7 @@ class Surface: public Drawable {
 
     Surface(int width, int height);
     explicit Surface(SDL_Surface* internal_surface);
+    ~Surface();
 
     // Surfaces should only created with std::make_shared.
     // This is what create() functions do, so you should call them rather than
@@ -76,9 +78,6 @@ class Surface: public Drawable {
     int get_height() const;
     virtual Size get_size() const override;
 
-    bool is_software_destination() const;
-    void set_software_destination(bool software_destination);
-
     void clear();
     void clear(const Rectangle& where);
     void fill_with_color(const Color& color);
@@ -87,12 +86,13 @@ class Surface: public Drawable {
     void set_opacity(uint8_t opacity);
 
     std::string get_pixels() const;
+    void apply_pixel_filter(const SoftwarePixelFilter& pixel_filter, Surface& dst_surface);
 
-    void apply_pixel_filter(const PixelFilter& pixel_filter, Surface& dst_surface);
+    void render(SDL_Texture& render_target);
 
-    void render(SDL_Renderer* renderer);
+    GLuint to_opengl_texture();
 
-    virtual const std::string& get_lua_type_name() const override;
+    const std::string& get_lua_type_name() const override;
 
   protected:
 
@@ -111,22 +111,12 @@ class Surface: public Drawable {
 
   private:
 
-    class SubSurfaceNode;
-    using SubSurfaceNodePtr = std::shared_ptr<Surface::SubSurfaceNode>;
-
     struct SDL_Surface_Deleter {
         void operator()(SDL_Surface* sdl_surface) {
           SDL_FreeSurface(sdl_surface);
         }
     };
     using SDL_Surface_UniquePtr = std::unique_ptr<SDL_Surface, SDL_Surface_Deleter>;
-
-    struct SDL_Texture_Deleter {
-        void operator()(SDL_Texture* sdl_texture) {
-          SDL_DestroyTexture(sdl_texture);
-        }
-    };
-    using SDL_Texture_UniquePtr = std::unique_ptr<SDL_Texture, SDL_Texture_Deleter>;
 
     uint32_t get_pixel(int index) const;
     bool is_pixel_transparent(int index) const;
@@ -139,34 +129,11 @@ class Surface: public Drawable {
 
     void create_software_surface();
     void convert_software_surface();
-    void create_texture_from_surface();
-    void add_subsurface(const SurfacePtr& src_surface, const Rectangle& region, const Point& dst_position);
-    void clear_subsurfaces();
-    void render(
-        SDL_Renderer* renderer,
-        const Rectangle& src_rect,
-        const Rectangle& dst_rect,
-        const Rectangle& clip_rect,
-        uint8_t opacity,
-        const std::vector<SubSurfaceNodePtr>& subsurfaces
-    );
 
-    std::vector<SubSurfaceNodePtr>
-        subsurfaces;                      /**< Source Subsurfaces not in the tree yet */
-
-    bool software_destination;            /**< Whether this surface should be modified on software side
-                                           * (and therefore immediately) when used as a destination */
     SDL_Surface_UniquePtr
-        internal_surface;                 /**< The SDL_Surface encapsulated, if any. */
-    SDL_Texture_UniquePtr
-        internal_texture;                 /**< The SDL_Texture encapsulated, if any. */
-    std::unique_ptr<Color>
-        internal_color;                   /**< The background color to use, if any. */
-    bool is_rendered;                     /**< Whether the current surface has been rendered.
-                                           * Set to false when drawing a surface on this one. */
+        internal_surface;                 /**< The SDL_Surface encapsulated. */
     uint8_t opacity;                      /**< Opacity (0: transparent, 255: opaque). */
-    int width, height;                    /**< Size of the texture, avoid to use SDL_QueryTexture. */
-
+    GLuint opengl_texture;                /**< OpenGL texture for this surface, if any. */
 };
 
 }

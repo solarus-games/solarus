@@ -19,42 +19,55 @@
 
 #include "solarus/Common.h"
 
-#if SOLARUS_HAVE_OPENGL == 1
-
 #include "solarus/lowlevel/shaders/Shader.h"
 #include <SDL.h>
-#include <SDL_opengl.h>
 #include <string>
+
+#ifdef SOLARUS_HAVE_OPENGLES2
+#  include "SDL_opengles2.h"
+#endif
 
 
 namespace Solarus {
 
 /**
- * \brief Represents a GLSL shader for use with GL 2D sampler.
+ * \brief Represents a GLSL shader and displays it using the GLES2 way.
  *
  * This class basically encapsulates a GLSL vertex and fragment shader.
  */
+//TODO Check if there is a way to support both gl, gles and gles2 with this codebase
+// and rename this class to GL_ES2Shader else
 class GL_2DShader : public Shader {
-
-  // TODO
 
   public:
 
+#ifdef SOLARUS_HAVE_OPENGLES2
     static bool initialize();
 
-    explicit GL_2DShader(const std::string& shader_name);
+    explicit GL_2DShader(const std::string& shader_id);
+    ~GL_2DShader();
+
+  protected:
+
+    void load() override;
 
   private:
 
-    static void set_rendering_settings();
-    static int l_shader(lua_State* l);
+    GLuint create_shader(GLenum type, const char* source);
+    static void check_gl_error();
 
-    void register_callback(lua_State* l);
-    void render(const SurfacePtr& quest_surface) const;
+    void render(const SurfacePtr& quest_surface) override;
+
+    GLuint program;                         /**< The program which bind the vertex and fragment shader. */
+    GLuint vertex_shader;                   /**< The vertex shader. */
+    GLuint fragment_shader;                 /**< The fragment shader. */
+#else
+
+    static bool initialize() { return false; }
+    explicit GL_2DShader(const std::string& shader_id): Shader(shader_id) {}
+#endif
 };
 
 }
-
-#endif // SOLARUS_HAVE_OPENGL
 
 #endif

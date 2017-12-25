@@ -15,11 +15,9 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/lowlevel/shaders/GLContext.h"
-
-#if SOLARUS_HAVE_OPENGL == 1
-
 #include "solarus/lowlevel/shaders/GL_ARBShader.h"
 #include "solarus/lowlevel/shaders/GL_2DShader.h"
+#include "solarus/lowlevel/Logger.h"
 #include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Video.h"
 #include "solarus/lua/LuaContext.h"
@@ -29,14 +27,33 @@
 
 namespace Solarus {
 
-SDL_GLContext GLContext::gl_context = nullptr;
+namespace GLContext {
 
+namespace {
+
+SDL_GLContext gl_context = nullptr;
+std::string opengl_version;
+std::string shading_language_version;
+std::string opengl_vendor;
+std::string opengl_renderer;
+
+}  // Anonymous namespace.
 
 /**
  * \brief Initializes OpenGL and the shader system.
  * \return \c true if a GL shader system is supported.
  */
-bool GLContext::initialize() {
+bool initialize() {
+
+  opengl_version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
+  shading_language_version = reinterpret_cast<const char *>(glGetString(GL_SHADING_LANGUAGE_VERSION));
+  opengl_vendor = reinterpret_cast<const char*>(glGetString(GL_VENDOR));
+  opengl_renderer = reinterpret_cast<const char*>(glGetString(GL_RENDERER));
+
+  Logger::info(std::string("OpenGL: ") + opengl_version);
+  Logger::info(std::string("OpenGL vendor: ") + opengl_vendor);
+  Logger::info(std::string("OpenGL renderer: ") + opengl_renderer);
+  Logger::info(std::string("OpenGL shading language: ") + shading_language_version);
 
   SDL_GL_SetAttribute(SDL_GL_SHARE_WITH_CURRENT_CONTEXT, 1);
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
@@ -47,34 +64,44 @@ bool GLContext::initialize() {
   }
 
   // Setting some parameters
-  glClearDepth(1.0); // Enables clearing of the depth buffer.
   glEnable(GL_DEPTH_TEST); // The type of depth test to do.
   glDepthFunc(GL_LESS); // Enables depth testing.
-  glShadeModel(GL_SMOOTH); // Enables smooth color shading.
 
   // Use late swap tearing, or try to use the classic swap interval (aka VSync) if not supported.
   if (SDL_GL_SetSwapInterval(-1) == -1) {
     SDL_GL_SetSwapInterval(1);
   }
 
-  // Get the shading language version.
-  Shader::set_shading_language_version(
-      reinterpret_cast<const char *>(glGetString(GL_SHADING_LANGUAGE_VERSION)));
-
   // Try to initialize a gl shader system, in order from the earlier to the older.
   return GL_ARBShader::initialize() || GL_2DShader::initialize();
 }
 
 /**
- * \brief Free GL context.
+ * \brief Frees the GL context.
  */
-void GLContext::quit() {
+void quit() {
 
   if (gl_context) {
     SDL_GL_DeleteContext(gl_context);
   }
 }
 
+/**
+ * \brief Returns the OpenGL version name.
+ * \return The OpenGL version name.
+ */
+const std::string& get_opengl_version() {
+  return opengl_version;
 }
 
-#endif // SOLARUS_HAVE_OPENGL
+/**
+ * \brief Returns the shading language version.
+ * \return The shading language version.
+ */
+const std::string& get_shading_language_version() {
+  return shading_language_version;
+}
+
+}  // namespace GLContext
+
+}  // namespace Solarus

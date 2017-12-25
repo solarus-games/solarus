@@ -115,7 +115,7 @@ const std::string LuaContext::map_module_name = "sol.map";
  */
 void LuaContext::register_map_module() {
 
-  static const luaL_Reg methods[] = {
+  const std::vector<luaL_Reg> methods = {
       { "get_id", map_api_get_id },
       { "get_game", map_api_get_game },
       { "get_world", map_api_get_world },
@@ -151,18 +151,16 @@ void LuaContext::register_map_module() {
       { "get_entities_in_region", map_api_get_entities_in_region },
       { "get_hero", map_api_get_hero },
       { "set_entities_enabled", map_api_set_entities_enabled },
-      { "remove_entities", map_api_remove_entities },
-      { nullptr, nullptr }
+      { "remove_entities", map_api_remove_entities }
   };
 
-  static const luaL_Reg metamethods[] = {
+  const std::vector<luaL_Reg> metamethods = {
       { "__gc", userdata_meta_gc },
       { "__newindex", userdata_meta_newindex_as_table },
-      { "__index", userdata_meta_index_as_table },
-      { nullptr, nullptr }
+      { "__index", userdata_meta_index_as_table }
   };
 
-  register_type(map_module_name, nullptr, methods, metamethods);
+  register_type(map_module_name, {}, methods, metamethods);
 
   // Add map:create_* functions as closures because we pass the entity type as upvalue.
   luaL_getmetatable(l, map_module_name.c_str());
@@ -1661,7 +1659,9 @@ int LuaContext::map_api_get_camera_position(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
 
-    get_lua_context(l).warning_deprecated("map:get_camera_position()",
+    get_lua_context(l).warning_deprecated(
+        { 1, 5 },
+        "map:get_camera_position()",
         "Use map:get_camera():get_bounding_box() instead.");
 
     const Map& map = *check_map(l, 1);
@@ -1692,7 +1692,9 @@ int LuaContext::map_api_move_camera(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
 
     LuaContext& lua_context = get_lua_context(l);
-    lua_context.warning_deprecated("map:move_camera()",
+    lua_context.warning_deprecated(
+        { 1, 5 },
+        "map:move_camera()",
         "Make a target movement on map:get_camera() instead.");
 
     check_map(l, 1);
@@ -1768,7 +1770,9 @@ int LuaContext::map_api_draw_sprite(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
 
-    get_lua_context(l).warning_deprecated("map:draw_sprite()",
+    get_lua_context(l).warning_deprecated(
+        { 1, 5 },
+        "map:draw_sprite()",
         "Use map:draw_visual() instead.");
 
     Map& map = *check_map(l, 1);

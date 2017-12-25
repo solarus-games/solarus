@@ -47,6 +47,7 @@ class SOLARUS_API QuestProperties : public LuaData {
     bool import_from_lua(lua_State* l) override;
     bool export_to_lua(std::ostream& out) const override;
 
+    std::pair<int, int> get_solarus_version_major_minor() const;
     std::string get_solarus_version() const;
     void set_solarus_version(const std::string& solarus_version);
     std::string get_quest_write_dir() const;

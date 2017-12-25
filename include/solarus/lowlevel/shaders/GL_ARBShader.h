@@ -19,18 +19,19 @@
 
 #include "solarus/Common.h"
 
-#if SOLARUS_HAVE_OPENGL == 1
-
 #include "solarus/lowlevel/shaders/Shader.h"
 #include <SDL.h>
-#include <SDL_opengl.h>
+#include <map>
 #include <string>
 
+#ifdef SOLARUS_HAVE_OPENGL
+#  include <SDL_opengl.h>
+#endif
 
 namespace Solarus {
 
 /**
- * \brief Represents a GLSL shader for use with GL rectangle ARB sampler.
+ * \brief Represents a GLSL shader and displays it using the GL ARB extension way.
  *
  * This class basically encapsulates a GLSL vertex and fragment shader.
  */
@@ -38,27 +39,52 @@ class GL_ARBShader : public Shader {
 
   public:
 
+#ifdef SOLARUS_HAVE_OPENGL
     static bool initialize();
 
-    explicit GL_ARBShader(const std::string& shader_name);
+    explicit GL_ARBShader(const std::string& shader_id);
     ~GL_ARBShader();
+
+    void set_uniform_1b(
+        const std::string& uniform_name, bool value) override;
+    void set_uniform_1i(
+        const std::string& uniform_name, int value) override;
+    void set_uniform_1f(
+        const std::string& uniform_name, float value) override;
+    void set_uniform_2f(
+        const std::string& uniform_name, float value_1, float value_2) override;
+    void set_uniform_3f(
+        const std::string& uniform_name, float value_1, float value_2, float value_3) override;
+    void set_uniform_4f(
+        const std::string& uniform_name, float value_1, float value_2, float value_3, float value_4) override;
+    bool set_uniform_texture(const std::string& uniform_name, const SurfacePtr& value) override;
+
+  protected:
+
+    void load() override;
 
   private:
 
-    static void compile_shader(GLhandleARB& shader, const char* source);
+    GLhandleARB create_shader(uint type, const char* source);
     static void set_rendering_settings();
-    static int l_shader(lua_State* l);
+    GLint get_uniform_location(const std::string& uniform_name) const;
 
-    void register_callback(lua_State* l);
-    void render(const SurfacePtr& quest_surface) const;
+    void render(const SurfacePtr& quest_surface) override;
 
     GLhandleARB program;                         /**< The program which bind the vertex and fragment shader. */
     GLhandleARB vertex_shader;                   /**< The vertex shader. */
     GLhandleARB fragment_shader;                 /**< The fragment shader. */
+    mutable std::map<std::string, GLint>
+        uniform_locations;                       /**< Cache of uniform locations. */
+    mutable std::map<SurfacePtr, int>
+        uniform_texture_units;                   /**< Texture unit of each uniform texture. */
+#else
+
+  static bool initialize() { return false; }
+  explicit GL_ARBShader(const std::string& shader_id): Shader(shader_id)  {}
+#endif
 };
 
 }
-
-#endif // SOLARUS_HAVE_OPENGL
 
 #endif

@@ -22,7 +22,7 @@ namespace Solarus {
  * \brief Constructor.
  */
 Scale2xFilter::Scale2xFilter():
-  PixelFilter() {
+  SoftwarePixelFilter() {
 }
 
 /**

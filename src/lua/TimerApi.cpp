@@ -40,14 +40,13 @@ const std::string LuaContext::timer_module_name = "sol.timer";
 void LuaContext::register_timer_module() {
 
   // Functions of sol.timer.
-  static const luaL_Reg functions[] = {
+  const std::vector<luaL_Reg> functions = {
       { "start", timer_api_start },
-      { "stop_all", timer_api_stop_all },
-      { nullptr, nullptr }
+      { "stop_all", timer_api_stop_all }
   };
 
   // Methods of the timer type.
-  static const luaL_Reg methods[] = {
+  const std::vector<luaL_Reg> methods = {
       { "stop", timer_api_stop },
       { "is_with_sound", timer_api_is_with_sound },
       { "set_with_sound", timer_api_set_with_sound },
@@ -56,13 +55,11 @@ void LuaContext::register_timer_module() {
       { "is_suspended_with_map", timer_api_is_suspended_with_map },
       { "set_suspended_with_map", timer_api_set_suspended_with_map },
       { "get_remaining_time", timer_api_get_remaining_time },
-      { "set_remaining_time", timer_api_set_remaining_time },
-      { nullptr, nullptr }
+      { "set_remaining_time", timer_api_set_remaining_time }
   };
 
-  static const luaL_Reg metamethods[] = {
-      { "__gc", userdata_meta_gc },
-      { nullptr, nullptr }
+  const std::vector<luaL_Reg> metamethods = {
+      { "__gc", userdata_meta_gc }
   };
 
   register_type(timer_module_name, functions, methods, metamethods);
@@ -94,7 +91,7 @@ TimerPtr LuaContext::check_timer(lua_State* l, int index) {
 /**
  * \brief Pushes a timer userdata onto the stack.
  * \param l A Lua context.
- * \param Timer A timer.
+ * \param timer A timer.
  */
 void LuaContext::push_timer(lua_State* l, const TimerPtr& timer) {
   push_userdata(l, *timer);

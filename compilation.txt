@@ -72,7 +72,7 @@ and probably with other recent compilers (please let us know).
 
 The following libraries are required to compile and execute Solarus:
 
-- SDL2 (2.0.1 or greater)
+- SDL2 (2.0.4 or greater)
 - SDL2main
 - SDL2_image
 - SDL2_ttf
@@ -89,10 +89,8 @@ snes_spc, an SPC music decoding library.
 
 - About SDL2:
 
-SDL 2.0.0 is buggy (you will get broken graphics or even a black screen).
-You need at least SDL 2.0.1.
-Ubuntu 14.04 provides SDL 2.0.2, so you will be okay, but Ubuntu 13.10 only
-provides SDL 2.0.0.
+SDL 2.0.2 is buggy (you will get broken graphics or even a black screen).
+You need at least SDL 2.0.4.
 
 - About Qt5:
 

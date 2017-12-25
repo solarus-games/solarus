@@ -14,28 +14,20 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_GL_CONTEXT_H
-#define SOLARUS_GL_CONTEXT_H
+#ifndef SOLARUS_SHADER_PTR_H
+#define SOLARUS_SHADER_PTR_H
 
-#include "solarus/Common.h"
-
-#include <SDL.h>
-#include <SDL_opengl.h>
-#include <string>
+#include <memory>
 
 namespace Solarus {
 
-namespace GLContext {
+class Shader;
 
+/**
+ * \brief Alias for shared_ptr of Shader.
+ */
+using ShaderPtr = std::shared_ptr<Shader>;
 
-  bool initialize();
-  void quit();
-
-  const std::string& get_opengl_version();
-  const std::string& get_shading_language_version();
-
-}  // namespace GLContext
-
-}  // namespace Solarus
+}
 
 #endif

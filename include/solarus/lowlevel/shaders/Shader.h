@@ -18,51 +18,65 @@
 #define SOLARUS_SHADER_H
 
 #include "solarus/Common.h"
+#include "solarus/lowlevel/shaders/ShaderData.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/SurfacePtr.h"
+#include "solarus/lua/ExportableToLua.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
 #include <string>
+
+#define SOLARUS_HAVE_OPENGL // Temporary define. To determine at configure part
 
 namespace Solarus {
 
 /**
  * \brief Represents a shader for a driver and sampler-independant uses.
  */
-class Shader {
+class Shader : public ExportableToLua {
 
   public:
 
-    explicit Shader(const std::string& shader_name);
+    explicit Shader(const std::string& shader_id);
     virtual ~Shader();
 
-    static void set_shading_language_version(const std::string& version);
-    static const std::string& get_sampler_type();
-    static void reset_time();
+    bool is_valid() const;
+    std::string get_error() const;
 
-    const std::string& get_name();
-    double get_default_window_scale();
-    bool is_valid();
+    const std::string& get_id() const;
+    const ShaderData& get_data() const;
 
-    virtual void render(const SurfacePtr& quest_surface) const;
+    virtual void set_uniform_1b(
+        const std::string& uniform_name, bool value);  // TODO make pure virtual
+    virtual void set_uniform_1i(
+        const std::string& uniform_name, int value);
+    virtual void set_uniform_1f(
+        const std::string& uniform_name, float value);
+    virtual void set_uniform_2f(
+        const std::string& uniform_name, float value_1, float value_2);
+    virtual void set_uniform_3f(
+        const std::string& uniform_name, float value_1, float value_2, float value_3);
+    virtual void set_uniform_4f(
+        const std::string& uniform_name, float value_1, float value_2, float value_3, float value_4);
+    virtual bool set_uniform_texture(const std::string& uniform_name, const SurfacePtr& value);
+
+    virtual void render(const SurfacePtr& quest_surface);  // TODO make pure virtual
+
+    const std::string& get_lua_type_name() const override;
 
   protected:
 
-    void load(const std::string& shader_name);
-    virtual void register_callback(lua_State* l);
-
-    static std::string shading_language_version; /**< The version of the shading language. */
-    static std::string sampler_type;             /**< The sampler type of the shader. */
-    static int display_time;                      /**< Time since the current shader is displayed (without interruptions). */
-
-    std::string shader_name;                     /**< The name of the shader. */
-    double default_window_scale;                 /**< Default scale of the window when the shader is being active,
-                                                  * compared to the normal quest size. */
-    bool is_shader_valid;                        /**< False if the engine shader context is explicitly set as not compatible with the shader script. */
+    void set_valid(bool valid);
+    void set_error(const std::string& error);
+    void set_data(const ShaderData& data);
+    virtual void load();  // TODO make pure virtual
 
   private:
 
-    void load_lua_file(const std::string& path);
+    const std::string shader_id;  /**< The id of the shader (filename without extension). */
+    ShaderData data;              /**< The loaded shader data file. */
+    bool valid;                   /**< \c true if the compilation succedeed. */
+    std::string error;            /**< Error message of the last operation if any. */
 };
 
 }

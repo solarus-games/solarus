@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_VIDEO_MODE_H
-#define SOLARUS_VIDEO_MODE_H
+#ifndef SOLARUS_SOFTWARE_VIDEO_MODE_H
+#define SOLARUS_SOFTWARE_VIDEO_MODE_H
 
 #include "solarus/Common.h"
 #include "solarus/lowlevel/Size.h"
@@ -24,29 +24,30 @@
 
 namespace Solarus {
 
-class PixelFilter;
+class SoftwarePixelFilter;
 class Shader;
 
 /**
  * \brief Represents a method to display the quest content on the screen.
  *
  * The video mode may include a scaling algorithm.
+ *
+ * \deprecated Software video modes are deprecated since Solarus 1.6.
+ * The new recommended way is to use shaders.
  */
-class VideoMode {
+class SoftwareVideoMode {
 
   public:
 
-    VideoMode(
+    SoftwareVideoMode(
         const std::string& name,
         const Size& initial_window_size,
-        std::unique_ptr<PixelFilter> software_filter,
-        std::unique_ptr<Shader> hardware_filter
+        std::unique_ptr<SoftwarePixelFilter> software_filter
     );
 
     const std::string& get_name() const;
     const Size& get_initial_window_size() const;
-    const PixelFilter* get_software_filter() const;
-    const Shader* get_hardware_filter() const;
+    const SoftwarePixelFilter* get_software_filter() const;
 
   private:
 
@@ -54,9 +55,8 @@ class VideoMode {
     Size initial_window_size;      /**< Default size of the window when
                                     * selecting this video mode. */
 
-    // Pixel filter (in CPU or GPU).
-    std::unique_ptr<PixelFilter> software_filter;        /**< Software scaling pixel filter to use or nullptr. */
-    std::unique_ptr<Shader> hardware_filter;             /**< Scaling shader to use or nullptr. */
+    std::unique_ptr<SoftwarePixelFilter>
+        software_filter;           /**< Software scaling pixel filter to use or nullptr. */
 
 };
 

@@ -18,6 +18,7 @@
 #define SOLARUS_VIDEO_H
 
 #include "solarus/Common.h"
+#include "solarus/lowlevel/shaders/ShaderPtr.h"
 #include "solarus/lowlevel/Point.h"
 #include "solarus/lowlevel/SurfacePtr.h"
 #include <vector>
@@ -35,76 +36,71 @@ namespace Solarus {
 class Arguments;
 class Rectangle;
 class Size;
-class VideoMode;
+class SoftwareVideoMode;
 
 /**
  * \brief Draws the window and handles the video mode.
  */
-class Video {
+namespace Video {
 
-  public:
+    void initialize(const Arguments& args);
+    void quit();
+    bool is_initialized();
 
-    static void initialize(const Arguments& args);
-    static void quit();
-    static bool is_initialized();
+    SDL_Window* get_window();
+    SDL_Renderer* get_renderer();
 
-    static SDL_Window* get_window();
-    static SDL_Renderer* get_renderer();
+    SDL_Texture* get_render_target();
+    SDL_PixelFormat* get_pixel_format();
+    bool is_acceleration_enabled();
+    const std::string& get_rendering_driver_name();
+    void show_window();
 
-    static SDL_Texture* get_render_target();
-    static SDL_PixelFormat* get_pixel_format();
-    static bool is_acceleration_enabled();
-    static const std::string& get_rendering_driver_name();
-    static void show_window();
+    bool is_fullscreen();
+    void set_fullscreen(bool fullscreen);
 
-    static const VideoMode& get_video_mode();
-    static std::vector<const VideoMode*> get_video_modes();
-    static bool is_mode_supported(const VideoMode& mode);
-    static bool set_video_mode(const VideoMode& mode);
-    static bool set_video_mode(const VideoMode& mode, bool fullscreen);
-    static void set_default_video_mode();
-    static void switch_video_mode();
+    bool is_cursor_visible();
+    void set_cursor_visible(bool cursor_visible);
 
-    static const VideoMode* get_video_mode_by_name(const std::string& mode_name);
+    std::string get_window_title();
+    void set_window_title(const std::string& window_title);
 
-    static bool is_fullscreen();
-    static void set_fullscreen(bool fullscreen);
+    const ShaderPtr& get_shader();
+    void set_shader(const ShaderPtr& shader);
 
-    static bool is_cursor_visible();
-    static void set_cursor_visible(bool cursor_visible);
+    const SoftwareVideoMode& get_video_mode();
+    std::vector<const SoftwareVideoMode*> get_video_modes();
+    bool is_mode_supported(const SoftwareVideoMode& mode);
+    bool set_video_mode(const SoftwareVideoMode& mode);
+    void set_default_video_mode();
+    void switch_video_mode();
+    const SoftwareVideoMode* get_video_mode_by_name(const std::string& mode_name);
 
-    static std::string get_window_title();
-    static void set_window_title(const std::string& window_title);
+    bool parse_size(const std::string& size_string, Size& size);
 
-    static bool parse_size(const std::string& size_string, Size& size);
-
-    static const Size& get_quest_size();
-    static void get_quest_size_range(
+    const Size& get_quest_size();
+    void get_quest_size_range(
         Size& normal_quest_size,
         Size& min_quest_size,
         Size& max_quest_size);
-    static void set_quest_size_range(
+    void set_quest_size_range(
         const Size& normal_quest_size,
         const Size& min_quest_size,
         const Size& max_quest_size);
 
-    static Size get_window_size();
-    static void set_window_size(const Size& size);
-    static void reset_window_size();
+    Size get_window_size();
+    void set_window_size(const Size& size);
+    void reset_window_size();
 
-    static Rectangle get_viewport();
-    static Point window_to_quest_coordinates(const Point& window_xy);
-    static bool renderer_to_quest_coordinates(const Point& renderer_xy, Point& quest_xy);
+    Rectangle get_viewport();
+    Point window_to_quest_coordinates(const Point& window_xy);
+    bool renderer_to_quest_coordinates(const Point& renderer_xy, Point& quest_xy);
 
-    static void render(const SurfacePtr& quest_surface);
+    void render(const SurfacePtr& quest_surface);
 
-  private:
+}  // namespace Video
 
-    static void shaded_render(const SurfacePtr& quest_surface);
-
-};
-
-}
+}  // namespace Solarus
 
 #endif
 

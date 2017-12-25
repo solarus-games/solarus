@@ -100,6 +100,13 @@ file(
   include/solarus/hero/VictoryState.h
 
   include/solarus/lowlevel/apple/AppleInterface.h
+  include/solarus/lowlevel/shaders/GL_2DShader.h
+  include/solarus/lowlevel/shaders/GL_ARBShader.h
+  include/solarus/lowlevel/shaders/GLContext.h
+  include/solarus/lowlevel/shaders/ShaderContext.h
+  include/solarus/lowlevel/shaders/Shader.h
+  include/solarus/lowlevel/shaders/ShaderData.h
+  include/solarus/lowlevel/shaders/ShaderPtr.h
   include/solarus/lowlevel/BlendMode.h
   include/solarus/lowlevel/BlendModeInfo.h
   include/solarus/lowlevel/Color.h
@@ -115,21 +122,17 @@ file(
   include/solarus/lowlevel/Music.h
   include/solarus/lowlevel/OggDecoder.h
   include/solarus/lowlevel/PixelBits.h
-  include/solarus/lowlevel/PixelFilter.h
   include/solarus/lowlevel/Point.h
   include/solarus/lowlevel/Point.inl
   include/solarus/lowlevel/QuestFiles.h
   include/solarus/lowlevel/Random.h
   include/solarus/lowlevel/Rectangle.h
   include/solarus/lowlevel/Scale2xFilter.h
-  include/solarus/lowlevel/shaders/GL_2DShader.h
-  include/solarus/lowlevel/shaders/GL_ARBShader.h
-  include/solarus/lowlevel/shaders/GLContext.h
-  include/solarus/lowlevel/shaders/ShaderContext.h
-  include/solarus/lowlevel/shaders/Shader.h
   include/solarus/lowlevel/Size.h
   include/solarus/lowlevel/Size.inl
   include/solarus/lowlevel/Sound.h
+  include/solarus/lowlevel/SoftwarePixelFilter.h
+  include/solarus/lowlevel/SoftwareVideoMode.h
   include/solarus/lowlevel/SpcDecoder.h
   include/solarus/lowlevel/String.h
   include/solarus/lowlevel/Surface.h
@@ -137,7 +140,6 @@ file(
   include/solarus/lowlevel/System.h
   include/solarus/lowlevel/TextSurface.h
   include/solarus/lowlevel/Video.h
-  include/solarus/lowlevel/VideoMode.h
 
   include/solarus/lua/ExportableToLua.h
   include/solarus/lua/ExportableToLuaPtr.h
@@ -304,6 +306,12 @@ file(
   src/hero/UsingItemState.cpp
   src/hero/VictoryState.cpp
 
+  src/lowlevel/shaders/GL_2DShader.cpp
+  src/lowlevel/shaders/GL_ARBShader.cpp
+  src/lowlevel/shaders/GLContext.cpp
+  src/lowlevel/shaders/ShaderContext.cpp
+  src/lowlevel/shaders/ShaderData.cpp
+  src/lowlevel/shaders/Shader.cpp
   src/lowlevel/BlendModeInfo.cpp
   src/lowlevel/Color.cpp
   src/lowlevel/Debug.cpp
@@ -318,18 +326,14 @@ file(
   src/lowlevel/Music.cpp
   src/lowlevel/OggDecoder.cpp
   src/lowlevel/PixelBits.cpp
-  src/lowlevel/PixelFilter.cpp
   src/lowlevel/Point.cpp
   src/lowlevel/QuestFiles.cpp
   src/lowlevel/Random.cpp
   src/lowlevel/Rectangle.cpp
   src/lowlevel/Scale2xFilter.cpp
-  src/lowlevel/shaders/GL_2DShader.cpp
-  src/lowlevel/shaders/GL_ARBShader.cpp
-  src/lowlevel/shaders/GLContext.cpp
-  src/lowlevel/shaders/ShaderContext.cpp
-  src/lowlevel/shaders/Shader.cpp
   src/lowlevel/Size.cpp
+  src/lowlevel/SoftwarePixelFilter.cpp
+  src/lowlevel/SoftwareVideoMode.cpp
   src/lowlevel/Sound.cpp
   src/lowlevel/SpcDecoder.cpp
   src/lowlevel/String.cpp
@@ -337,7 +341,6 @@ file(
   src/lowlevel/System.cpp
   src/lowlevel/TextSurface.cpp
   src/lowlevel/Video.cpp
-  src/lowlevel/VideoMode.cpp
 
   src/lua/AudioApi.cpp
   src/lua/DrawableApi.cpp
@@ -357,6 +360,7 @@ file(
   src/lua/MenuApi.cpp
   src/lua/MovementApi.cpp
   src/lua/ScopedLuaRef.cpp
+  src/lua/ShaderApi.cpp
   src/lua/SpriteApi.cpp
   src/lua/SurfaceApi.cpp
   src/lua/TextSurfaceApi.cpp
@@ -448,6 +452,7 @@ target_link_libraries(solarus
   "${SDL2_LIBRARY}"
   "${SDL2_IMAGE_LIBRARY}"
   "${SDL2_TTF_LIBRARY}"
+  "${OPENGL_LIBRARY}"
   "${OPENAL_LIBRARY}"
   "${LUA_LIBRARY}"
   "${DL_LIBRARY}"

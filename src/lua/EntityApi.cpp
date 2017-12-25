@@ -97,60 +97,63 @@ const std::set<std::string>& get_entity_internal_type_names_set() {
 void LuaContext::register_entity_module() {
 
   // Methods common to all entity types.
-#define ENTITY_COMMON_METHODS\
-      { "get_type", entity_api_get_type },\
-      { "get_map", entity_api_get_map },\
-      { "get_game", entity_api_get_game },\
-      { "get_name", entity_api_get_name },\
-      { "exists", entity_api_exists },\
-      { "remove", entity_api_remove },\
-      { "is_enabled", entity_api_is_enabled },\
-      { "set_enabled", entity_api_set_enabled },\
-      { "get_size", entity_api_get_size },\
-      { "get_origin", entity_api_get_origin },\
-      { "get_position", entity_api_get_position },\
-      { "set_position", entity_api_set_position },\
-      { "get_center_position", entity_api_get_center_position },\
-      { "get_facing_position", entity_api_get_facing_position },\
-      { "get_facing_entity", entity_api_get_facing_entity },\
-      { "get_ground_position", entity_api_get_ground_position },\
-      { "get_ground_below", entity_api_get_ground_below },\
-      { "get_bounding_box", entity_api_get_bounding_box },\
-      { "get_max_bounding_box", entity_api_get_max_bounding_box },\
-      { "get_layer", entity_api_get_layer },\
-      { "set_layer", entity_api_set_layer },\
-      { "overlaps", entity_api_overlaps },\
-      { "get_distance", entity_api_get_distance },\
-      { "get_angle", entity_api_get_angle },\
-      { "get_direction4_to", entity_api_get_direction4_to },\
-      { "get_direction8_to", entity_api_get_direction8_to },\
-      { "snap_to_grid", entity_api_snap_to_grid },\
-      { "bring_to_front", entity_api_bring_to_front },\
-      { "bring_to_back", entity_api_bring_to_back },\
-      { "get_optimization_distance", entity_api_get_optimization_distance },\
-      { "set_optimization_distance", entity_api_set_optimization_distance },\
-      { "is_in_same_region", entity_api_is_in_same_region },\
-      { "test_obstacles", entity_api_test_obstacles },\
-      { "get_sprite", entity_api_get_sprite },\
-      { "get_sprites", entity_api_get_sprites },\
-      { "bring_sprite_to_front", entity_api_bring_sprite_to_front },\
-      { "bring_sprite_to_back", entity_api_bring_sprite_to_back },\
-      { "is_visible", entity_api_is_visible },\
-      { "set_visible", entity_api_set_visible },\
-      { "get_movement", entity_api_get_movement },\
+  std::vector<luaL_Reg> common_methods = {
+      { "get_type", entity_api_get_type },
+      { "get_map", entity_api_get_map },
+      { "get_game", entity_api_get_game },
+      { "get_name", entity_api_get_name },
+      { "exists", entity_api_exists },
+      { "remove", entity_api_remove },
+      { "is_enabled", entity_api_is_enabled },
+      { "set_enabled", entity_api_set_enabled },
+      { "get_size", entity_api_get_size },
+      { "get_origin", entity_api_get_origin },
+      { "get_position", entity_api_get_position },
+      { "set_position", entity_api_set_position },
+      { "get_center_position", entity_api_get_center_position },
+      { "get_facing_position", entity_api_get_facing_position },
+      { "get_facing_entity", entity_api_get_facing_entity },
+      { "get_ground_position", entity_api_get_ground_position },
+      { "get_ground_below", entity_api_get_ground_below },
+      { "get_bounding_box", entity_api_get_bounding_box },
+      { "get_max_bounding_box", entity_api_get_max_bounding_box },
+      { "overlaps", entity_api_overlaps },
+      { "get_distance", entity_api_get_distance },
+      { "get_angle", entity_api_get_angle },
+      { "get_direction4_to", entity_api_get_direction4_to },
+      { "get_direction8_to", entity_api_get_direction8_to },
+      { "snap_to_grid", entity_api_snap_to_grid },
+      { "bring_to_front", entity_api_bring_to_front },
+      { "bring_to_back", entity_api_bring_to_back },
+      { "get_optimization_distance", entity_api_get_optimization_distance },
+      { "set_optimization_distance", entity_api_set_optimization_distance },
+      { "is_in_same_region", entity_api_is_in_same_region },
+      { "test_obstacles", entity_api_test_obstacles },
+      { "get_sprite", entity_api_get_sprite },
+      { "get_sprites", entity_api_get_sprites },
+      { "bring_sprite_to_front", entity_api_bring_sprite_to_front },
+      { "bring_sprite_to_back", entity_api_bring_sprite_to_back },
+      { "is_visible", entity_api_is_visible },
+      { "set_visible", entity_api_set_visible },
+      { "get_movement", entity_api_get_movement },
       { "stop_movement", entity_api_stop_movement }
+  };
+  if (CurrentQuest::is_format_at_least({ 1, 6 })) {
+    common_methods.insert(common_methods.end(), {
+        { "get_layer", entity_api_get_layer },
+        { "set_layer", entity_api_set_layer }
+    });
+  }
 
   // Metamethods of all entity types.
-  static const luaL_Reg metamethods[] = {
+  std::vector<luaL_Reg> metamethods = {
       { "__gc", userdata_meta_gc },
       { "__newindex", userdata_meta_newindex_as_table },
       { "__index", userdata_meta_index_as_table },
-      { nullptr, nullptr }
   };
 
   // Hero.
-  static const luaL_Reg hero_methods[] = {
-      ENTITY_COMMON_METHODS,
+  std::vector<luaL_Reg> hero_methods = {
       { "teleport", hero_api_teleport },
       { "get_direction", hero_api_get_direction },
       { "set_direction", hero_api_set_direction },
@@ -187,19 +190,18 @@ void LuaContext::register_entity_module() {
       { "start_hookshot", hero_api_start_hookshot },
       { "start_running", hero_api_start_running },
       { "start_hurt", hero_api_start_hurt },
-      { nullptr, nullptr }
   };
 
+  hero_methods.insert(hero_methods.end(), common_methods.begin(), common_methods.end());
   register_type(
       get_entity_internal_type_name(EntityType::HERO),
-      nullptr,
+      {},
       hero_methods,
       metamethods
   );
 
   // Camera.
-  static const luaL_Reg camera_methods[] = {
-      ENTITY_COMMON_METHODS,
+  std::vector<luaL_Reg> camera_methods = {
       { "set_size", entity_api_set_size },
       { "get_position_on_screen", camera_api_get_position_on_screen },
       { "set_position_on_screen", camera_api_set_position_on_screen },
@@ -208,34 +210,32 @@ void LuaContext::register_entity_module() {
       { "start_manual", camera_api_start_manual },
       { "get_position_to_track", camera_api_get_position_to_track },
       { "get_tracked_entity", camera_api_get_tracked_entity },
-      { nullptr, nullptr }
   };
 
+  camera_methods.insert(camera_methods.end(), common_methods.begin(), common_methods.end());
   register_type(
       get_entity_internal_type_name(EntityType::CAMERA),
-      nullptr,
+      {},
       camera_methods,
       metamethods
   );
 
   // Destination.
-  static const luaL_Reg destination_methods[] = {
-      ENTITY_COMMON_METHODS,
+  std::vector<luaL_Reg> destination_methods = {
       { "get_starting_location_mode", destination_api_get_starting_location_mode },
       { "set_starting_location_mode", destination_api_set_starting_location_mode },
-      { nullptr, nullptr }
   };
 
+  destination_methods.insert(destination_methods.end(), common_methods.begin(), common_methods.end());
   register_type(
       get_entity_internal_type_name(EntityType::DESTINATION),
-      nullptr,
+      {},
       destination_methods,
       metamethods
   );
 
   // Teletransporter.
-  static const luaL_Reg teletransporter_methods[] = {
-      ENTITY_COMMON_METHODS,
+  std::vector<luaL_Reg> teletransporter_methods = {
       { "get_sound", teletransporter_api_get_sound },
       { "set_sound", teletransporter_api_set_sound },
       { "get_transition", teletransporter_api_get_transition },
@@ -244,51 +244,48 @@ void LuaContext::register_entity_module() {
       { "set_destination_map", teletransporter_api_set_destination_map},
       { "get_destination_name", teletransporter_api_get_destination_name },
       { "set_destination_name", teletransporter_api_set_destination_name },
-      { nullptr, nullptr }
   };
 
+  teletransporter_methods.insert(teletransporter_methods.end(), common_methods.begin(), common_methods.end());
   register_type(
       get_entity_internal_type_name(EntityType::TELETRANSPORTER),
-      nullptr,
+      {},
       teletransporter_methods,
       metamethods
   );
 
   // NPC.
-  static const luaL_Reg npc_methods[] = {
-      ENTITY_COMMON_METHODS,
+  std::vector<luaL_Reg> npc_methods = {
       { "is_traversable", npc_api_is_traversable },
       { "set_traversable", npc_api_set_traversable },
-      { nullptr, nullptr }
   };
 
+  npc_methods.insert(npc_methods.end(), common_methods.begin(), common_methods.end());
   register_type(
       get_entity_internal_type_name(EntityType::NPC),
-      nullptr,
+      {},
       npc_methods,
       metamethods
   );
 
   // Chest.
-  static const luaL_Reg chest_methods[] = {
-      ENTITY_COMMON_METHODS,
+  std::vector<luaL_Reg> chest_methods = {
       { "is_open", chest_api_is_open },
       { "set_open", chest_api_set_open },
       { "get_treasure", chest_api_get_treasure },
       { "set_treasure", chest_api_set_treasure },
-      { nullptr, nullptr }
   };
 
+  chest_methods.insert(chest_methods.end(), common_methods.begin(), common_methods.end());
   register_type(
       get_entity_internal_type_name(EntityType::CHEST),
-      nullptr,
+      {},
       chest_methods,
       metamethods
   );
 
   // Block.
-  static const luaL_Reg block_methods[] = {
-      ENTITY_COMMON_METHODS,
+  std::vector<luaL_Reg> block_methods = {
       { "reset", block_api_reset },
       { "is_pushable", block_api_is_pushable },
       { "set_pushable", block_api_set_pushable },
@@ -296,37 +293,35 @@ void LuaContext::register_entity_module() {
       { "set_pullable", block_api_set_pullable },
       { "get_maximum_moves", block_api_get_maximum_moves },
       { "set_maximum_moves", block_api_set_maximum_moves },
-      { nullptr, nullptr }
   };
 
+  block_methods.insert(block_methods.end(), common_methods.begin(), common_methods.end());
   register_type(
       get_entity_internal_type_name(EntityType::BLOCK),
-      nullptr,
+      {},
       block_methods,
       metamethods
   );
 
   // Switch.
-  static const luaL_Reg switch_methods[] = {
-      ENTITY_COMMON_METHODS,
+  std::vector<luaL_Reg> switch_methods = {
       { "is_activated", switch_api_is_activated },
       { "set_activated", switch_api_set_activated },
       { "is_locked", switch_api_is_locked },
       { "set_locked", switch_api_set_locked },
       { "is_walkable", switch_api_is_walkable },
-      { nullptr, nullptr }
   };
 
+  switch_methods.insert(switch_methods.end(), common_methods.begin(), common_methods.end());
   register_type(
       get_entity_internal_type_name(EntityType::SWITCH),
-      nullptr,
+      {},
       switch_methods,
       metamethods
   );
 
   // Stream.
-  static const luaL_Reg stream_methods[] = {
-      ENTITY_COMMON_METHODS,
+  std::vector<luaL_Reg> stream_methods = {
       { "get_direction", stream_api_get_direction },
       { "set_direction", stream_api_set_direction },
       { "get_speed", stream_api_get_speed },
@@ -337,67 +332,51 @@ void LuaContext::register_entity_module() {
       { "set_allow_attack", stream_api_set_allow_attack },
       { "get_allow_item", stream_api_get_allow_item },
       { "set_allow_item", stream_api_set_allow_item },
-      { nullptr, nullptr }
   };
 
+  stream_methods.insert(stream_methods.end(), common_methods.begin(), common_methods.end());
   register_type(
       get_entity_internal_type_name(EntityType::STREAM),
-      nullptr,
+      {},
       stream_methods,
       metamethods
   );
 
   // Door.
-  static const luaL_Reg door_methods[] = {
-      ENTITY_COMMON_METHODS,
+  std::vector<luaL_Reg> door_methods = {
       { "is_open", door_api_is_open },
       { "is_opening", door_api_is_opening },
       { "is_closed", door_api_is_closed },
       { "is_closing", door_api_is_closing },
-      { nullptr, nullptr }
   };
 
+  door_methods.insert(door_methods.end(), common_methods.begin(), common_methods.end());
   register_type(
       get_entity_internal_type_name(EntityType::DOOR),
-      nullptr,
+      {},
       door_methods,
       metamethods
   );
 
-  // Shop treasure.
-  static const luaL_Reg shop_treasure_methods[] = {
-      ENTITY_COMMON_METHODS,
-      { nullptr, nullptr }
-  };
-
-  register_type(
-      get_entity_internal_type_name(EntityType::SHOP_TREASURE),
-      nullptr,
-      shop_treasure_methods,
-      metamethods
-  );
-
   // Pickable.
-  static const luaL_Reg pickable_methods[] = {
-      ENTITY_COMMON_METHODS,
+  std::vector<luaL_Reg> pickable_methods = {
       { "has_layer_independent_collisions", entity_api_has_layer_independent_collisions },
       { "set_layer_independent_collisions", entity_api_set_layer_independent_collisions },
       { "get_followed_entity", pickable_api_get_followed_entity },
       { "get_falling_height", pickable_api_get_falling_height },
       { "get_treasure", pickable_api_get_treasure },
-      { nullptr, nullptr }
   };
 
+  pickable_methods.insert(pickable_methods.end(), common_methods.begin(), common_methods.end());
   register_type(
       get_entity_internal_type_name(EntityType::PICKABLE),
-      nullptr,
+      {},
       pickable_methods,
       metamethods
   );
 
   // Destructible.
-  static const luaL_Reg destructible_methods[] = {
-      ENTITY_COMMON_METHODS,
+  std::vector<luaL_Reg> destructible_methods = {
       { "get_treasure", destructible_api_get_treasure },
       { "set_treasure", destructible_api_set_treasure },
       { "get_destruction_sound", destructible_api_get_destruction_sound },
@@ -413,34 +392,32 @@ void LuaContext::register_entity_module() {
       { "get_damage_on_enemies", destructible_api_get_damage_on_enemies },
       { "set_damage_on_enemies", destructible_api_set_damage_on_enemies },
       { "get_modified_ground", destructible_api_get_modified_ground },
-      { nullptr, nullptr }
   };
 
+  destructible_methods.insert(destructible_methods.end(), common_methods.begin(), common_methods.end());
   register_type(
       get_entity_internal_type_name(EntityType::DESTRUCTIBLE),
-      nullptr,
+      {},
       destructible_methods,
       metamethods
   );
 
   // Dynamic tile.
-  static const luaL_Reg dynamic_tile_methods[] = {
-      ENTITY_COMMON_METHODS,
+  std::vector<luaL_Reg> dynamic_tile_methods = {
       { "get_pattern_id", dynamic_tile_api_get_pattern_id },
       { "get_modified_ground", dynamic_tile_api_get_modified_ground },
-      { nullptr, nullptr }
   };
 
+  dynamic_tile_methods.insert(dynamic_tile_methods.end(), common_methods.begin(), common_methods.end());
   register_type(
       get_entity_internal_type_name(EntityType::DYNAMIC_TILE),
-      nullptr,
+      {},
       dynamic_tile_methods,
       metamethods
   );
 
   // Enemy.
-  static const luaL_Reg enemy_methods[] = {
-      ENTITY_COMMON_METHODS,
+  std::vector<luaL_Reg> enemy_methods = {
       { "get_breed", enemy_api_get_breed },
       { "get_life", enemy_api_get_life },
       { "set_life", enemy_api_set_life },
@@ -484,19 +461,18 @@ void LuaContext::register_entity_module() {
       { "create_sprite", entity_api_create_sprite },
       { "remove_sprite", entity_api_remove_sprite },
       { "create_enemy", enemy_api_create_enemy },
-      { nullptr, nullptr }
   };
 
+  enemy_methods.insert(enemy_methods.end(), common_methods.begin(), common_methods.end());
   register_type(
       get_entity_internal_type_name(EntityType::ENEMY),
-      nullptr,
+      {},
       enemy_methods,
       metamethods
   );
 
   // Custom entity.
-  static const luaL_Reg custom_entity_methods[] = {
-      ENTITY_COMMON_METHODS,
+  std::vector<luaL_Reg> custom_entity_methods = {
       { "get_model", custom_entity_api_get_model },
       { "set_size", entity_api_set_size },
       { "set_origin", entity_api_set_origin },
@@ -516,38 +492,33 @@ void LuaContext::register_entity_module() {
       { "set_layer_independent_collisions", entity_api_set_layer_independent_collisions },
       { "get_modified_ground", custom_entity_api_get_modified_ground },
       { "set_modified_ground", custom_entity_api_set_modified_ground },
-      { nullptr, nullptr }
   };
 
+  custom_entity_methods.insert(custom_entity_methods.end(), common_methods.begin(), common_methods.end());
   register_type(
       get_entity_internal_type_name(EntityType::CUSTOM),
-      nullptr,
+      {},
       custom_entity_methods,
       metamethods
   );
 
-  // Methods of the entity type.
-  static const luaL_Reg entity_common_methods[] = {
-      ENTITY_COMMON_METHODS,
-      { nullptr, nullptr }
-  };
-
   // Also register all other types of entities that have no specific methods.
-  register_type(get_entity_internal_type_name(EntityType::TILE), nullptr, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(EntityType::CARRIED_OBJECT), nullptr, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(EntityType::JUMPER), nullptr, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(EntityType::SENSOR), nullptr, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(EntityType::SEPARATOR), nullptr, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(EntityType::WALL), nullptr, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(EntityType::CRYSTAL), nullptr, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(EntityType::CRYSTAL_BLOCK), nullptr, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(EntityType::STAIRS), nullptr, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(EntityType::BOMB), nullptr, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(EntityType::EXPLOSION), nullptr, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(EntityType::FIRE), nullptr, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(EntityType::ARROW), nullptr, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(EntityType::HOOKSHOT), nullptr, entity_common_methods, metamethods);
-  register_type(get_entity_internal_type_name(EntityType::BOOMERANG), nullptr, entity_common_methods, metamethods);
+  register_type(get_entity_internal_type_name(EntityType::TILE), {}, common_methods, metamethods);
+  register_type(get_entity_internal_type_name(EntityType::CARRIED_OBJECT), {}, common_methods, metamethods);
+  register_type(get_entity_internal_type_name(EntityType::JUMPER), {}, common_methods, metamethods);
+  register_type(get_entity_internal_type_name(EntityType::SENSOR), {}, common_methods, metamethods);
+  register_type(get_entity_internal_type_name(EntityType::SEPARATOR), {}, common_methods, metamethods);
+  register_type(get_entity_internal_type_name(EntityType::WALL), {}, common_methods, metamethods);
+  register_type(get_entity_internal_type_name(EntityType::CRYSTAL), {}, common_methods, metamethods);
+  register_type(get_entity_internal_type_name(EntityType::CRYSTAL_BLOCK), {}, common_methods, metamethods);
+  register_type(get_entity_internal_type_name(EntityType::SHOP_TREASURE), {}, common_methods, metamethods);
+  register_type(get_entity_internal_type_name(EntityType::STAIRS), {}, common_methods, metamethods);
+  register_type(get_entity_internal_type_name(EntityType::BOMB), {}, common_methods, metamethods);
+  register_type(get_entity_internal_type_name(EntityType::EXPLOSION), {}, common_methods, metamethods);
+  register_type(get_entity_internal_type_name(EntityType::FIRE), {}, common_methods, metamethods);
+  register_type(get_entity_internal_type_name(EntityType::ARROW), {}, common_methods, metamethods);
+  register_type(get_entity_internal_type_name(EntityType::HOOKSHOT), {}, common_methods, metamethods);
+  register_type(get_entity_internal_type_name(EntityType::BOOMERANG), {}, common_methods, metamethods);
 }
 
 /**

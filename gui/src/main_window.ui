@@ -151,7 +151,7 @@ QPushButton#play_button {
                 <x>0</x>
                 <y>0</y>
                 <width>260</width>
-                <height>464</height>
+                <height>452</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -627,7 +627,7 @@ QPushButton#play_button {
      <x>0</x>
      <y>0</y>
      <width>960</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_file">
@@ -660,19 +660,7 @@ QPushButton#play_button {
      <addaction name="action_zoom_x3"/>
      <addaction name="action_zoom_x4"/>
     </widget>
-    <widget class="QMenu" name="menu_video_filter">
-     <property name="title">
-      <string>Video filter</string>
-     </property>
-     <addaction name="action_filter_normal"/>
-     <addaction name="action_filter_scale2x"/>
-     <addaction name="action_filter_hq2x"/>
-     <addaction name="action_filter_hq3x"/>
-     <addaction name="action_filter_hq4x"/>
-    </widget>
     <addaction name="action_fullscreen"/>
-    <addaction name="action_video_acceleration"/>
-    <addaction name="menu_video_filter"/>
     <addaction name="menu_zoom"/>
    </widget>
    <widget class="QMenu" name="menu_audio">
@@ -778,54 +766,6 @@ QPushButton#play_button {
   <action name="action_zoom_x4">
    <property name="text">
     <string>x4</string>
-   </property>
-  </action>
-  <action name="action_filter_normal">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>None</string>
-   </property>
-  </action>
-  <action name="action_filter_scale2x">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Scale2x</string>
-   </property>
-  </action>
-  <action name="action_filter_hq2x">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Hq2x</string>
-   </property>
-  </action>
-  <action name="action_filter_hq3x">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Hq3x</string>
-   </property>
-  </action>
-  <action name="action_filter_hq4x">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Hq4x</string>
-   </property>
-  </action>
-  <action name="action_video_acceleration">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>2D acceleration</string>
    </property>
   </action>
   <action name="action_mute">

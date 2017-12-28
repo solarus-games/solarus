@@ -51,7 +51,6 @@ struct VideoContext {
   bool disable_window = false;              /**< Indicates that no window is displayed (used for unit tests). */
   bool fullscreen_window = false;           /**< True if the window is in fullscreen. */
   bool visible_cursor = true;               /**< True if the mouse cursor is visible. */
-  bool acceleration_enabled = false;        /**< \c true if 2D GPU acceleration is available and enabled. */
 
   // Sizes.
   Size normal_quest_size;                   /**< Default value of quest_size (depends on the quest). */
@@ -109,24 +108,15 @@ void create_window() {
   Debug::check_assertion(context.main_window != nullptr,
       std::string("Cannot create the window: ") + SDL_GetError());
 
-  int acceleration_flag = context.acceleration_enabled ?
-      SDL_RENDERER_ACCELERATED : SDL_RENDERER_SOFTWARE;
-
   context.main_renderer = SDL_CreateRenderer(
         context.main_window,
         -1,
-        acceleration_flag
+        SDL_RENDERER_ACCELERATED
   );
 
   if (context.main_renderer == nullptr) {
-      // Try without vsync.
-      context.main_renderer = SDL_CreateRenderer(context.main_window, -1, acceleration_flag);
-      if (context.main_renderer == nullptr && context.acceleration_enabled) {
-          // Try without acceleration.
-          context.acceleration_enabled = false;
-          acceleration_flag = SDL_RENDERER_SOFTWARE;
-          context.main_renderer = SDL_CreateRenderer(context.main_window, -1, acceleration_flag);
-      }
+    // Try without acceleration.
+    context.main_renderer = SDL_CreateRenderer(context.main_window, -1, SDL_RENDERER_SOFTWARE);
   }
 
   Debug::check_assertion(context.main_renderer != nullptr,
@@ -152,23 +142,9 @@ void create_window() {
   // Check renderer's flags
   context.rendering_driver_name = renderer_info.name;
   context.rendertarget_supported = (renderer_info.flags & SDL_RENDERER_TARGETTEXTURE) != 0;
-  context.acceleration_enabled = context.acceleration_enabled
-    && (renderer_info.flags & SDL_RENDERER_ACCELERATED) != 0;
-  if (context.acceleration_enabled) {
-    // Solarus uses accelerated graphics as of version 1.2 with SDL2.
-    Logger::info("2D acceleration: yes");
-  }
-  else {
-    // Acceleration may be disabled because the user decided so or because the
-    // system does not support it.
-    // This is not a problem: the engine runs perfectly in software mode.
-    Logger::info("2D acceleration: no");
-  }
-
 
   // Decide whether we enable shaders.
   context.shaders_enabled = context.rendertarget_supported &&
-      Video::is_acceleration_enabled() &&
       ShaderContext::initialize();
 }
 
@@ -219,7 +195,6 @@ namespace Video {
  * This method should be called when the program starts.
  * Options recognized:
  *   -no-video
- *   -video-acceleration=yes|no
  *   -quest-size=WIDTHxHEIGHT
  *
  * \param args Command-line arguments.
@@ -248,14 +223,6 @@ void initialize(const Arguments& args) {
     if (!parse_size(quest_size_string, context.wanted_quest_size)) {
       Debug::error(std::string("Invalid quest size: '") + quest_size_string + "'");
     }
-  }
-
-  if (args.get_argument_value("-video-acceleration") == "no") {
-    context.acceleration_enabled = false;
-  }
-  else {
-    // Accelerated by default.
-    context.acceleration_enabled = true;
   }
 
   if (context.disable_window) {
@@ -357,26 +324,6 @@ const std::string& get_rendering_driver_name() {
 void show_window() {
 
   SDL_ShowWindow(context.main_window);
-}
-
-/**
- * \brief Returns whether 2D hardware acceleration is currently enabled.
- *
- * 2D acceleration is enabled if the system supports it, except when the
- * current video mode needs to work in software mode
- * (typically because of a pixel filter implemented in software).
- *
- * \return \c true if GPU acceleration is active.
- */
-bool is_acceleration_enabled() {
-
-  const SoftwarePixelFilter* software_filter = nullptr;
-  if (context.video_mode != nullptr) {
-    software_filter = context.video_mode->get_software_filter();
-  }
-
-  return context.acceleration_enabled  // 2D acceleration must be available on the system.
-      && software_filter == nullptr;   // No software pixel filter must be active.
 }
 
 /**

@@ -55,8 +55,6 @@ void print_help(const Arguments& args) {
     << std::endl
     << "  -no-video                     disables displaying"
     << std::endl
-    << "  -video-acceleration=yes|no    enables or disables accelerated graphics (default yes)"
-    << std::endl
     << "  -quest-size=<width>x<height>  sets the size of the drawing area (if compatible with the quest)"
     << std::endl
     << "  -lua-console=yes|no           accepts standard input lines as Lua commands (default yes)"
@@ -89,7 +87,6 @@ void print_help(const Arguments& args) {
  *   -help                             Shows a help message.
  *   -no-audio                         Disables sounds and musics.
  *   -no-video                         Disables displaying (used for unit tests).
- *   -video-acceleration=yes|no        Enables or disables 2D accelerated graphics if available (default: yes).
  *   -quest-size=<width>x<height>      Sets the size of the drawing area (if compatible with the quest).
  *   -lua-console=yes|no               Accepts lines from standard input as Lua commands (default: yes).
  *   -turbo=yes|no                     Runs as fast as possible rather than simulating real time (default: no).

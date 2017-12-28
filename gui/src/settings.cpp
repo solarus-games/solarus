@@ -58,12 +58,6 @@ void Settings::export_to_quest(const QString& quest_path) const {
     solarus_settings.load(file_name);
   }
 
-  QVariant video_mode = value("quest_video_mode");
-  if (video_mode.isValid()) {
-    solarus_settings.set_string(
-          Solarus::Settings::key_video_mode, video_mode.toString().toStdString());
-  }
-
   QVariant fullscreen = value("quest_fullscreen");
   if (fullscreen.isValid()) {
     solarus_settings.set_boolean(

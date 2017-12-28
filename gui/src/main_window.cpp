@@ -124,26 +124,6 @@ void MainWindow::update_title() {
  */
 void MainWindow::initialize_menus() {
 
-  QActionGroup* group = new QActionGroup(this);
-
-  const QMap<QAction*, QString> video_mode_names = {
-    { ui.action_filter_normal, "normal" },
-    { ui.action_filter_scale2x, "scale2x" },
-    { ui.action_filter_hq2x, "hq2x" },
-    { ui.action_filter_hq3x, "hq3x" },
-    { ui.action_filter_hq4x, "hq4x" }
-  };
-
-  for (auto it = video_mode_names.constBegin(); it != video_mode_names.constEnd(); ++it) {
-    QAction* action = it.key();
-    const QString& name = it.value();
-    group->addAction(action);
-    action->setData(name);
-    connect(action, &QAction::triggered, [this, name]() {
-      set_video_mode_requested(name);
-    });
-  }
-
   // TODO implement the audio menu
   delete ui.menu_audio;
   ui.menu_audio = nullptr;
@@ -156,39 +136,7 @@ void MainWindow::initialize_menus() {
  */
 void MainWindow::update_menus() {
 
-  update_filter_menu();
   update_fullscreen_action();
-  update_video_acceleration_action();
-}
-
-/**
- * @brief Updates the video filter menu with the current settings.
- */
-void MainWindow::update_filter_menu() {
-
-  Settings settings;
-
-  QString video_mode = settings.value("quest_video_mode", "normal").toString();
-
-  if (video_mode == "normal") {
-    ui.action_filter_normal->setChecked(true);
-  }
-  else if (video_mode == "scale2x") {
-    ui.action_filter_scale2x->setChecked(true);
-  }
-  else if (video_mode == "hq2x") {
-    ui.action_filter_hq2x->setChecked(true);
-  }
-  else if (video_mode == "hq3x") {
-    ui.action_filter_hq3x->setChecked(true);
-  }
-  else if (video_mode == "hq4x") {
-    ui.action_filter_hq4x->setChecked(true);
-  }
-  else {
-    ui.action_filter_normal->setChecked(true);
-    settings.setValue("quest_video_mode", "normal");
-  }
 }
 
 /**
@@ -200,17 +148,6 @@ void MainWindow::update_fullscreen_action() {
 
   bool fullscreen = settings.value("quest_fullscreen", false).toBool();
   ui.action_fullscreen->setChecked(fullscreen);
-}
-
-/**
- * @brief Updates the 2D acceleration action with the current settings.
- */
-void MainWindow::update_video_acceleration_action() {
-
-  Settings settings;
-
-  bool video_acceleration = settings.value("video_acceleration", true).toBool();
-  ui.action_video_acceleration->setChecked(video_acceleration);
 }
 
 /**
@@ -394,31 +331,6 @@ void MainWindow::on_action_fullscreen_triggered() {
 }
 
 /**
- * @brief Slot called when the user triggers the "2D acceleration" action.
- */
-void MainWindow::on_action_video_acceleration_triggered() {
-
-  bool video_acceleration = ui.action_video_acceleration->isChecked();
-
-  Settings settings;
-  bool previous = settings.value("video_acceleration", true).toBool();
-  if (video_acceleration == previous) {
-    return;
-  }
-
-  settings.setValue("video_acceleration", video_acceleration);
-
-  if (quest_runner.is_started()) {
-    QMessageBox::information(
-          this,
-          tr("2D acceleration changed"),
-          tr("The change will take effect next time you play a quest."),
-          QMessageBox::Ok
-    );
-  }
-}
-
-/**
  * @brief Slot called when the user triggers the "Zoom x1" action.
  */
 void MainWindow::on_action_zoom_x1_triggered() {
@@ -564,34 +476,9 @@ void MainWindow::setting_changed_in_quest(
 ) {
 
   Settings settings;
-  if (key == "quest_video_mode") {
-    settings.setValue(key, value);
-    update_filter_menu();
-  }
-  else if (key == "quest_fullscreen") {
+  if (key == "quest_fullscreen") {
     settings.setValue(key, value);
     update_fullscreen_action();
-  }
-}
-
-/**
- * @brief Slot called when the user wants to change the video mode.
- * @param video_mode_name The new video mode.
- */
-void MainWindow::set_video_mode_requested(const QString& video_mode_name) {
-
-  Settings settings;
-  const QString& previous = settings.value("quest_video_mode").toString();
-  if (video_mode_name == previous) {
-    return;
-  }
-
-  settings.setValue("quest_video_mode", video_mode_name);
-
-  if (quest_runner.is_started()) {
-    // Change the video mode of the current quest process.
-    QString command = QString("sol.video.set_mode(\"%1\")").arg(video_mode_name);
-    ui.console->execute_command(command);
   }
 }
 

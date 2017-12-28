@@ -47,7 +47,6 @@ private slots:
   void on_action_play_quest_triggered();
   void on_action_stop_quest_triggered();
   void on_action_fullscreen_triggered();
-  void on_action_video_acceleration_triggered();
   void on_action_zoom_x1_triggered();
   void on_action_zoom_x2_triggered();
   void on_action_zoom_x3_triggered();
@@ -58,7 +57,6 @@ private slots:
   void update_run_quest();
 
   void setting_changed_in_quest(const QString& key, const QVariant& value);
-  void set_video_mode_requested(const QString& video_mode_name);
   void set_zoom_requested(int zoom);
 
 private:
@@ -67,9 +65,7 @@ private:
   bool confirm_close();
   void initialize_menus();
   void update_menus();
-  void update_filter_menu();
   void update_fullscreen_action();
-  void update_video_acceleration_action();
 
   Ui::MainWindow ui;         /**< The widgets. */
   QuestRunner quest_runner;  /**< The quest executor. */

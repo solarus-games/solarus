@@ -52,7 +52,6 @@ namespace Video {
 
     SDL_Texture* get_render_target();
     SDL_PixelFormat* get_pixel_format();
-    bool is_acceleration_enabled();
     const std::string& get_rendering_driver_name();
     void show_window();
 

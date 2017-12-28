@@ -39,7 +39,6 @@ const QRegularExpression output_regexp("^\\[Solarus\\] \\[(\\d+)\\] (\\w*): (.+)
 const QRegularExpression output_command_result_begin_regexp("^====== Begin Lua command #(\\d+) ======$");
 const QRegularExpression output_command_result_end_regexp("^====== End Lua command #(\\d+): (\\w+) ======$");
 const QRegularExpression output_simplify_console_error_regexp("In Lua command: \\[string \".*\"\\]:\\d+: ");
-const QRegularExpression output_setting_video_mode_regexp("^Video mode: (\\w+)$");
 const QRegularExpression output_setting_fullscreen_regexp("^Fullscreen: (\\w+)$");
 
 }
@@ -320,13 +319,6 @@ void Console::detect_setting_change(
 
   QRegularExpressionMatch match_result;
 
-  match_result = output_setting_video_mode_regexp.match(message);
-  if (match_result.lastCapturedIndex() == 1) {
-    QVariant value = match_result.captured(1);
-    emit setting_changed_in_quest("quest_video_mode", value);
-    return;
-  }
-
   match_result = output_setting_fullscreen_regexp.match(message);
   if (match_result.lastCapturedIndex() == 1) {
     QVariant value = (match_result.captured(1) == "yes");
@@ -388,11 +380,6 @@ QStringList Console::get_quest_lua_commands_from_settings() const {
 
   Settings settings;
   QStringList commands;
-  QVariant video_mode = settings.value("quest_video_mode");
-  if (video_mode.isValid()) {
-    commands << QString("sol.video.set_mode(\"%1\")").
-                arg(video_mode.toString());
-  }
 
   QVariant fullscreen = settings.value("quest_fullscreen");
   if (fullscreen.isValid()) {

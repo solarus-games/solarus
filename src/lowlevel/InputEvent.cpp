@@ -115,7 +115,7 @@ const EnumInfo<InputEvent::KeyboardKey>::names_type EnumInfoTraits<InputEvent::K
     { InputEvent::KeyboardKey::x,                 "x" },
     { InputEvent::KeyboardKey::y,                 "y" },
     { InputEvent::KeyboardKey::z,                 "z" },
-    { InputEvent::KeyboardKey::DELETE,            "delete" },
+    { InputEvent::KeyboardKey::KEY_DELETE,        "delete" },
     { InputEvent::KeyboardKey::KP0,               "kp 0" },
     { InputEvent::KeyboardKey::KP1,               "kp 1" },
     { InputEvent::KeyboardKey::KP2,               "kp 2" },

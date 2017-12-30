@@ -238,7 +238,7 @@ void GL_ARBShader::load() {
  * \param type The type of the shader to fill and compile.
  * \param source Sources to compile.
  */
-GLhandleARB GL_ARBShader::create_shader(uint type, const char* source) {
+GLhandleARB GL_ARBShader::create_shader(unsigned int type, const char* source) {
 
   GLint status;
 

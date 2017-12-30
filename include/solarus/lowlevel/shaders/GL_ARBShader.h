@@ -65,7 +65,7 @@ class GL_ARBShader : public Shader {
 
   private:
 
-    GLhandleARB create_shader(uint type, const char* source);
+    GLhandleARB create_shader(unsigned int type, const char* source);
     static void set_rendering_settings();
     GLint get_uniform_location(const std::string& uniform_name) const;
 

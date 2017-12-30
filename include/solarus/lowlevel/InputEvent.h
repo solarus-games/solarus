@@ -125,7 +125,7 @@ class InputEvent {
       x                        = SDLK_x,
       y                        = SDLK_y,
       z                        = SDLK_z,
-      DELETE                   = SDLK_DELETE,
+      KEY_DELETE               = SDLK_DELETE,
 
       KP0                      = SDLK_KP_0,
       KP1                      = SDLK_KP_1,

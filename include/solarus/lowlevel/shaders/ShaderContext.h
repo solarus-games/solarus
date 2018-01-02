@@ -27,7 +27,7 @@ namespace Solarus {
 /**
  * \brief Shader context management.
  *
- * This class provides static mappers for the Shader's child initialization, quit and constructors.
+ * This class allows to handle the display context and create a shader.
  */
 class ShaderContext {
 
@@ -35,12 +35,15 @@ class ShaderContext {
 
     static bool initialize();
     static void quit();
+  
+    static const std::string& get_opengl_version();
+    static const std::string& get_shading_language_version();
+
     static ShaderPtr create_shader(const std::string& shader_id);
 
   private:
 
     static bool shader_supported;
-
 };
 
 }

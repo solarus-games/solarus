@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/lowlevel/shaders/GLContext.h"
 #include "solarus/lowlevel/shaders/Shader.h"
 #include "solarus/lowlevel/shaders/ShaderContext.h"
 #include "solarus/lowlevel/Video.h"
@@ -124,7 +123,7 @@ int LuaContext::shader_api_get_opengl_version(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
 
-    const std::string& opengl_version = GLContext::get_opengl_version();
+    const std::string& opengl_version = ShaderContext::get_opengl_version();
 
     push_string(l, opengl_version);
     return 1;
@@ -140,7 +139,7 @@ int LuaContext::shader_api_get_shading_language_version(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
 
-    const std::string& shading_language_version = GLContext::get_shading_language_version();
+    const std::string& shading_language_version = ShaderContext::get_shading_language_version();
 
     push_string(l, shading_language_version);
     return 1;

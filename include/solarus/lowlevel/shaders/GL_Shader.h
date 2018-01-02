@@ -31,21 +31,21 @@
 namespace Solarus {
 
 /**
- * \brief Represents a GLSL shader and displays it using the GLES2 way.
+ * \brief Represents a GLSL shader and implement it using the post-deprecation way.
  *
  * This class basically encapsulates a GLSL vertex and fragment shader.
+ * The purpose is to support both desktop and ES OpenGLs in a single class.
+ * Supports OpenGL 3.0 and superior and OpenGL ES2.
  */
-//TODO Check if there is a way to support both gl, gles and gles2 with this codebase
-// and rename this class to GL_ES2Shader else
-class GL_2DShader : public Shader {
+class GL_Shader : public Shader {
 
   public:
 
 #ifdef SOLARUS_HAVE_OPENGLES2
     static bool initialize();
 
-    explicit GL_2DShader(const std::string& shader_id);
-    ~GL_2DShader();
+    explicit GL_Shader(const std::string& shader_id);
+    ~GL_Shader();
 
   protected:
 
@@ -64,7 +64,7 @@ class GL_2DShader : public Shader {
 #else
 
     static bool initialize() { return false; }
-    explicit GL_2DShader(const std::string& shader_id): Shader(shader_id) {}
+    explicit GL_Shader(const std::string& shader_id): Shader(shader_id) {}
 #endif
 };
 

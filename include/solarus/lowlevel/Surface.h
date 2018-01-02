@@ -23,7 +23,7 @@
 #include "solarus/Drawable.h"
 #include <SDL.h>
 #include <SDL_image.h>
-#include <GL/gl.h>
+#include <SDL_opengl.h>
 #include <cstdint>
 #include <memory>
 #include <string>

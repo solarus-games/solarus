@@ -15,14 +15,25 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/lowlevel/shaders/ShaderContext.h"
-#include "solarus/lowlevel/shaders/GLContext.h"
 #include "solarus/lowlevel/shaders/GL_ARBShader.h"
-#include "solarus/lowlevel/shaders/GL_2DShader.h"
+#include "solarus/lowlevel/shaders/GL_Shader.h"
+#include "solarus/lowlevel/Logger.h"
+#include "solarus/lowlevel/Video.h"
 
 
 namespace Solarus {
 
-bool ShaderContext::shader_supported = false;
+namespace {
+
+SDL_GLContext gl_context = nullptr;
+std::string opengl_version;
+std::string shading_language_version;
+std::string opengl_vendor;
+std::string opengl_renderer;
+bool is_universal_shader_supported = false;
+
+}  // Anonymous namespace.
+
 
 /**
  * \brief Initializes the shader system.
@@ -30,9 +41,40 @@ bool ShaderContext::shader_supported = false;
  */
 bool ShaderContext::initialize() {
 
-  shader_supported = GLContext::initialize();
+  opengl_version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
+  shading_language_version = reinterpret_cast<const char *>(glGetString(GL_SHADING_LANGUAGE_VERSION));
+  opengl_vendor = reinterpret_cast<const char*>(glGetString(GL_VENDOR));
+  opengl_renderer = reinterpret_cast<const char*>(glGetString(GL_RENDERER));
 
-  return shader_supported;
+  Logger::info(std::string("OpenGL: ") + opengl_version);
+  Logger::info(std::string("OpenGL vendor: ") + opengl_vendor);
+  Logger::info(std::string("OpenGL renderer: ") + opengl_renderer);
+  Logger::info(std::string("OpenGL shading language: ") + shading_language_version);
+
+  SDL_GL_SetAttribute(SDL_GL_SHARE_WITH_CURRENT_CONTEXT, 1);
+  SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
+  if (!(gl_context = SDL_GL_CreateContext(Video::get_window()))) {
+    Debug::warning("Unable to create OpenGL context : " + std::string(SDL_GetError()));
+    return false;
+  }
+
+  // Setting some parameters
+  glEnable(GL_DEPTH_TEST); // The type of depth test to do.
+  glDepthFunc(GL_LESS); // Enables depth testing.
+
+  // Use late swap tearing, or try to use the classic swap interval (aka VSync) if not supported.
+  if (SDL_GL_SetSwapInterval(-1) == -1) {
+    SDL_GL_SetSwapInterval(1);
+  }
+
+  // Try to initialize a gl shader system, in order from the earlier to the older.
+  is_universal_shader_supported = GL_Shader::initialize();
+  if (is_universal_shader_supported) {
+    return true;
+  }
+
+  return GL_ARBShader::initialize();
 }
 
 /**
@@ -40,9 +82,25 @@ bool ShaderContext::initialize() {
  */
 void ShaderContext::quit() {
 
-  if (shader_supported) {
-    GLContext::quit();
+  if (gl_context) {
+    SDL_GL_DeleteContext(gl_context);
   }
+}
+
+/**
+ * \brief Returns the OpenGL version name.
+ * \return The OpenGL version name.
+ */
+const std::string& ShaderContext::get_opengl_version() {
+  return opengl_version;
+}
+
+/**
+ * \brief Returns the shading language version.
+ * \return The shading language version.
+ */
+const std::string& ShaderContext::get_shading_language_version() {
+  return shading_language_version;
 }
 
 /**
@@ -54,11 +112,11 @@ ShaderPtr ShaderContext::create_shader(const std::string& shader_id) {
 
   ShaderPtr shader = nullptr;
 
-  if (true) {  // TODO
-    shader = std::make_shared<GL_ARBShader>(shader_id);
+  if (is_universal_shader_supported) {
+    shader = std::make_shared<GL_Shader>(shader_id);
   }
   else {
-    shader = std::make_shared<GL_2DShader>(shader_id);
+    shader = std::make_shared<GL_ARBShader>(shader_id);
   }
 
   return shader;

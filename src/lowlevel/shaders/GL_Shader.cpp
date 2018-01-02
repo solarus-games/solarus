@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/lowlevel/shaders/GL_2DShader.h"
+#include "solarus/lowlevel/shaders/GL_Shader.h"
 #include "solarus/lowlevel/shaders/ShaderData.h"
 #include "solarus/lowlevel/Logger.h"
 #include "solarus/lowlevel/QuestFiles.h"
@@ -26,7 +26,7 @@
 #ifdef SOLARUS_HAVE_OPENGLES2
 
 // TODO Use an OpenGL loading library instead of this ugly code.
-typedef struct GLES2_Context {
+typedef struct GL_Context {
 
   void (APIENTRY *glAttachShader) (GLuint, GLuint);
   void (APIENTRY *glClear) (GLbitfield);
@@ -62,7 +62,7 @@ typedef struct GLES2_Context {
 namespace Solarus {
 
 namespace {
-GLES2_Context ctx; //TODO Remove if possible or make it a separate class
+GL_Context ctx; //TODO Remove if possible or make it a separate class
 GLint default_shader_program = 0;
 }
 
@@ -70,7 +70,7 @@ GLint default_shader_program = 0;
  * \brief Initializes the GL 2D shader system.
  * \return \c true if GL 2D shaders are supported.
  */
-bool GL_2DShader::initialize() {
+bool GL_Shader::initialize() {
 
   // Setting some parameters.
   glClearDepthf(1.0); // Enables clearing of the depth buffer.
@@ -128,7 +128,7 @@ bool GL_2DShader::initialize() {
  * \brief Constructor.
  * \param shader_name The name of the shader to load.
  */
-GL_2DShader::GL_2DShader(const std::string& shader_id):
+GL_Shader::GL_Shader(const std::string& shader_id):
     Shader(shader_id),
     program(0),
     vertex_shader(0),
@@ -159,7 +159,7 @@ GL_2DShader::GL_2DShader(const std::string& shader_id):
 /**
  * \brief Destructor.
  */
-GL_2DShader::~GL_2DShader() {
+GL_Shader::~GL_Shader() {
 
   ctx.glDeleteShader(vertex_shader);
   ctx.glDeleteShader(fragment_shader);
@@ -169,7 +169,7 @@ GL_2DShader::~GL_2DShader() {
 /**
  * \copydoc Shader::load
  */
-void GL_2DShader::load() {
+void GL_Shader::load() {
 
   GLint linked;
 
@@ -222,7 +222,7 @@ void GL_2DShader::load() {
  * \param type The type of the shader to fill and compile.
  * \param source Sources to compile.
  */
-GLuint GL_2DShader::create_shader(GLenum type, const char* source) {
+GLuint GL_Shader::create_shader(GLenum type, const char* source) {
 
   GLint compiled;
 
@@ -263,7 +263,7 @@ GLuint GL_2DShader::create_shader(GLenum type, const char* source) {
 /**
  * \brief Check for a possible error returned by glGetError().
  */
-void GL_2DShader::check_gl_error() {
+void GL_Shader::check_gl_error() {
   GLenum gl_error(ctx.glGetError());
 
   while (gl_error != GL_NO_ERROR) {
@@ -297,7 +297,7 @@ void GL_2DShader::check_gl_error() {
  * It will perform the render using the OpenGL API directly.
  * \param quest_surface the surface to render on the screen
  */
-void GL_2DShader::render(const SurfacePtr& quest_surface) {
+void GL_Shader::render(const SurfacePtr& quest_surface) {
 
   Shader::render(quest_surface);
 

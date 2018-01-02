@@ -31,9 +31,10 @@
 namespace Solarus {
 
 /**
- * \brief Represents a GLSL shader and displays it using the GL ARB extension way.
+ * \brief Represents a GLSL shader and implement it using the GL ARB extension way.
  *
  * This class basically encapsulates a GLSL vertex and fragment shader.
+ * Supports OpenGL 2.0 and superior.
  */
 class GL_ARBShader : public Shader {
 

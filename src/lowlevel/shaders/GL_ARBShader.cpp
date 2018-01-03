@@ -270,12 +270,9 @@ GLhandleARB GL_ARBShader::create_shader(unsigned int type, const char* source) {
  */
 void GL_ARBShader::set_rendering_settings() {
 
-  const Size& quest_size = Video::get_quest_size();
-  static const GLdouble aspect = GLdouble(quest_size.width / quest_size.height);
-
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  glOrtho(-1.0, 1.0, -1.0 / aspect, 1.0 / aspect, 0.0, 1.0);
+  glOrtho(-1.0, 1.0, -1.0, 1.0, 0.0, 1.0);
 
   glMatrixMode(GL_MODELVIEW);
 }

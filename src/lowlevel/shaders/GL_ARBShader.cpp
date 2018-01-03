@@ -308,6 +308,7 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) {
   set_rendering_settings();
 
   // Update uniform variables.
+  GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
   glUseProgramObjectARB(program);
 
   const Size& window_size = Video::get_window_size();
@@ -346,6 +347,8 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) {
 
   // And swap the window.
   SDL_GL_SwapWindow(window);
+
+  glUseProgramObjectARB(previous_program);
 }
 
 /**

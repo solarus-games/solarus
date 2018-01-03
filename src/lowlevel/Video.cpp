@@ -350,7 +350,7 @@ void render(const SurfacePtr& quest_surface) {
   }
 
   if (context.current_shader != nullptr) {
-      // OpenGL rendering with the current shader.
+    // OpenGL rendering with the current shader.
     context.current_shader->render(quest_surface);
   }
   else {

@@ -271,6 +271,7 @@ GLhandleARB GL_ARBShader::create_shader(unsigned int type, const char* source) {
 void GL_ARBShader::set_rendering_settings() {
 
   glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
   glLoadIdentity();
   glOrtho(-1.0, 1.0, -1.0, 1.0, 0.0, 1.0);
 
@@ -293,7 +294,6 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) {
   // Clear the window.
   glClearColor(0.0, 0.0, 0.0, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glLoadIdentity();
 
   // Clear the render target.
   SDL_SetRenderTarget(renderer, render_target);
@@ -349,6 +349,9 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) {
   SDL_GL_SwapWindow(window);
 
   glUseProgramObjectARB(previous_program);
+
+  glMatrixMode(GL_PROJECTION);
+  glPopMatrix();
 }
 
 /**

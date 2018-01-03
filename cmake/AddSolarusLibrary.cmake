@@ -100,8 +100,8 @@ file(
   include/solarus/hero/VictoryState.h
 
   include/solarus/lowlevel/apple/AppleInterface.h
-  include/solarus/lowlevel/shaders/GL_2DShader.h
   include/solarus/lowlevel/shaders/GL_ARBShader.h
+  include/solarus/lowlevel/shaders/GL_Shader.h
   include/solarus/lowlevel/shaders/GLContext.h
   include/solarus/lowlevel/shaders/ShaderContext.h
   include/solarus/lowlevel/shaders/Shader.h
@@ -306,8 +306,8 @@ file(
   src/hero/UsingItemState.cpp
   src/hero/VictoryState.cpp
 
-  src/lowlevel/shaders/GL_2DShader.cpp
   src/lowlevel/shaders/GL_ARBShader.cpp
+  src/lowlevel/shaders/GL_Shader.cpp
   src/lowlevel/shaders/GLContext.cpp
   src/lowlevel/shaders/ShaderContext.cpp
   src/lowlevel/shaders/ShaderData.cpp

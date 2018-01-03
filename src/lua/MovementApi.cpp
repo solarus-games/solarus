@@ -215,8 +215,7 @@ void LuaContext::register_movement_module() {
   std::vector<luaL_Reg> random_path_movement_methods = {
       { "get_speed", random_path_movement_api_get_speed },
       { "set_speed", random_path_movement_api_set_speed },
-      { "get_angle", random_path_movement_api_get_angle},
-      { nullptr, nullptr }
+      { "get_angle", random_path_movement_api_get_angle}
   };
   random_path_movement_methods.insert(
         random_path_movement_methods.end(),
@@ -235,8 +234,7 @@ void LuaContext::register_movement_module() {
       { "set_target", path_finding_movement_api_set_target },
       { "get_speed", path_finding_movement_api_get_speed },
       { "set_speed", path_finding_movement_api_set_speed },
-      { "get_angle", path_finding_movement_api_get_angle},
-      { nullptr, nullptr }
+      { "get_angle", path_finding_movement_api_get_angle}
   };
   path_finding_movement_methods.insert(
         path_finding_movement_methods.end(),

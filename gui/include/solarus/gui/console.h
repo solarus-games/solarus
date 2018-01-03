@@ -37,6 +37,8 @@ public:
 
   explicit Console(QWidget* parent = nullptr);
 
+  void clear();
+
   void set_quest_runner(QuestRunner& quest_runner);
 
   bool is_command_enabled() const;

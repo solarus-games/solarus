@@ -23,6 +23,11 @@ Engine changes
 * Fix scripts failing to load if a directory exists with the same name (#1100).
 * Improve Lua error messages.
 
+Solarus launcher GUI changes
+----------------------------
+
+* Clear the console when a quest is started.
+
 Lua API changes
 ---------------
 
@@ -75,7 +80,6 @@ Engine changes
 * Fix entity:get_name() returning nil after the entity is removed (#954).
 * Improve error messages of surface creations and conversions.
 * Chests: set an initial value "entities/chest" to the sprite field.
-
 
 Solarus launcher GUI changes
 ----------------------------

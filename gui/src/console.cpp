@@ -58,6 +58,14 @@ Console::Console(QWidget* parent) :
 }
 
 /**
+ * @brief Clears the content of the console.
+ */
+void Console::clear() {
+
+  ui.log_view->clear();
+}
+
+/**
  * @brief Returns whether the Lua command input field is available.
  * @return @c true if the user can type Lua commands.
  */
@@ -99,6 +107,8 @@ void Console::set_quest_runner(QuestRunner& quest_runner) {
  * @brief Slot called when the quest execution begins.
  */
 void Console::quest_running() {
+
+  clear();
 
   // Apply settings to the running quest as Lua commands,
   // for quests that don't read the settings.dat file.

@@ -403,7 +403,27 @@ void MainLoop::run() {
  * Otherwise, use run() to execute the standard main loop.
  */
 void MainLoop::step() {
-  update();
+
+  if (game != nullptr) {
+    game->update();
+  }
+  lua_context->update();
+  System::update();
+
+  // Go to another game?
+  if (next_game != game.get()) {
+
+    game = std::unique_ptr<Game>(next_game);
+
+    if (game != nullptr) {
+      game->start();
+    }
+    else {
+      lua_context->exit();
+      lua_context->initialize();
+      Music::stop_playing();
+    }
+  }
 }
 
 /**
@@ -464,35 +484,6 @@ void MainLoop::notify_input(const InputEvent& event) {
   bool handled = lua_context->notify_input(event);
   if (!handled && game != nullptr) {
     game->notify_input(event);
-  }
-}
-
-/**
- * \brief Updates the current screen.
- *
- * This function is called repeatedly by the main loop.
- */
-void MainLoop::update() {
-
-  if (game != nullptr) {
-    game->update();
-  }
-  lua_context->update();
-  System::update();
-
-  // go to another game?
-  if (next_game != game.get()) {
-
-    game = std::unique_ptr<Game>(next_game);
-
-    if (game != nullptr) {
-      game->start();
-    }
-    else {
-      lua_context->exit();
-      lua_context->initialize();
-      Music::stop_playing();
-    }
   }
 }
 

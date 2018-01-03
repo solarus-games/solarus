@@ -483,74 +483,6 @@ void set_quest_size_range(
 }
 
 /**
- * \brief Returns the size of the window.
- * \return The size of the window in pixels.
- */
-Size get_window_size() {
-
-  Debug::check_assertion(context.main_window != nullptr, "No window");
-  Debug::check_assertion(!context.quest_size.is_flat(), "Quest size is not initialized");
-
-  if (is_fullscreen()) {
-    // Returns the memorized window size.
-    return context.window_size;
-  }
-
-  // Returns the current window size.
-  int width = 0;
-  int height = 0;
-  SDL_GetWindowSize(context.main_window, &width, &height);
-
-  return { width, height };
-}
-
-/**
- * \brief Sets the size of the window.
- * \param size The size of the window in pixels.
- */
-void set_window_size(const Size& size) {
-
-  Debug::check_assertion(context.main_window != nullptr, "No window");
-  Debug::check_assertion(!context.quest_size.is_flat(), "Quest size is not initialized");
-  Debug::check_assertion(
-      size.width > 0 && size.height > 0,
-      "Wrong window size"
-  );
-
-  if (is_fullscreen()) {
-    // Store the size to remember it during fullscreen.
-    context.window_size = size;
-  }
-  else {
-    int width = 0;
-    int height = 0;
-    SDL_GetWindowSize(context.main_window, &width, &height);
-    if (width != size.width || height != size.height) {
-      SDL_SetWindowSize(
-          context.main_window,
-          size.width,
-          size.height
-      );
-      SDL_SetWindowPosition(
-          context.main_window,
-          SDL_WINDOWPOS_CENTERED,
-          SDL_WINDOWPOS_CENTERED
-      );
-    }
-  }
-}
-
-/**
- * \brief Restores the default size of the window for the current video mode.
- */
-void reset_window_size() {
-
-  Debug::check_assertion(context.video_mode != nullptr, "No video mode");
-
-  set_window_size(context.video_mode->get_initial_window_size());
-}
-
-/**
  * \brief Returns whether the current video mode is in fullscreen.
  * \return true if the current video mode is in fullscreen.
  */
@@ -801,9 +733,112 @@ const SoftwareVideoMode* get_video_mode_by_name(
 }
 
 /**
+ * \brief Returns the size of the window.
+ *
+ * This includes letterboxing black bars if any.
+ * It does not include the window decorations if any.
+ *
+ * In fullscreen mode, returns the size the window would have in windowed mode.
+ *
+ * \return The size of the window in pixels.
+ */
+Size get_window_size() {
+
+  Debug::check_assertion(context.main_window != nullptr, "No window");
+
+  if (is_fullscreen()) {
+    // Returns the memorized window size.
+    return context.window_size;
+  }
+
+  // Returns the current window size.
+  int width = 0;
+  int height = 0;
+  SDL_GetWindowSize(context.main_window, &width, &height);
+
+  return { width, height };
+}
+
+/**
+ * \brief Sets the size of the window.
+ *
+ * Letterboxing black bars will be included if necessary to keep the quest aspect ratio.
+ * It does not include the window decorations if any.
+ *
+ * In fullscreen mode, sets the size the window should have in windowed mode.
+ *
+ * \param size The size of the window in pixels.
+ */
+void set_window_size(const Size& size) {
+
+  Debug::check_assertion(context.main_window != nullptr, "No window");
+  Debug::check_assertion(
+      size.width > 0 && size.height > 0,
+      "Wrong window size"
+  );
+
+  if (is_fullscreen()) {
+    // Store the size to remember it during fullscreen.
+    context.window_size = size;
+  }
+  else {
+    int width = 0;
+    int height = 0;
+    SDL_GetWindowSize(context.main_window, &width, &height);
+    if (width != size.width || height != size.height) {
+      SDL_SetWindowSize(
+          context.main_window,
+          size.width,
+          size.height
+      );
+      SDL_SetWindowPosition(
+          context.main_window,
+          SDL_WINDOWPOS_CENTERED,
+          SDL_WINDOWPOS_CENTERED
+      );
+    }
+  }
+}
+
+/**
+ * \brief Restores the default size of the window for the current video mode.
+ */
+void reset_window_size() {
+
+  Debug::check_assertion(context.video_mode != nullptr, "No video mode");
+
+  set_window_size(context.video_mode->get_initial_window_size());
+}
+
+/**
+ * \brief Returns the output size of the renderer.
+ *
+ * Unlike get_window_size(), this does not include letterboxing black bars,
+ * and it takes care of whether fullscreen is active.
+ *
+ * \return The output size of the renderer in pixels.
+ */
+Size get_renderer_output_size() {
+
+  Debug::check_assertion(context.main_renderer != nullptr, "No window");
+
+  float scale_x = 0;
+  float scale_y = 0;
+  SDL_RenderGetScale(context.main_renderer, &scale_x, &scale_y);
+
+  Rectangle viewport = get_viewport();
+  return {
+    static_cast<int>(viewport.get_width() * scale_x),
+    static_cast<int>(viewport.get_height() * scale_y)
+  };
+}
+
+/**
  * \brief Gets the viewport of the renderer.
+ *
  * The viewport is the logical drawing area of the renderer.
- * x and y indicate the possible black bars.
+ * x and y indicate the possible letterboxing black bars.
+ *
  * \return The viewport, in renderer logical coordinates (before window scaling).
  */
 Rectangle get_viewport() {
@@ -818,7 +853,7 @@ Rectangle get_viewport() {
 /**
  * \brief Converts window coordinates to quest size coordinates.
  * \param window_xy A position relative to the window, not including
- * the title bar.
+ * window decorations.
  * \return The position in quest size coordinate.
  */
 Point window_to_quest_coordinates(const Point& window_xy) {

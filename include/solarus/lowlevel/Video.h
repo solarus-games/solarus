@@ -91,6 +91,8 @@ namespace Video {
     void set_window_size(const Size& size);
     void reset_window_size();
 
+    Size get_renderer_output_size();
+
     Rectangle get_viewport();
     Point window_to_quest_coordinates(const Point& window_xy);
     bool renderer_to_quest_coordinates(const Point& renderer_xy, Point& quest_xy);

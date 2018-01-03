@@ -311,9 +311,9 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) {
   GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
   glUseProgramObjectARB(program);
 
-  const Size& window_size = Video::get_window_size();
+  const Size& output_size = Video::get_renderer_output_size();
   set_uniform_1i("sol_time", System::now());
-  set_uniform_2f("sol_output_size", window_size.width, window_size.height);
+  set_uniform_2f("sol_output_size", output_size.width, output_size.height);
 
   glActiveTextureARB(GL_TEXTURE0_ARB + 0);  // Texture unit 0.
   SDL_GL_BindTexture(render_target, nullptr, nullptr);
@@ -324,13 +324,13 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) {
 
   glBegin(GL_QUADS);
   glTexCoord2f(texcoord[0], texcoord[1]);
-  glVertex3f(-1.0f, 1.0f, 0.0f); // Top left.
+  glVertex3f(-1.0f, 1.0f, 0.0f);  // Top left.
   glTexCoord2f(texcoord[2], texcoord[1]);
-  glVertex3f(1.0f, 1.0f, 0.0f); // Top right.
+  glVertex3f(1.0f, 1.0f, 0.0f);  // Top right.
   glTexCoord2f(texcoord[2], texcoord[3]);
-  glVertex3f(1.0f, -1.0f, 0.0f); // Bottom right.
+  glVertex3f(1.0f, -1.0f, 0.0f);  // Bottom right.
   glTexCoord2f(texcoord[0], texcoord[3]);
-  glVertex3f(-1.0f, -1.0f, 0.0f); // Bottom left.
+  glVertex3f(-1.0f, -1.0f, 0.0f);  // Bottom left.
   glEnd();
 
   SDL_GL_UnbindTexture(render_target);

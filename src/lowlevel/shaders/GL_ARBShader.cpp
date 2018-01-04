@@ -311,7 +311,7 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) {
   GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
   glUseProgramObjectARB(program);
 
-  const Size& output_size = Video::get_renderer_output_size();
+  const Size& output_size = Video::get_output_size();
   set_uniform_1i("sol_time", System::now());
   set_uniform_2f("sol_output_size", output_size.width, output_size.height);
 

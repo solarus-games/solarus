@@ -813,12 +813,34 @@ void reset_window_size() {
 /**
  * \brief Returns the output size of the renderer.
  *
- * Unlike get_window_size(), this does not include letterboxing black bars,
- * and it takes care of whether fullscreen is active.
+ * This includes letterboxing black bars.
+ * Unlike get_window_size(), this function takes care
+ * of whether fullscreen is active.
  *
  * \return The output size of the renderer in pixels.
  */
-Size get_renderer_output_size() {
+Size get_output_size() {
+
+  Debug::check_assertion(context.main_window != nullptr, "No window");
+
+  int width = 0;
+  int height = 0;
+  SDL_GetWindowSize(context.main_window, &width, &height);
+
+  return { width, height };
+}
+
+/**
+ * \brief Returns the output size of the renderer.
+ *
+ * This does not include letterboxing black bars.
+ * Unlike get_window_size(), this function takes care
+ * of whether fullscreen is active.
+ *
+ * \return The output size of the renderer in pixels,
+ * not including black bars.
+ */
+Size get_output_size_no_bars() {
 
   Debug::check_assertion(context.main_renderer != nullptr, "No window");
 

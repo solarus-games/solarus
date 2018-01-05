@@ -36,6 +36,6 @@ SOLARUS_API std::string to_string(int value) {
   return oss.str();
 }
 
-}  // namespace Logger
+}  // namespace String
 
 }  // namespace Solarus

@@ -326,8 +326,7 @@ void Surface::clear(const Rectangle& where) {
  * \param color A color.
  */
 void Surface::fill_with_color(const Color& color) {
-
-  SDL_FillRect(internal_surface.get(), nullptr, get_color_value(color));
+  fill_with_color(color, Rectangle(Point(0, 0), get_size()));
 }
 
 /**
@@ -341,7 +340,37 @@ void Surface::fill_with_color(const Color& color) {
  */
 void Surface::fill_with_color(const Color& color, const Rectangle& where) {
 
-  SDL_FillRect(internal_surface.get(), where.get_internal_rect(), get_color_value(color));
+  if (color.get_alpha() == 255) {
+    // Opaque color: directly replace the pixel values.
+    SDL_FillRect(internal_surface.get(), where.get_internal_rect(), get_color_value(color));
+  }
+  else {
+    // We need an intermediate surface to perform alpha blending.
+    if (alpha_color_surface == nullptr) {
+      SDL_PixelFormat* format = Video::get_pixel_format();
+      alpha_color_surface = SDL_Surface_UniquePtr(SDL_CreateRGBSurface(
+          0,
+          where.get_width(),
+          where.get_height(),
+          32,
+          format->Rmask,
+          format->Gmask,
+          format->Bmask,
+          format->Amask
+      ));
+
+      Debug::check_assertion(alpha_color_surface != nullptr,
+          std::string("Failed to create SDL surface: ") + SDL_GetError());
+    }
+
+    SDL_FillRect(alpha_color_surface.get(), nullptr, get_color_value(color));
+    SDL_BlitSurface(
+        alpha_color_surface.get(),
+        nullptr,
+        internal_surface.get(),
+        Rectangle(where).get_internal_rect()
+    );
+  }
 }
 
 /**

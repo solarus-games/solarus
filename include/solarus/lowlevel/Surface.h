@@ -132,6 +132,8 @@ class Surface: public Drawable {
 
     SDL_Surface_UniquePtr
         internal_surface;                 /**< The SDL_Surface encapsulated. */
+    SDL_Surface_UniquePtr
+        alpha_color_surface;              /**< Intermediate surface needed to fill with non-opaque colors. */
     uint8_t opacity;                      /**< Opacity (0: transparent, 255: opaque). */
     GLuint opengl_texture;                /**< OpenGL texture for this surface, if any. */
 };

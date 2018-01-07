@@ -151,7 +151,7 @@ int LuaContext::video_api_switch_mode(lua_State* l) {
     get_lua_context(l).warning_deprecated(
         { 1, 6 },
         "sol.video.switch_mode()",
-        "Use sol.video.get_shader() instead."
+        "Use sol.video.set_shader() instead."
     );
 
     Video::switch_video_mode();

@@ -27,7 +27,7 @@
 #include "solarus/lowlevel/SoftwareVideoMode.h"
 #include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/Video.h"
-#include "solarus/lowlevel/shaders/ShaderContext.h"
+#include "solarus/shaders/ShaderContext.h"
 #include "solarus/Arguments.h"
 #include "solarus/CurrentQuest.h"
 #include <memory>

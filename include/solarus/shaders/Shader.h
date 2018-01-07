@@ -18,12 +18,12 @@
 #define SOLARUS_SHADER_H
 
 #include "solarus/Common.h"
-#include "solarus/lowlevel/shaders/ShaderData.h"
 #include "solarus/lowlevel/Debug.h"
 #include "solarus/lowlevel/SurfacePtr.h"
 #include "solarus/lua/ExportableToLua.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
+#include "solarus/shaders/ShaderData.h"
 #include <string>
 
 #define SOLARUS_HAVE_OPENGL // Temporary define. To determine at configure part

@@ -14,14 +14,14 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/lowlevel/shaders/GL_Shader.h"
-#include "solarus/lowlevel/shaders/ShaderData.h"
 #include "solarus/lowlevel/Logger.h"
 #include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lowlevel/Size.h"
 #include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Video.h"
+#include "solarus/shaders/GL_Shader.h"
+#include "solarus/shaders/ShaderData.h"
 
 #ifdef SOLARUS_HAVE_OPENGLES2
 

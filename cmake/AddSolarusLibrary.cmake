@@ -100,13 +100,6 @@ file(
   include/solarus/hero/VictoryState.h
 
   include/solarus/lowlevel/apple/AppleInterface.h
-  include/solarus/lowlevel/shaders/GL_ARBShader.h
-  include/solarus/lowlevel/shaders/GL_Shader.h
-  include/solarus/lowlevel/shaders/GLContext.h
-  include/solarus/lowlevel/shaders/ShaderContext.h
-  include/solarus/lowlevel/shaders/Shader.h
-  include/solarus/lowlevel/shaders/ShaderData.h
-  include/solarus/lowlevel/shaders/ShaderPtr.h
   include/solarus/lowlevel/BlendMode.h
   include/solarus/lowlevel/BlendModeInfo.h
   include/solarus/lowlevel/Color.h
@@ -165,6 +158,14 @@ file(
   include/solarus/movements/RelativeMovement.h
   include/solarus/movements/StraightMovement.h
   include/solarus/movements/TargetMovement.h
+
+  include/solarus/shaders/GL_ARBShader.h
+  include/solarus/shaders/GL_Shader.h
+  include/solarus/shaders/GLContext.h
+  include/solarus/shaders/ShaderContext.h
+  include/solarus/shaders/Shader.h
+  include/solarus/shaders/ShaderData.h
+  include/solarus/shaders/ShaderPtr.h
 
   include/solarus/third_party/hqx/common.h
   include/solarus/third_party/hqx/hqx.h
@@ -306,12 +307,6 @@ file(
   src/hero/UsingItemState.cpp
   src/hero/VictoryState.cpp
 
-  src/lowlevel/shaders/GL_ARBShader.cpp
-  src/lowlevel/shaders/GL_Shader.cpp
-  src/lowlevel/shaders/GLContext.cpp
-  src/lowlevel/shaders/ShaderContext.cpp
-  src/lowlevel/shaders/ShaderData.cpp
-  src/lowlevel/shaders/Shader.cpp
   src/lowlevel/BlendModeInfo.cpp
   src/lowlevel/Color.cpp
   src/lowlevel/Debug.cpp
@@ -381,6 +376,13 @@ file(
   src/movements/RelativeMovement.cpp
   src/movements/StraightMovement.cpp
   src/movements/TargetMovement.cpp
+
+  src/shaders/GL_ARBShader.cpp
+  src/shaders/GL_Shader.cpp
+  src/shaders/GLContext.cpp
+  src/shaders/ShaderContext.cpp
+  src/shaders/ShaderData.cpp
+  src/shaders/Shader.cpp
 
   src/AbilityInfo.cpp
   src/Arguments.cpp

@@ -18,7 +18,7 @@
 #define SOLARUS_SHADERCONTEXT_H
 
 #include "solarus/Common.h"
-#include "solarus/lowlevel/shaders/Shader.h"
+#include "solarus/shaders/Shader.h"
 #include <memory>
 #include <string>
 

@@ -19,7 +19,7 @@
 
 #include "solarus/Common.h"
 
-#include "solarus/lowlevel/shaders/Shader.h"
+#include "solarus/shaders/Shader.h"
 #include <SDL.h>
 #include <map>
 #include <string>

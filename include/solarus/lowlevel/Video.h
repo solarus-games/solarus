@@ -18,9 +18,9 @@
 #define SOLARUS_VIDEO_H
 
 #include "solarus/Common.h"
-#include "solarus/lowlevel/shaders/ShaderPtr.h"
 #include "solarus/lowlevel/Point.h"
 #include "solarus/lowlevel/SurfacePtr.h"
+#include "solarus/shaders/ShaderPtr.h"
 #include <vector>
 #include <string>
 

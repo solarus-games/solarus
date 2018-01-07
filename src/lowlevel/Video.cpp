@@ -531,8 +531,7 @@ bool is_cursor_visible() {
 void set_cursor_visible(bool cursor_visible) {
 
   context.visible_cursor = cursor_visible;
-  Debug::check_assertion(context.video_mode != nullptr, "No video mode");
-  set_video_mode(*context.video_mode);
+  SDL_ShowCursor(context.visible_cursor);
   Logger::info(std::string("Cursor visible: ") + (cursor_visible ? "yes" : "no"));
 }
 
@@ -679,7 +678,6 @@ bool set_video_mode(const SoftwareVideoMode& mode) {
         context.main_renderer,
         render_size.width,
         render_size.height);
-    SDL_ShowCursor(context.visible_cursor);
 
     if (mode_changed) {
       reset_window_size();

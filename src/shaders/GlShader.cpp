@@ -20,7 +20,7 @@
 #include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Video.h"
-#include "solarus/shaders/GL_Shader.h"
+#include "solarus/shaders/GlShader.h"
 #include "solarus/shaders/ShaderData.h"
 
 #ifdef SOLARUS_HAVE_OPENGLES2
@@ -70,7 +70,7 @@ GLint default_shader_program = 0;
  * \brief Initializes the GL 2D shader system.
  * \return \c true if GL 2D shaders are supported.
  */
-bool GL_Shader::initialize() {
+bool GlShader::initialize() {
 
   // Setting some parameters.
   glClearDepthf(1.0); // Enables clearing of the depth buffer.
@@ -128,7 +128,7 @@ bool GL_Shader::initialize() {
  * \brief Constructor.
  * \param shader_name The name of the shader to load.
  */
-GL_Shader::GL_Shader(const std::string& shader_id):
+GlShader::GlShader(const std::string& shader_id):
     Shader(shader_id),
     program(0),
     vertex_shader(0),
@@ -159,7 +159,7 @@ GL_Shader::GL_Shader(const std::string& shader_id):
 /**
  * \brief Destructor.
  */
-GL_Shader::~GL_Shader() {
+GlShader::~GlShader() {
 
   ctx.glDeleteShader(vertex_shader);
   ctx.glDeleteShader(fragment_shader);
@@ -169,7 +169,7 @@ GL_Shader::~GL_Shader() {
 /**
  * \copydoc Shader::load
  */
-void GL_Shader::load() {
+void GlShader::load() {
 
   GLint linked;
 
@@ -222,7 +222,7 @@ void GL_Shader::load() {
  * \param type The type of the shader to fill and compile.
  * \param source Sources to compile.
  */
-GLuint GL_Shader::create_shader(GLenum type, const char* source) {
+GLuint GlShader::create_shader(GLenum type, const char* source) {
 
   GLint compiled;
 
@@ -263,7 +263,7 @@ GLuint GL_Shader::create_shader(GLenum type, const char* source) {
 /**
  * \brief Check for a possible error returned by glGetError().
  */
-void GL_Shader::check_gl_error() {
+void GlShader::check_gl_error() {
   GLenum gl_error(ctx.glGetError());
 
   while (gl_error != GL_NO_ERROR) {
@@ -297,7 +297,7 @@ void GL_Shader::check_gl_error() {
  * It will perform the render using the OpenGL API directly.
  * \param quest_surface the surface to render on the screen
  */
-void GL_Shader::render(const SurfacePtr& quest_surface) {
+void GlShader::render(const SurfacePtr& quest_surface) {
 
   Shader::render(quest_surface);
 

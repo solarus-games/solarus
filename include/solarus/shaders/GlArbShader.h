@@ -36,15 +36,15 @@ namespace Solarus {
  * This class basically encapsulates a GLSL vertex and fragment shader.
  * Supports OpenGL 2.0 and superior.
  */
-class GL_ARBShader : public Shader {
+class GlArbShader : public Shader {
 
   public:
 
 #ifdef SOLARUS_HAVE_OPENGL
     static bool initialize();
 
-    explicit GL_ARBShader(const std::string& shader_id);
-    ~GL_ARBShader();
+    explicit GlArbShader(const std::string& shader_id);
+    ~GlArbShader();
 
     void set_uniform_1b(
         const std::string& uniform_name, bool value) override;
@@ -82,7 +82,7 @@ class GL_ARBShader : public Shader {
 #else
 
   static bool initialize() { return false; }
-  explicit GL_ARBShader(const std::string& shader_id): Shader(shader_id)  {}
+  explicit GlArbShader(const std::string& shader_id): Shader(shader_id)  {}
 #endif
 };
 

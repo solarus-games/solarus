@@ -37,15 +37,15 @@ namespace Solarus {
  * The purpose is to support both desktop and ES OpenGLs in a single class.
  * Supports OpenGL 3.0 and superior and OpenGL ES2.
  */
-class GL_Shader : public Shader {
+class GlShader : public Shader {
 
   public:
 
 #ifdef SOLARUS_HAVE_OPENGLES2
     static bool initialize();
 
-    explicit GL_Shader(const std::string& shader_id);
-    ~GL_Shader();
+    explicit GlShader(const std::string& shader_id);
+    ~GlShader();
 
   protected:
 
@@ -64,7 +64,7 @@ class GL_Shader : public Shader {
 #else
 
     static bool initialize() { return false; }
-    explicit GL_Shader(const std::string& shader_id): Shader(shader_id) {}
+    explicit GlShader(const std::string& shader_id): Shader(shader_id) {}
 #endif
 };
 

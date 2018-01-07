@@ -20,7 +20,7 @@
 #include "solarus/lowlevel/Surface.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/lowlevel/Video.h"
-#include "solarus/shaders/GL_ARBShader.h"
+#include "solarus/shaders/GlArbShader.h"
 #include "solarus/shaders/ShaderData.h"
 #include <sstream>
 
@@ -70,7 +70,7 @@ FunctionPointerType get_proc_address_cast(void* object_ptr) {
  * \brief Initializes the GL ARB shader system.
  * \return \c true if GL ARB shaders are supported.
  */
-bool GL_ARBShader::initialize() {
+bool GlArbShader::initialize() {
 
   // TODO Make sure that SDL doesn't disable GL ARB for render targets even if available.
 
@@ -132,7 +132,7 @@ bool GL_ARBShader::initialize() {
  * \brief Constructor.
  * \param shader_id Id of the shader to load.
  */
-GL_ARBShader::GL_ARBShader(const std::string& shader_id):
+GlArbShader::GlArbShader(const std::string& shader_id):
     Shader(shader_id),
     program(0),
     vertex_shader(0),
@@ -170,7 +170,7 @@ GL_ARBShader::GL_ARBShader(const std::string& shader_id):
 /**
  * \brief Destructor.
  */
-GL_ARBShader::~GL_ARBShader() {
+GlArbShader::~GlArbShader() {
 
   // TODO use glDeleteProgramARB?
   glDeleteObjectARB(vertex_shader);
@@ -181,7 +181,7 @@ GL_ARBShader::~GL_ARBShader() {
 /**
  * \copydoc Shader::load
  */
-void GL_ARBShader::load() {
+void GlArbShader::load() {
 
   set_valid(true);
 
@@ -237,7 +237,7 @@ void GL_ARBShader::load() {
  * \param type The type of the shader to fill and compile.
  * \param source Sources to compile.
  */
-GLhandleARB GL_ARBShader::create_shader(unsigned int type, const char* source) {
+GLhandleARB GlArbShader::create_shader(unsigned int type, const char* source) {
 
   GLint status;
 
@@ -268,7 +268,7 @@ GLhandleARB GL_ARBShader::create_shader(unsigned int type, const char* source) {
  * \brief Set up OpenGL rendering parameter.
  * This basically resets the projection matrix.
  */
-void GL_ARBShader::set_rendering_settings() {
+void GlArbShader::set_rendering_settings() {
 
   glMatrixMode(GL_PROJECTION);
   glPushMatrix();
@@ -283,7 +283,7 @@ void GL_ARBShader::set_rendering_settings() {
  * It will perform the render using the OpenGL API directly.
  * \param quest_surface The surface to render on the screen.
  */
-void GL_ARBShader::render(const SurfacePtr& quest_surface) {
+void GlArbShader::render(const SurfacePtr& quest_surface) {
 
   Shader::render(quest_surface);
 
@@ -359,7 +359,7 @@ void GL_ARBShader::render(const SurfacePtr& quest_surface) {
  * \param uniform_name Name of the uniform to find.
  * \return The uniform location or \c -1.
  */
-GLint GL_ARBShader::get_uniform_location(const std::string& uniform_name) const {
+GLint GlArbShader::get_uniform_location(const std::string& uniform_name) const {
 
   const auto& it = uniform_locations.find(uniform_name);
   if (it != uniform_locations.end()) {
@@ -377,7 +377,7 @@ GLint GL_ARBShader::get_uniform_location(const std::string& uniform_name) const 
 /**
  * \copydoc Shader::set_uniform1f
  */
-void GL_ARBShader::set_uniform_1b(const std::string& uniform_name, bool value) {
+void GlArbShader::set_uniform_1b(const std::string& uniform_name, bool value) {
 
   const GLint location = get_uniform_location(uniform_name);
   if (location == -1) {
@@ -393,7 +393,7 @@ void GL_ARBShader::set_uniform_1b(const std::string& uniform_name, bool value) {
 /**
  * \copydoc Shader::set_uniform_1i
  */
-void GL_ARBShader::set_uniform_1i(const std::string& uniform_name, int value) {
+void GlArbShader::set_uniform_1i(const std::string& uniform_name, int value) {
 
   const GLint location = get_uniform_location(uniform_name);
   if (location == -1) {
@@ -409,7 +409,7 @@ void GL_ARBShader::set_uniform_1i(const std::string& uniform_name, int value) {
 /**
  * \copydoc Shader::set_uniform_1f
  */
-void GL_ARBShader::set_uniform_1f(const std::string& uniform_name, float value) {
+void GlArbShader::set_uniform_1f(const std::string& uniform_name, float value) {
 
   const GLint location = get_uniform_location(uniform_name);
   if (location == -1) {
@@ -425,7 +425,7 @@ void GL_ARBShader::set_uniform_1f(const std::string& uniform_name, float value) 
 /**
  * \copydoc Shader::set_uniform_2f
  */
-void GL_ARBShader::set_uniform_2f(const std::string& uniform_name, float value_1, float value_2) {
+void GlArbShader::set_uniform_2f(const std::string& uniform_name, float value_1, float value_2) {
 
   const GLint location = get_uniform_location(uniform_name);
   if (location == -1) {
@@ -441,7 +441,7 @@ void GL_ARBShader::set_uniform_2f(const std::string& uniform_name, float value_1
 /**
  * \copydoc Shader::set_uniform_3f
  */
-void GL_ARBShader::set_uniform_3f(
+void GlArbShader::set_uniform_3f(
     const std::string& uniform_name, float value_1, float value_2, float value_3) {
 
   const GLint location = get_uniform_location(uniform_name);
@@ -458,7 +458,7 @@ void GL_ARBShader::set_uniform_3f(
 /**
  * \copydoc Shader::set_uniform_4f
  */
-void GL_ARBShader::set_uniform_4f(
+void GlArbShader::set_uniform_4f(
     const std::string& uniform_name, float value_1, float value_2, float value_3, float value_4) {
 
   const GLint location = get_uniform_location(uniform_name);
@@ -475,7 +475,7 @@ void GL_ARBShader::set_uniform_4f(
 /**
  * \copydoc Shader::set_uniform_texture
  */
-bool GL_ARBShader::set_uniform_texture(const std::string& uniform_name, const SurfacePtr& value) {
+bool GlArbShader::set_uniform_texture(const std::string& uniform_name, const SurfacePtr& value) {
 
   const GLint location = get_uniform_location(uniform_name);
   if (location == -1) {

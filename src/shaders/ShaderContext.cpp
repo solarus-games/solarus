@@ -17,8 +17,8 @@
 #include "solarus/lowlevel/Logger.h"
 #include "solarus/lowlevel/Video.h"
 #include "solarus/shaders/ShaderContext.h"
-#include "solarus/shaders/GL_ARBShader.h"
-#include "solarus/shaders/GL_Shader.h"
+#include "solarus/shaders/GlArbShader.h"
+#include "solarus/shaders/GlShader.h"
 
 namespace Solarus {
 
@@ -68,12 +68,12 @@ bool ShaderContext::initialize() {
   }
 
   // Try to initialize a gl shader system, in order from the earlier to the older.
-  is_universal_shader_supported = GL_Shader::initialize();
+  is_universal_shader_supported = GlShader::initialize();
   if (is_universal_shader_supported) {
     return true;
   }
 
-  return GL_ARBShader::initialize();
+  return GlArbShader::initialize();
 }
 
 /**
@@ -112,10 +112,10 @@ ShaderPtr ShaderContext::create_shader(const std::string& shader_id) {
   ShaderPtr shader = nullptr;
 
   if (is_universal_shader_supported) {
-    shader = std::make_shared<GL_Shader>(shader_id);
+    shader = std::make_shared<GlShader>(shader_id);
   }
   else {
-    shader = std::make_shared<GL_ARBShader>(shader_id);
+    shader = std::make_shared<GlArbShader>(shader_id);
   }
 
   return shader;

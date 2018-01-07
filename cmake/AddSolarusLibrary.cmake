@@ -159,9 +159,8 @@ file(
   include/solarus/movements/StraightMovement.h
   include/solarus/movements/TargetMovement.h
 
-  include/solarus/shaders/GL_ARBShader.h
-  include/solarus/shaders/GL_Shader.h
-  include/solarus/shaders/GLContext.h
+  include/solarus/shaders/GlArbShader.h
+  include/solarus/shaders/GlShader.h
   include/solarus/shaders/ShaderContext.h
   include/solarus/shaders/Shader.h
   include/solarus/shaders/ShaderData.h
@@ -377,9 +376,8 @@ file(
   src/movements/StraightMovement.cpp
   src/movements/TargetMovement.cpp
 
-  src/shaders/GL_ARBShader.cpp
-  src/shaders/GL_Shader.cpp
-  src/shaders/GLContext.cpp
+  src/shaders/GlArbShader.cpp
+  src/shaders/GlShader.cpp
   src/shaders/ShaderContext.cpp
   src/shaders/ShaderData.cpp
   src/shaders/Shader.cpp

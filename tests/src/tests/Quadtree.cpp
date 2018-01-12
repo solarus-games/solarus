@@ -23,6 +23,8 @@
 
 using namespace Solarus;
 
+using Box = Solarus::Rectangle;
+
 namespace {
 
 class Element {
@@ -33,21 +35,21 @@ class Element {
         rectangle() {
     }
 
-    explicit Element(const Rectangle& rectangle) :
+    explicit Element(const Box& rectangle) :
         rectangle(rectangle) {
     }
 
-    const Rectangle& get_bounding_box() const {
+    const Box& get_bounding_box() const {
       return rectangle;
     }
 
-    Rectangle& get_bounding_box() {
+    Box& get_bounding_box() {
       return rectangle;
     }
 
   private:
 
-    Rectangle rectangle;
+    Box rectangle;
 };
 
 using ElementPtr = std::shared_ptr<Element>;
@@ -78,7 +80,7 @@ void check_found(const std::vector<ElementPtr>& found_elements, ElementPtr& expe
 /**
  * \brief Creates an element with the given coordinates and adds it to a quatree.
  */
-ElementPtr add(Quadtree<ElementPtr>& quadtree, const Rectangle& bounding_box) {
+ElementPtr add(Quadtree<ElementPtr>& quadtree, const Box& bounding_box) {
 
   int num_elements = quadtree.get_num_elements();
   ElementPtr element(std::make_shared<Element>(bounding_box));
@@ -124,26 +126,26 @@ void test_empty(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) {
  */
 void test_add(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) {
 
-  const std::vector<Rectangle> rectangles = {
-      Rectangle(100, 40, 16, 16),
-      Rectangle(200, 10, 16, 16),
-      Rectangle(250, 20, 16, 16),
-      Rectangle(300, 30, 16, 16),
-      Rectangle(300, 50, 16, 16),
-      Rectangle(800, 40, 16, 16),
-      Rectangle(500, 60, 16, 16),
-      Rectangle(600, 100, 16, 16),
-      Rectangle(400, 300, 16, 16),
-      Rectangle(700, 400, 16, 16)
+  const std::vector<Box> rectangles = {
+      Box(100, 40, 16, 16),
+      Box(200, 10, 16, 16),
+      Box(250, 20, 16, 16),
+      Box(300, 30, 16, 16),
+      Box(300, 50, 16, 16),
+      Box(800, 40, 16, 16),
+      Box(500, 60, 16, 16),
+      Box(600, 100, 16, 16),
+      Box(400, 300, 16, 16),
+      Box(700, 400, 16, 16)
   };
 
   std::vector<ElementPtr> added_elements;
-  for (const Rectangle& rectangle : rectangles) {
+  for (const Box& rectangle : rectangles) {
     ElementPtr element = add(quadtree, rectangle);
     added_elements.push_back(element);
   }
 
-  Rectangle region(220, 10, 100, 100);
+  Box region(220, 10, 100, 100);
   std::vector<ElementPtr> found_elements = quadtree.get_elements(region);
 
   Debug::check_assertion(found_elements.size() == 3, "Expected 3 elements found");
@@ -170,8 +172,8 @@ void test_remove(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) {
  */
 void test_add_big_size(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) {
 
-  add(quadtree, Rectangle(25, 25, 600, 600));
-  add(quadtree, Rectangle(100, 0, 16, 960));
+  add(quadtree, Box(25, 25, 600, 600));
+  add(quadtree, Box(100, 0, 16, 960));
 }
 
 /**
@@ -179,10 +181,10 @@ void test_add_big_size(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtre
  */
 void test_add_limit(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) {
 
-  add(quadtree, Rectangle(-16, 0, 16, 960));
+  add(quadtree, Box(-16, 0, 16, 960));
 
   // Try to add an element outside the quadtree space.
-  add(quadtree, Rectangle(-160, 0, 16, 960));
+  add(quadtree, Box(-160, 0, 16, 960));
 }
 
 /**
@@ -190,8 +192,8 @@ void test_add_limit(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) 
  */
 void test_add_center_outside(TestEnvironment& /* env */, Quadtree<ElementPtr>& quadtree) {
 
-  add(quadtree, Rectangle(-480, 32, 640, 640));
-  add(quadtree, Rectangle(1300, 32, 640, 640));
+  add(quadtree, Box(-480, 32, 640, 640));
+  add(quadtree, Box(1300, 32, 640, 640));
 }
 
 /**
@@ -242,7 +244,7 @@ int main(int argc, char** argv) {
   TestEnvironment env(argc, argv);
 
   int margin = 64;
-  Rectangle space(-margin, -margin, 1280 + 2 * margin, 960 + 2 * margin);
+  Box space(-margin, -margin, 1280 + 2 * margin, 960 + 2 * margin);
   Quadtree<ElementPtr> quadtree(space);
 
   test_empty(env, quadtree);

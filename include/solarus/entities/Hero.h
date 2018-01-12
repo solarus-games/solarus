@@ -267,10 +267,15 @@ class Hero: public Entity {
     void start_victory(const ScopedLuaRef& callback_ref);
     void start_lifting(const std::shared_ptr<CarriedObject>& item_to_lift);
     void start_running();
+    void start_pushing();
     void start_grabbing();
+    void start_pulling();
     bool can_pick_treasure(EquipmentItem& item);
     bool can_avoid_teletransporter(const Teletransporter& teletransporter) const;
     bool can_run() const;
+    bool can_push() const;
+    bool can_grab() const;
+    bool can_pull() const;
     bool can_use_shield() const;
     bool can_start_sword() const;
     void start_sword();

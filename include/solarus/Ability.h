@@ -34,6 +34,9 @@ enum class Ability {
   JUMP_OVER_WATER,        /**< Automatically jumping when arriving in water
                            * without the SWIM ability. */
   RUN,                    /**< Running faster. */
+  PUSH,                   /**< Pushing obstacles. */
+  GRAB,                   /**< Grabbing obstacles. */
+  PULL,                   /**< Pulling obstacles. */
   DETECT_WEAK_WALLS,      /**< Be notified of weak walls nearby. */
 };
 

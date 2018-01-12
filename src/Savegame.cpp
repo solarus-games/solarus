@@ -58,7 +58,7 @@ const std::string Savegame::KEY_MAX_MONEY = "_max_money";              /**< Maxi
 const std::string Savegame::KEY_MAX_MAGIC = "_max_magic";              /**< Maximum allowed magic points. */
 const std::string Savegame::KEY_ITEM_SLOT_1 = "_item_slot_1";          /**< Name of the equipment item in slot 1. */
 const std::string Savegame::KEY_ITEM_SLOT_2 = "_item_slot_2";          /**< Name of the equipment item in slot 2. */
-const std::string Savegame::KEY_ABILITY_TUNIC = "_ability_tunic"; /**< Resistance level. */
+const std::string Savegame::KEY_ABILITY_TUNIC = "_ability_tunic";      /**< Resistance level. */
 const std::string Savegame::KEY_ABILITY_SWORD = "_ability_sword";      /**< Attack level. */
 const std::string Savegame::KEY_ABILITY_SWORD_KNOWLEDGE =
     "_ability_sword_knowledge";                                        /**< Super spin attack ability level. */
@@ -68,6 +68,9 @@ const std::string Savegame::KEY_ABILITY_SWIM = "_ability_swim";        /**< Swim
 const std::string Savegame::KEY_ABILITY_JUMP_OVER_WATER =
     "_ability_jump_over_water";                                        /**< Jump over water level. */
 const std::string Savegame::KEY_ABILITY_RUN = "_ability_run";          /**< Run level. */
+const std::string Savegame::KEY_ABILITY_PUSH = "_ability_push";        /**< Push level. */
+const std::string Savegame::KEY_ABILITY_GRAB = "_ability_grab";        /**< Grab level. */
+const std::string Savegame::KEY_ABILITY_PULL = "_ability_pull";        /**< Pull level. */
 const std::string Savegame::KEY_ABILITY_DETECT_WEAK_WALLS =
     "_ability_detect_weak_walls";                                      /**< Weak walls detection level. */
 const std::string Savegame::KEY_ABILITY_GET_BACK_FROM_DEATH =
@@ -143,6 +146,9 @@ void Savegame::set_initial_values() {
   equipment.set_max_life(1);
   equipment.set_life(1);
   equipment.set_ability(Ability::TUNIC, 1);  // Mandatory to have a valid hero sprite.
+  equipment.set_ability(Ability::PUSH, 1);
+  equipment.set_ability(Ability::GRAB, 1);
+  equipment.set_ability(Ability::PULL, 1);
 }
 
 /**
@@ -192,6 +198,27 @@ void Savegame::set_default_joypad_controls() {
 }
 
 /**
+ * \brief Updates a savegame if necessary from any Solarus version to the newest one.
+ */
+void Savegame::post_process_existing_savegame() {
+
+  // Push, grab and pull did not need abilities before Solarus 1.6.
+  // Any savegame that does not define them is an old one that
+  // needs them to have the value 1.
+  if (!is_set(Savegame::KEY_ABILITY_PUSH)) {
+    set_integer(Savegame::KEY_ABILITY_PUSH, 1);
+  }
+
+  if (!is_set(Savegame::KEY_ABILITY_GRAB)) {
+    set_integer(Savegame::KEY_ABILITY_GRAB, 1);
+  }
+
+  if (!is_set(Savegame::KEY_ABILITY_PULL)) {
+    set_integer(Savegame::KEY_ABILITY_PULL, 1);
+  }
+}
+
+/**
  * \brief Import the savegame data from the file.
  */
 void Savegame::import_from_file() {
@@ -229,13 +256,15 @@ void Savegame::import_from_file() {
     }
   }
   else if (load_result == LUA_ERRSYNTAX) {
-     // Apparently it was not a Lua file.
-     // Let's try the obsolete format of Solarus 0.9.
-     SavegameConverterV1 converter(file_name);
-     converter.convert_to_v2(*this);
-   }
+    // Apparently it was not a Lua file.
+    // Let's try the obsolete format of Solarus 0.9.
+    SavegameConverterV1 converter(file_name);
+    converter.convert_to_v2(*this);
+  }
 
   lua_close(l);
+
+  post_process_existing_savegame();
 }
 
 /**
@@ -544,6 +573,16 @@ void Savegame::set_boolean(const std::string& key, bool value) {
 
   saved_values[key].type = SavedValue::VALUE_BOOLEAN;
   saved_values[key].int_data = value;
+}
+
+/**
+ * \brief Returns whether a value is defined in the savegame.
+ * \param key Name of the value to check.
+ * \return \c true if such a value is defined.
+ */
+bool Savegame::is_set(const std::string& key) const {
+
+  return saved_values.find(key) != saved_values.end();
 }
 
 /**

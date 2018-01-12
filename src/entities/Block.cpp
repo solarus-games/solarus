@@ -189,7 +189,9 @@ void Block::notify_collision_with_switch(Switch& sw, CollisionMode /* collision_
  */
 bool Block::notify_action_command_pressed() {
 
-  if (get_commands_effects().get_action_key_effect() == CommandsEffects::ACTION_KEY_GRAB) {
+  if (get_commands_effects().get_action_key_effect() == CommandsEffects::ACTION_KEY_GRAB &&
+      get_hero().can_grab()
+  ) {
     get_hero().start_grabbing();
     return true;
   }

@@ -21,6 +21,7 @@
 #include "solarus/movements/PlayerMovement.h"
 #include "solarus/lowlevel/System.h"
 #include "solarus/CommandsEffects.h"
+#include "solarus/Equipment.h"
 #include "solarus/Game.h"
 
 namespace Solarus {
@@ -101,22 +102,21 @@ void Hero::FreeState::notify_action_command_pressed() {
     if (get_commands_effects().get_action_key_effect() == CommandsEffects::ACTION_KEY_NONE ||
         get_commands_effects().is_action_key_acting_on_facing_entity()
     ) {
-
-      // action on the facing entity
+      // Action on the facing entity.
       facing_entity_interaction = facing_entity->notify_action_command_pressed();
     }
   }
 
   if (!facing_entity_interaction) {
     // The event was not handled by the facing entity.
-    if (hero.is_facing_point_on_obstacle()) {
-
-      // grab an obstacle
-      hero.set_state(new GrabbingState(hero));
+    if (hero.is_facing_point_on_obstacle() &&
+        hero.can_grab()
+    ) {
+      // Grab an obstacle.
+      hero.start_grabbing();
     }
     else if (hero.can_run()) {
-
-      // run
+      // Run.
       hero.start_running();
     }
   }
@@ -131,14 +131,18 @@ void Hero::FreeState::notify_obstacle_reached() {
   PlayerMovementState::notify_obstacle_reached();
 
   Hero& hero = get_entity();
-  if (hero.is_facing_point_on_obstacle()) { // he is really facing an obstacle
+  Equipment& equipment = get_equipment();
+  if (hero.is_facing_point_on_obstacle() &&   // He is really facing an obstacle.
+      equipment.has_ability(Ability::PUSH)    // He is able to push.
+  ) {
 
     uint32_t now = System::now();
     if (pushing_direction4 == -1) {
-      start_pushing_date = now + 800; // start animation "pushing" after 800 ms
+      start_pushing_date = now + 800;  // Start animation "pushing" after 800 ms.
       pushing_direction4 = hero.get_animation_direction();
     }
     else if (now >= start_pushing_date) {
+      equipment.notify_ability_used(Ability::PUSH);
       hero.set_state(new PushingState(hero));
     }
   }

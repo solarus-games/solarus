@@ -79,6 +79,9 @@ class SOLARUS_API Savegame: public ExportableToLua {
     static const std::string KEY_ABILITY_SWIM;
     static const std::string KEY_ABILITY_JUMP_OVER_WATER;
     static const std::string KEY_ABILITY_RUN;
+    static const std::string KEY_ABILITY_PUSH;
+    static const std::string KEY_ABILITY_GRAB;
+    static const std::string KEY_ABILITY_PULL;
     static const std::string KEY_ABILITY_DETECT_WEAK_WALLS;
     static const std::string KEY_ABILITY_GET_BACK_FROM_DEATH;
 
@@ -101,11 +104,13 @@ class SOLARUS_API Savegame: public ExportableToLua {
     bool is_boolean(const std::string& key) const;
     bool get_boolean(const std::string& key) const;
     void set_boolean(const std::string& key, bool value);
+    bool is_set(const std::string& key) const;
     void unset(const std::string& key);
 
     void set_initial_values();
     void set_default_keyboard_controls();
     void set_default_joypad_controls();
+    void post_process_existing_savegame();
 
     // unsaved data
     MainLoop& get_main_loop();

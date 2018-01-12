@@ -47,6 +47,8 @@
 #include "solarus/hero/JumpingState.h"
 #include "solarus/hero/LiftingState.h"
 #include "solarus/hero/PlungingState.h"
+#include "solarus/hero/PullingState.h"
+#include "solarus/hero/PushingState.h"
 #include "solarus/hero/RunningState.h"
 #include "solarus/hero/StairsState.h"
 #include "solarus/hero/SwordSwingingState.h"
@@ -2487,10 +2489,30 @@ void Hero::start_running() {
 }
 
 /**
+ * \brief Starts pushing an obstacle.
+ */
+void Hero::start_pushing() {
+
+  get_equipment().notify_ability_used(Ability::PUSH);
+  set_state(new PushingState(*this));
+}
+
+/**
  * \brief Starts grabbing an obstacle.
  */
 void Hero::start_grabbing() {
+
+  get_equipment().notify_ability_used(Ability::GRAB);
   set_state(new GrabbingState(*this));
+}
+
+/**
+ * \brief Starts pulling an obstacle.
+ */
+void Hero::start_pulling() {
+
+  get_equipment().notify_ability_used(Ability::PULL);
+  set_state(new PullingState(*this));
 }
 
 /**
@@ -2542,6 +2564,33 @@ bool Hero::can_run() const {
   }
 
   return is_free();
+}
+
+/**
+ * \brief Returns whether the hero can currently push an obstacle.
+ * \return \c true if the hero can push.
+ */
+bool Hero::can_push() const {
+
+  return get_equipment().has_ability(Ability::PUSH);
+}
+
+/**
+ * \brief Returns whether the hero can currently grab an obstacle.
+ * \return \c true if the hero can grab.
+ */
+bool Hero::can_grab() const {
+
+  return get_equipment().has_ability(Ability::GRAB);
+}
+
+/**
+ * \brief Returns whether the hero can currently pull an obstacle.
+ * \return \c true if the hero can pull.
+ */
+bool Hero::can_pull() const {
+
+  return get_equipment().has_ability(Ability::PULL);
 }
 
 /**

@@ -427,7 +427,9 @@ bool Destructible::notify_action_command_pressed() {
     }
     else {
       // Cannot lift the object.
-      get_hero().start_grabbing();
+      if (get_hero().can_grab()) {
+        get_hero().start_grabbing();
+      }
       get_lua_context()->destructible_on_looked(*this);
     }
 

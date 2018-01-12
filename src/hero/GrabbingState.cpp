@@ -15,10 +15,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/hero/GrabbingState.h"
-#include "solarus/hero/FreeState.h"
-#include "solarus/hero/PushingState.h"
-#include "solarus/hero/PullingState.h"
 #include "solarus/hero/HeroSprites.h"
+#include "solarus/Equipment.h"
 #include "solarus/Game.h"
 #include "solarus/GameCommands.h"
 
@@ -53,25 +51,32 @@ void Hero::GrabbingState::update() {
     return;
   }
 
-  // the hero is grabbing an obstacle: check the direction pressed
+  // The hero is grabbing an obstacle: check the direction pressed.
 
   int wanted_direction8 = get_commands().get_wanted_direction8();
   int sprite_direction8 = get_sprites().get_animation_direction8();
 
-  // release the obstacle
+  // Release the obstacle.
   Hero& hero = get_entity();
   if (!get_commands().is_command_pressed(GameCommand::ACTION)) {
-    hero.set_state(new FreeState(hero));
+    hero.start_free();
+    return;
   }
 
-  // push the obstacle
-  else if (wanted_direction8 == sprite_direction8) {
-    hero.set_state(new PushingState(hero));
+  // Push the obstacle.
+  if (wanted_direction8 == sprite_direction8) {
+    if (hero.can_push()) {
+      hero.start_pushing();
+    }
+    return;
   }
 
-  // pull the obstacle
-  else if (wanted_direction8 == (sprite_direction8 + 4) % 8) {
-    hero.set_state(new PullingState(hero));
+  // Pull the obstacle.
+  if (wanted_direction8 == (sprite_direction8 + 4) % 8) {
+    if (hero.can_pull()) {
+      hero.start_pulling();
+    }
+    return;
   }
 }
 

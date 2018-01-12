@@ -536,12 +536,12 @@ int Equipment::get_item_slot(const EquipmentItem& item) const {
   return 0;
 }
 
-// abilities
+// Abilities.
 
 /**
- * \brief Returns the index of the savegame variable that stores the specified ability.
+ * \brief Returns the savegame variable that stores the specified ability.
  * \param ability An ability.
- * \return Name of the boolean savegame variable that stores this ability.
+ * \return Name of the integer savegame variable that stores this ability.
  */
 std::string Equipment::get_ability_savegame_variable(Ability ability) const {
 
@@ -570,6 +570,15 @@ std::string Equipment::get_ability_savegame_variable(Ability ability) const {
 
   case Ability::RUN:
     return Savegame::KEY_ABILITY_RUN;
+
+  case Ability::PUSH:
+    return Savegame::KEY_ABILITY_PUSH;
+
+  case Ability::GRAB:
+    return Savegame::KEY_ABILITY_GRAB;
+
+  case Ability::PULL:
+    return Savegame::KEY_ABILITY_PULL;
 
   case Ability::DETECT_WEAK_WALLS:
     return Savegame::KEY_ABILITY_DETECT_WEAK_WALLS;

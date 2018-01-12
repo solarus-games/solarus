@@ -82,8 +82,10 @@ void Hero::PullingState::update() {
     }
 
     // stop pulling the obstacle if the player changes his direction
-    else if (wanted_direction8 != opposite_direction8) {
-      hero.set_state(new GrabbingState(hero));
+    else if (wanted_direction8 != opposite_direction8 &&
+             hero.can_grab()
+    ) {
+      hero.start_grabbing();
     }
 
     // see if the obstacle is an entity that the hero can pull
@@ -230,7 +232,12 @@ void Hero::PullingState::stop_moving_pulled_entity() {
     entity_just_moved->notify_moved_by(hero);
   }
 
-  hero.set_state(new GrabbingState(hero));
+  if (hero.can_grab()) {
+    hero.start_grabbing();
+  }
+  else {
+    hero.start_free();
+  }
 }
 
 /**

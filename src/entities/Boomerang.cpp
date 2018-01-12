@@ -333,10 +333,13 @@ void Boomerang::notify_collision_with_crystal(Crystal& crystal, CollisionMode co
 }
 
 /**
- * \brief This function is called when an enemy collides with the entity.
- * \param enemy the enemy
+ * \copydoc Entity::notify_collision_with_enemy(Enemy&, CollisionMode)
  */
-void Boomerang::notify_collision_with_enemy(Enemy& enemy) {
+void Boomerang::notify_collision_with_enemy(Enemy& enemy, CollisionMode collision_mode) {
+
+  if (collision_mode != CollisionMode::COLLISION_OVERLAPPING) {
+    return;
+  }
 
   if (!overlaps(*hero)) {
     enemy.try_hurt(EnemyAttack::BOOMERANG, *this, nullptr);

@@ -112,6 +112,8 @@ class Enemy: public Entity {
     void set_can_attack(bool can_attack);
     bool is_traversable() const;
     void set_traversable(bool traversable);
+    CollisionMode get_attacking_collision_mode() const;
+    void set_attacking_collision_mode(CollisionMode attacking_collision_mode);
     ObstacleBehavior get_obstacle_behavior() const;
     void set_obstacle_behavior(ObstacleBehavior obstacle_behavior);
     bool get_pushed_back_when_hurt() const;
@@ -229,7 +231,10 @@ class Enemy: public Entity {
     std::string savegame_variable;     /**< name of the boolean variable indicating whether this enemy is killed,
                                         * or an empty string if it is not saved */
     bool traversable;                  /**< Whether this enemy can be traversed by other entities. */
-    ObstacleBehavior obstacle_behavior; /**< behavior with obstacles */
+    CollisionMode
+        attacking_collision_mode;      /**< How the enemy tries to attack the hero. */
+    ObstacleBehavior
+        obstacle_behavior;             /**< Whether this enemy can fly or swim. */
 
     // enemy state
     bool being_hurt;                   /**< indicates that the enemy is being hurt */

@@ -154,7 +154,7 @@ class SOLARUS_API CustomEntity: public Entity {
     void notify_collision_with_explosion(Explosion& explosion, CollisionMode collision_mode) override;
     void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping) override;
     void notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping) override;
-    void notify_collision_with_enemy(Enemy& enemy) override;
+    void notify_collision_with_enemy(Enemy& enemy, CollisionMode collision_mode) override;
     void notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite) override;
     bool notify_action_command_pressed() override;
     bool notify_interaction_with_item(EquipmentItem& item) override;

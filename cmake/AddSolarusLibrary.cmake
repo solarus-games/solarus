@@ -237,6 +237,7 @@ file(
   src/entities/Chest.cpp
   src/entities/CrystalBlock.cpp
   src/entities/Crystal.cpp
+  src/entities/CollisionMode.cpp
   src/entities/CustomEntity.cpp
   src/entities/Destination.cpp
   src/entities/Destructible.cpp

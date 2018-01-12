@@ -1011,6 +1011,8 @@ class LuaContext {
       enemy_api_set_treasure,
       enemy_api_is_traversable,
       enemy_api_set_traversable,
+      enemy_api_get_attacking_collision_mode,
+      enemy_api_set_attacking_collision_mode,
       enemy_api_get_obstacle_behavior,
       enemy_api_set_obstacle_behavior,
       enemy_api_restart,

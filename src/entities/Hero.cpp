@@ -1540,28 +1540,35 @@ void Hero::notify_collision_with_destructible(
 }
 
 /**
- * \brief This function is called when the rectangle of an enemy collides with the hero.
- * \param enemy the enemy
+ * \copydoc Enemy::notify_collision_with_enemy(Enemy&, CollisionMode)
  */
-void Hero::notify_collision_with_enemy(Enemy& /* enemy */) {
-  // hurt the hero only on pixel-precise collisions
+void Hero::notify_collision_with_enemy(Enemy& enemy, CollisionMode collision_mode) {
+
+  if (enemy.get_attacking_collision_mode() != collision_mode) {
+    // Not the collision mode used to attack the hero.
+    return;
+  }
+  enemy.attack_hero(*this, nullptr);
 }
 
 /**
- * \brief This function is called when an enemy's sprite collides with a sprite of the hero.
- * \param enemy the enemy
- * \param enemy_sprite the enemy's sprite that overlaps a sprite of the hero
- * \param this_sprite the hero's sprite that overlaps the enemy's sprite
+ * \copydoc Enemy::notify_collision_with_enemy(Enemy&, Sprite&, Sprite&))
  */
 void Hero::notify_collision_with_enemy(
     Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite) {
 
-  const std::string this_sprite_id = this_sprite.get_animation_set_id();
+  const std::string& this_sprite_id = this_sprite.get_animation_set_id();
   if (this_sprite_id == get_hero_sprites().get_sword_sprite_id()) {
     // the hero's sword overlaps the enemy
     enemy.try_hurt(EnemyAttack::SWORD, *this, &enemy_sprite);
   }
   else if (this_sprite_id == get_hero_sprites().get_tunic_sprite_id()) {
+
+    if (enemy.get_attacking_collision_mode() != CollisionMode::COLLISION_SPRITE) {
+      // The enemy does not attack with sprite collisions.
+      return;
+    }
+
     // The hero's body sprite overlaps the enemy.
     // Check that the 16x16 rectangle of the hero also overlaps the enemy.
     const Size& enemy_sprite_size = enemy_sprite.get_size();

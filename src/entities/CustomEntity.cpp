@@ -1130,9 +1130,9 @@ void CustomEntity::notify_collision_with_fire(
 }
 
 /**
- * \copydoc Entity::notify_collision_with_enemy(Enemy&)
+ * \copydoc Entity::notify_collision_with_enemy(Enemy&, CollisionMode)
  */
-void CustomEntity::notify_collision_with_enemy(Enemy& enemy) {
+void CustomEntity::notify_collision_with_enemy(Enemy& enemy, CollisionMode /* collision_mode */) {
 
   notify_collision_from(enemy);
 }

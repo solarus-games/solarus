@@ -97,4 +97,3 @@ const EnemyReaction::Reaction& EnemyReaction::get_reaction(
 }
 
 }
-

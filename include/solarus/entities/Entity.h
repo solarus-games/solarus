@@ -313,7 +313,7 @@ class SOLARUS_API Entity: public ExportableToLua {
     virtual void notify_collision_with_explosion(Explosion& explosion, CollisionMode collision_mode);
     virtual void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping);
     virtual void notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping);
-    virtual void notify_collision_with_enemy(Enemy& enemy);
+    virtual void notify_collision_with_enemy(Enemy& enemy, CollisionMode collision_mode);
     virtual void notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite);
     virtual void notify_attacked_enemy(
         EnemyAttack attack,

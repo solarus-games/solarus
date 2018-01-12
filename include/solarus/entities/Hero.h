@@ -186,7 +186,7 @@ class Hero: public Entity {
      */
     virtual void check_position() override;
     virtual void notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode) override;
-    virtual void notify_collision_with_enemy(Enemy& enemy) override;
+    virtual void notify_collision_with_enemy(Enemy& enemy, CollisionMode) override;
     virtual void notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite) override;
     virtual void notify_collision_with_teletransporter(Teletransporter& teletransporter, CollisionMode collision_mode) override;
     virtual void notify_collision_with_stream(Stream& stream, int dx, int dy) override;

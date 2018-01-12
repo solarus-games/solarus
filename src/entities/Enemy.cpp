@@ -96,6 +96,7 @@ Enemy::Enemy(
   minimum_shield_needed(0),
   savegame_variable(),
   traversable(true),
+  attacking_collision_mode(CollisionMode::COLLISION_SPRITE),
   obstacle_behavior(ObstacleBehavior::NORMAL),
   being_hurt(false),
   stop_hurt_date(0),
@@ -112,7 +113,16 @@ Enemy::Enemy(
   nb_explosions(0),
   next_explosion_date(0) {
 
-  set_collision_modes(CollisionMode::COLLISION_OVERLAPPING | CollisionMode::COLLISION_SPRITE);
+  // All collision modes are potentially needed because of Enemy::set_attacking_collision_mode().
+  set_collision_modes(
+        CollisionMode::COLLISION_OVERLAPPING |  // Also for some entities like the boomerang.
+        CollisionMode::COLLISION_CONTAINING |
+        CollisionMode::COLLISION_ORIGIN |
+        CollisionMode::COLLISION_FACING |
+        CollisionMode::COLLISION_TOUCHING |
+        CollisionMode::COLLISION_CENTER |
+        CollisionMode::COLLISION_SPRITE         // For collisions with the hero by default.
+  );
   set_size(16, 16);
   set_origin(8, 13);
   set_drawn_in_y_order(true);
@@ -550,6 +560,22 @@ void Enemy::set_traversable(bool traversable) {
 }
 
 /**
+ * \brief Sets the collision test used to detect when attacking the hero.
+ * \return The attacking collision mode.
+ */
+CollisionMode Enemy::get_attacking_collision_mode() const {
+  return attacking_collision_mode;
+}
+
+/**
+ * \brief Returns the collision test used to detect when attacking the hero.
+ * \param attacking_collision_mode The attacking collision mode.
+ */
+void Enemy::set_attacking_collision_mode(CollisionMode attacking_collision_mode) {
+  this->attacking_collision_mode = attacking_collision_mode;
+}
+
+/**
  * \brief Returns whether the enemy is pushed back when it gets hurt by the hero.
  * \return \c true if the enemy is pushed back when it gets hurt.
  */
@@ -967,13 +993,11 @@ void Enemy::notify_ground_below_changed() {
 }
 
 /**
- * \brief Notifies the enemy that a collision was just detected with another entity
- * \param entity_overlapping the other entity
- * \param collision_mode the collision mode that detected the collision
+ * \copydoc Entity::notify_collision(Entity&, CollisionMode)
  */
-void Enemy::notify_collision(Entity& entity_overlapping, CollisionMode /* collision_mode */) {
+void Enemy::notify_collision(Entity& entity_overlapping, CollisionMode collision_mode) {
 
-  entity_overlapping.notify_collision_with_enemy(*this);
+  entity_overlapping.notify_collision_with_enemy(*this, collision_mode);
 }
 
 /**

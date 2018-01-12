@@ -17,6 +17,8 @@
 #ifndef SOLARUS_COLLISION_MODE_H
 #define SOLARUS_COLLISION_MODE_H
 
+#include "solarus/EnumInfo.h"
+
 namespace Solarus {
 
 /**
@@ -42,7 +44,14 @@ enum CollisionMode {
   COLLISION_CUSTOM            = 0x0080  /**< Custom collision function, defined by a subclass of Entity. */
 };
 
+template <>
+struct SOLARUS_API EnumInfoTraits<CollisionMode> {
+  static const std::string pretty_name;
+
+  static const EnumInfo<CollisionMode>::names_type names;
+  static const EnumInfo<CollisionMode>::names_type names_no_none_no_custom;
+};
+
 }
 
 #endif
-

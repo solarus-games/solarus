@@ -76,7 +76,7 @@ class Boomerang: public Entity {
     // collisions
     virtual void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) override;
     virtual void notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode) override;
-    virtual void notify_collision_with_enemy(Enemy& enemy) override;
+    virtual void notify_collision_with_enemy(Enemy& enemy, CollisionMode collision_mode) override;
     virtual void notify_attacked_enemy(
         EnemyAttack attack,
         Enemy& victim,

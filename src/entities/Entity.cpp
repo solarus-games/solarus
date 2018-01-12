@@ -3176,10 +3176,11 @@ void Entity::notify_collision_with_fire(Fire& /* fire */, Sprite& /* sprite_over
 }
 
 /**
- * \brief This function is called when an enemy's rectangle detects a collision with this entity's rectangle.
- * \param enemy the enemy
+ * \brief This function is called when an enemy detects a collision with this entity.
+ * \param enemy The enemy.
+ * \param collision_mode The collision mode that detected the event.
  */
-void Entity::notify_collision_with_enemy(Enemy& /* enemy */) {
+void Entity::notify_collision_with_enemy(Enemy& /* enemy */, CollisionMode /* collision_mode */) {
 }
 
 /**

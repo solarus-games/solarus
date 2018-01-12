@@ -451,6 +451,8 @@ void LuaContext::register_entity_module() {
       { "set_treasure", enemy_api_set_treasure },
       { "is_traversable", enemy_api_is_traversable },
       { "set_traversable", enemy_api_set_traversable },
+      { "get_attacking_collision_mode", enemy_api_get_attacking_collision_mode },
+      { "set_attacking_collision_mode", enemy_api_set_attacking_collision_mode },
       { "get_obstacle_behavior", enemy_api_get_obstacle_behavior },
       { "set_obstacle_behavior", enemy_api_set_obstacle_behavior },
       { "set_size", entity_api_set_size },
@@ -4941,6 +4943,39 @@ int LuaContext::enemy_api_set_traversable(lua_State* l) {
 }
 
 /**
+ * \brief Implementation of enemy:get_attacking_collision_mode().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::enemy_api_get_attacking_collision_mode(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Enemy& enemy = *check_enemy(l, 1);
+
+    push_string(l, enum_to_name(enemy.get_attacking_collision_mode()));
+    return 1;
+  });
+}
+
+/**
+ * \brief Implementation of enemy:set_attacking_collision_mode().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::enemy_api_set_attacking_collision_mode(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Enemy& enemy = *check_enemy(l, 1);
+    CollisionMode attacking_collision_mode = LuaTools::check_enum<CollisionMode>(l, 2,
+        EnumInfoTraits<CollisionMode>::names_no_none_no_custom
+    );
+    enemy.set_attacking_collision_mode(attacking_collision_mode);
+
+    return 0;
+  });
+}
+
+/**
  * \brief Implementation of enemy:get_obstacle_behavior().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
@@ -5519,39 +5554,9 @@ int LuaContext::custom_entity_api_add_collision_test(lua_State* l) {
 
     if (lua_isstring(l, 2)) {
       // Built-in collision test.
-      // TODO move string to enum conversion into a function of Entity.
-      // We cannot use LuaTools::check_enum() like always, because this
-      // enum has special numerical values.
-      const std::string& collision_mode_name = LuaTools::check_string(l, 2);
-      CollisionMode collision_mode = CollisionMode::COLLISION_NONE;
-
-      if (collision_mode_name == "overlapping") {
-        collision_mode = CollisionMode::COLLISION_OVERLAPPING;
-      }
-      else if (collision_mode_name == "containing") {
-        collision_mode = CollisionMode::COLLISION_CONTAINING;
-      }
-      else if (collision_mode_name == "origin") {
-        collision_mode = CollisionMode::COLLISION_CONTAINING;
-      }
-      else if (collision_mode_name == "facing") {
-        collision_mode = CollisionMode::COLLISION_FACING;
-      }
-      else if (collision_mode_name == "touching") {
-        collision_mode = CollisionMode::COLLISION_TOUCHING;
-      }
-      else if (collision_mode_name == "center") {
-        collision_mode = CollisionMode::COLLISION_CENTER;
-      }
-      else if (collision_mode_name == "sprite") {
-        collision_mode = CollisionMode::COLLISION_SPRITE;
-      }
-      else {
-        LuaTools::arg_error(l, 2,
-            std::string("Invalid name '") + lua_tostring(l, 2) + "'"
-        );
-      }
-
+      CollisionMode collision_mode = LuaTools::check_enum<CollisionMode>(l, 2,
+          EnumInfoTraits<CollisionMode>::names_no_none_no_custom
+      );
       entity.add_collision_test(collision_mode, callback_ref);
     }
     else if (lua_isfunction(l, 2)) {

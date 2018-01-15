@@ -1871,10 +1871,11 @@ void Hero::notify_collision_with_chest(Chest& chest) {
  */
 void Hero::notify_collision_with_block(Block& /* block */) {
 
-  if (get_commands_effects().get_action_key_effect() == CommandsEffects::ACTION_KEY_NONE
-      && is_free()) {
-
-    // we show the action icon
+  if (get_commands_effects().get_action_key_effect() == CommandsEffects::ACTION_KEY_NONE &&
+      is_free() &&
+      can_grab()
+  ) {
+    // We allow to grab using the action command.
     get_commands_effects().set_action_key_effect(CommandsEffects::ACTION_KEY_GRAB);
   }
 }

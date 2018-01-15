@@ -2976,5 +2976,27 @@ int LuaContext::l_loader(lua_State* l) {
   });
 }
 
+/**
+ * \brief A function that prints the stack trace of an error raised in lua
+ * \param l The lua context
+ * \return Number of values to return to lua
+ */
+int LuaContext::l_backtrace(lua_State* l) {
+    if (!lua_isstring(l, 1)) return 1;
+    lua_getglobal(l, "debug");
+    if (!lua_istable(l, -1)) {
+        lua_pop(l, 1);
+        return 1;
+    }
+    lua_getfield(l, -1, "traceback");
+    if (!lua_isfunction(l, -1)) {
+        lua_pop(l, 2);
+        return 1;
+    }
+    lua_pushvalue(l, 1);    // pass error message
+    lua_call(l, 1, 1);      // call debug.traceback
+    return 1;
+}
+
 }
 

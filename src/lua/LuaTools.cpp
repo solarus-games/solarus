@@ -18,6 +18,7 @@
 #include "solarus/lua/LuaException.h"
 #include "solarus/lua/LuaTools.h"
 #include "solarus/lua/ScopedLuaRef.h"
+#include "solarus/lua/LuaContext.h"
 #include "solarus/Map.h"
 #include <cctype>
 #include <sstream>
@@ -114,14 +115,18 @@ bool call_function(
     int nb_results,
     const char* function_name
 ) {
-  if (lua_pcall(l, nb_arguments, nb_results, 0) != 0) {
+  int base = lua_gettop(l) - nb_arguments;
+  lua_pushcfunction(l, &LuaContext::l_backtrace);
+  lua_insert(l, base);
+  int status = lua_pcall(l, nb_arguments, nb_results, base);
+  lua_remove(l,base);
+  if (status != 0) {
     Debug::error(std::string("In ") + function_name + ": "
         + lua_tostring(l, -1)
     );
     lua_pop(l, 1);
     return false;
   }
-
   return true;
 }
 

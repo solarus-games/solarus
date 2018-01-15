@@ -1036,8 +1036,9 @@ class LuaContext {
       // available to all userdata types
       userdata_meta_gc,
       userdata_meta_newindex_as_table,
-      userdata_meta_index_as_table;
-
+      userdata_meta_index_as_table,
+      // Lua backtrace error function
+      l_backtrace;
   private:
 
     /**

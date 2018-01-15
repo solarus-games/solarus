@@ -106,6 +106,7 @@ file(
   include/solarus/lowlevel/Debug.h
   include/solarus/lowlevel/FontResource.h
   include/solarus/lowlevel/Geometry.h
+  include/solarus/lowlevel/GlTextureHandle.cpp
   include/solarus/lowlevel/Hq2xFilter.h
   include/solarus/lowlevel/Hq3xFilter.h
   include/solarus/lowlevel/Hq4xFilter.h
@@ -312,6 +313,7 @@ file(
   src/lowlevel/Debug.cpp
   src/lowlevel/FontResource.cpp
   src/lowlevel/Geometry.cpp
+  src/lowlevel/GlTextureHandle.cpp
   src/lowlevel/Hq2xFilter.cpp
   src/lowlevel/Hq3xFilter.cpp
   src/lowlevel/Hq4xFilter.cpp

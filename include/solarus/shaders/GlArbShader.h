@@ -19,6 +19,7 @@
 
 #include "solarus/Common.h"
 
+#include "solarus/lowlevel/GlTextureHandle.h"
 #include "solarus/shaders/Shader.h"
 #include <SDL.h>
 #include <map>
@@ -60,6 +61,9 @@ class GlArbShader : public Shader {
         const std::string& uniform_name, float value_1, float value_2, float value_3, float value_4) override;
     bool set_uniform_texture(const std::string& uniform_name, const SurfacePtr& value) override;
 
+    static GlTextureHandle create_gl_texture(const SurfacePtr& surface);
+    static void update_gl_texture(const SurfacePtr& surface, const GlTextureHandle& texture);
+
   protected:
 
     void load() override;
@@ -77,8 +81,10 @@ class GlArbShader : public Shader {
     GLhandleARB fragment_shader;                 /**< The fragment shader. */
     mutable std::map<std::string, GLint>
         uniform_locations;                       /**< Cache of uniform locations. */
-    mutable std::map<SurfacePtr, int>
-        uniform_texture_units;                   /**< Texture unit of each uniform texture. */
+    mutable std::map<SurfacePtr, GlTextureHandle>
+        uniform_textures;                        /**< Uniform texture value of surfaces. */
+    mutable std::map<SurfacePtr, GLuint>
+        uniform_texture_units;                   /**< Texture units used by uniforms. */
 #else
 
   static bool initialize() { return false; }

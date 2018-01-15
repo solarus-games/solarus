@@ -38,8 +38,7 @@ namespace Solarus {
 Surface::Surface(int width, int height):
   Drawable(),
   internal_surface(nullptr),
-  opacity(255),
-  opengl_texture(0) {
+  opacity(255) {
 
   Debug::check_assertion(width > 0 && height > 0,
       "Attempt to create a surface with an empty size");
@@ -72,8 +71,7 @@ Surface::Surface(int width, int height):
 Surface::Surface(SDL_Surface* internal_surface):
   Drawable(),
   internal_surface(internal_surface),
-  opacity(255),
-  opengl_texture(0) {
+  opacity(255) {
 
   // Convert to the preferred pixel format.
   SDL_PixelFormat* pixel_format = Video::get_pixel_format();
@@ -95,7 +93,6 @@ Surface::Surface(SDL_Surface* internal_surface):
  */
 Surface::~Surface() {
 
-  glDeleteTextures(1, &opengl_texture);
 }
 
 
@@ -252,6 +249,14 @@ void Surface::set_opacity(uint8_t opacity) {
   if (error != 0) {
     Debug::error(SDL_GetError());
   }
+}
+
+/**
+ * \brief Returns the SDL surface wrapped.
+ * \return The internal SDL surface.
+ */
+SDL_Surface* Surface::get_internal_surface() {
+  return internal_surface.get();
 }
 
 /**
@@ -585,81 +590,6 @@ void Surface::render(SDL_Texture& render_target) {
       internal_surface->pixels,
       internal_surface->pitch
   );
-}
-
-/**
- * \brief Returns an OpenGL texture with the same pixel data as this surface.
- *
- * Only works for software surfaces.
- * Returns the same OpenGL texture for the same surface.
- *
- * \return The OpenGL texture or \c 0 in case of failure.
- */
-GLuint Surface::to_opengl_texture() {
-
-  if (opengl_texture != 0) {
-    // TODO update if it has changed
-    return opengl_texture;
-  }
-
-  // Create the OpenGL texture.
-  glGenTextures(1, &opengl_texture);
-  glBindTexture(GL_TEXTURE_2D, opengl_texture);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-  glBindTexture(GL_TEXTURE_2D, 0);
-
-  // Use the surface width and height expanded to powers of 2.
-  int width = internal_surface->w;
-  int height = internal_surface->h;
-
-  // TODO Don't copy to an intermediate surface if the format is already RGBA or ABGR.
-  SDL_Surface_UniquePtr rgba_surface;
-#if SDL_BYTEORDER == SDL_LIL_ENDIAN     // OpenGL RGBA masks.
-  rgba_surface = SDL_Surface_UniquePtr(SDL_CreateRGBSurface(
-      0, width, height, 32,
-      0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000
-  ));
-#else
-  rgba_surface = SDL_Surface_UniquePtr(SDL_CreateRGBSurface(
-      0, width, height, 32,
-      0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF
-  ));
-#endif
-
-  if (rgba_surface == nullptr) {
-    return 0;
-  }
-
-  // Save the alpha blending attributes.
-  SDL_BlendMode saved_mode;
-  SDL_GetSurfaceBlendMode(internal_surface.get(), &saved_mode);
-  SDL_SetSurfaceBlendMode(internal_surface.get(), SDL_BLENDMODE_NONE);
-
-  // Copy the original surface into the power-of-two surface.
-  SDL_Rect area;
-  area.x = 0;
-  area.y = 0;
-  area.w = internal_surface->w;
-  area.h = internal_surface->h;
-  SDL_BlitSurface(internal_surface.get(), &area, rgba_surface.get(), &area);
-
-  // Restore the alpha blending attributes.
-  SDL_SetSurfaceBlendMode(internal_surface.get(), saved_mode);
-
-  // Copy the image to the OpenGL texture.
-  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);  // Restore default pixel alignment settings.
-  glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-  glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
-  glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
-  glBindTexture(GL_TEXTURE_2D, opengl_texture);
-  glTexImage2D(GL_TEXTURE_2D,
-               0,
-               GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba_surface->pixels);
-
-  glBindTexture(GL_TEXTURE_2D, 0);
-
-  return opengl_texture;
 }
 
 /**

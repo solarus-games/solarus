@@ -336,11 +336,10 @@ void GlArbShader::render(const SurfacePtr& quest_surface) {
   SDL_GL_UnbindTexture(render_target);
 
   for (const auto& kvp : uniform_texture_units) {
-    const GLuint texture = kvp.first->to_opengl_texture();
-    const int texture_unit = kvp.second;
-    Debug::check_assertion(texture != 0, "Failed to get OpenGL texture");
+    const GLuint texture_unit = kvp.second;
     glActiveTextureARB(GL_TEXTURE0_ARB + texture_unit);
-    glBindTexture(GL_TEXTURE_2D, texture);
+    const GlTextureHandle& texture = uniform_textures.find(kvp.first)->second;
+    glBindTexture(GL_TEXTURE_2D, texture.get());
   }
 
   glActiveTextureARB(GL_TEXTURE0_ARB + 0);  // Necessary to reset the active texture.
@@ -489,17 +488,95 @@ bool GlArbShader::set_uniform_texture(const std::string& uniform_name, const Sur
   int texture_unit = 0;
   const auto& it = uniform_texture_units.find(value);
   if (it != uniform_texture_units.end()) {
+    // Texture already created.
     texture_unit = it->second;
+    const GlTextureHandle& texture = uniform_textures.at(value);
+    update_gl_texture(value, texture);
   }
   else {
     texture_unit = uniform_texture_units.size() + 1;
     uniform_texture_units[value] = texture_unit;
+    uniform_textures.emplace(value, create_gl_texture(value));
   }
   glUniform1iARB(location, texture_unit);
 
   glUseProgramObjectARB(previous_program);
 
   return true;
+}
+
+/**
+ * \brief Creates an OpenGL texture from the given surface.
+ * \return The OpenGL texture or an empty handle in case of failure.
+ */
+GlTextureHandle GlArbShader::create_gl_texture(const SurfacePtr& surface) {
+
+  // Create the OpenGL texture.
+  GLuint handle = 0;
+  glGenTextures(1, &handle);
+  GlTextureHandle texture(handle);
+
+  glBindTexture(GL_TEXTURE_2D, texture.get());
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  glBindTexture(GL_TEXTURE_2D, 0);
+
+  update_gl_texture(surface, texture);
+  return texture;
+}
+
+/**
+ * \brief Copies a surface to an OpenGL texture.
+ * \param surface The source surface.
+ * \param texture The destination OpenGL texture.
+ */
+void GlArbShader::update_gl_texture(const SurfacePtr& surface, const GlTextureHandle& texture) {
+
+  // Use the surface width and height.
+  const Size& size = surface->get_size();
+
+  // TODO Don't copy to an intermediate surface if the format is already RGBA or ABGR.
+  Surface::SDL_Surface_UniquePtr rgba_surface;
+#if SDL_BYTEORDER == SDL_LIL_ENDIAN     // OpenGL RGBA masks.
+  rgba_surface = Surface::SDL_Surface_UniquePtr(SDL_CreateRGBSurface(
+      0, size.width, size.height, 32,
+      0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000
+  ));
+#else
+  rgba_surface = Surface::SDL_Surface_UniquePtr(SDL_CreateRGBSurface(
+      0, size.width, size.height, 32,
+      0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF
+  ));
+#endif
+
+  Debug::check_assertion(rgba_surface != nullptr, "Failed to create surface");
+
+  // Save the alpha blending attributes.
+  BlendMode saved_mode = surface->get_blend_mode();
+  surface->set_blend_mode(BlendMode::NONE);
+
+  // Copy the original surface into the power-of-two surface.
+  SDL_Rect area;
+  area.x = 0;
+  area.y = 0;
+  area.w = size.width;
+  area.h = size.height;
+  SDL_BlitSurface(surface->get_internal_surface(), &area, rgba_surface.get(), &area);
+
+  // Restore the alpha blending attributes.
+  surface->set_blend_mode(saved_mode);
+
+  // Copy the image to the OpenGL texture.
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);  // Restore default pixel alignment settings.
+  glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+  glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
+  glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
+  glBindTexture(GL_TEXTURE_2D, texture.get());
+  glTexImage2D(GL_TEXTURE_2D,
+               0,
+               GL_RGBA8, size.width, size.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba_surface->pixels);
+
+  glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 }

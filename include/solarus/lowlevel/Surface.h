@@ -47,7 +47,7 @@ class Surface: public Drawable {
   public:
 
     struct SDL_Surface_Deleter {
-        void operator()(SDL_Surface* sdl_surface) {
+        void operator()(SDL_Surface* sdl_surface) const {
           SDL_FreeSurface(sdl_surface);
         }
     };

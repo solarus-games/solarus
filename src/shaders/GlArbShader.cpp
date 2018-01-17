@@ -581,4 +581,4 @@ void GlArbShader::update_gl_texture(const SurfacePtr& surface, const GlTextureHa
 
 }
 
-#endif /* SOLARUS_HAVE_OPENGL */
+#endif  // SOLARUS_HAVE_OPENGL

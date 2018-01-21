@@ -17,7 +17,7 @@
 #ifndef SOLARUS_SCOPED_LUA_REF_H
 #define SOLARUS_SCOPED_LUA_REF_H
 
-#include "solarus/Common.h"
+#include "solarus/core/Common.h"
 #include <string>
 
 struct lua_State;

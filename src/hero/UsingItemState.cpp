@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/hero/UsingItemState.h"
-#include "solarus/hero/FreeState.h"
-#include "solarus/lowlevel/System.h"
+#include "solarus/core/System.h"
 #include "solarus/entities/Stream.h"
+#include "solarus/hero/FreeState.h"
+#include "solarus/hero/UsingItemState.h"
 
 namespace Solarus {
 

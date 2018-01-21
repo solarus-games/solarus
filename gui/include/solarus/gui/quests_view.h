@@ -18,7 +18,7 @@
 #define SOLARUS_GUI_QUESTS_VIEW_H
 
 #include "solarus/gui/gui_common.h"
-#include "solarus/QuestProperties.h"
+#include "solarus/core/QuestProperties.h"
 #include <QListView>
 
 namespace SolarusGui {

@@ -17,10 +17,10 @@
 #ifndef SOLARUS_TILE_PATTERN_H
 #define SOLARUS_TILE_PATTERN_H
 
-#include "solarus/Common.h"
+#include "solarus/core/Common.h"
+#include "solarus/core/Size.h"
 #include "solarus/entities/Ground.h"
-#include "solarus/lowlevel/SurfacePtr.h"
-#include "solarus/lowlevel/Size.h"
+#include "solarus/graphics/SurfacePtr.h"
 
 namespace Solarus {
 

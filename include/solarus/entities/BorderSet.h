@@ -17,7 +17,7 @@
 #ifndef SOLARUS_BORDER_SET_H
 #define SOLARUS_BORDER_SET_H
 
-#include "solarus/Common.h"
+#include "solarus/core/Common.h"
 #include "solarus/entities/BorderKind.h"
 #include <string>
 #include <map>

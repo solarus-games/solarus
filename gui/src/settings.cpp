@@ -15,8 +15,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/gui/settings.h"
-#include "solarus/lowlevel/QuestFiles.h"
-#include "solarus/Settings.h"
+#include "solarus/core/QuestFiles.h"
+#include "solarus/core/Settings.h"
 #include <QApplication>
 
 namespace SolarusGui {
@@ -32,8 +32,7 @@ Settings::Settings(Scope scope) :
 /**
  * @brief Export GUI settings to the Solarus settings.dat file of a quest.
  *
- * System settings like audio volume and the video mode are written to
- * settings.dat.
+ * System settings like the audio volume are written to settings.dat.
  * It allows quests that use settings.dat to apply what the user chose
  * in the GUI.
  *

@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/movements/StraightMovement.h"
+#include "solarus/core/Debug.h"
+#include "solarus/core/Geometry.h"
+#include "solarus/core/System.h"
 #include "solarus/entities/Entity.h"
 #include "solarus/lua/LuaContext.h"
-#include "solarus/lowlevel/System.h"
-#include "solarus/lowlevel/Geometry.h"
-#include "solarus/lowlevel/Debug.h"
+#include "solarus/movements/StraightMovement.h"
 #include <cmath>
 
 namespace Solarus {

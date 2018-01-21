@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/core/CommandsEffects.h"
+#include "solarus/core/Game.h"
 #include "solarus/hero/FrozenState.h"
 #include "solarus/hero/HeroSprites.h"
-#include "solarus/CommandsEffects.h"
-#include "solarus/Game.h"
 
 namespace Solarus {
 

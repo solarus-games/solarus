@@ -17,10 +17,10 @@
 #ifndef SOLARUS_TEST_ENVIRONMENT_H
 #define SOLARUS_TEST_ENVIRONMENT_H
 
-#include "solarus/Common.h"
-#include "solarus/Arguments.h"
-#include "solarus/MainLoop.h"
-#include "solarus/lowlevel/Point.h"
+#include "solarus/core/Common.h"
+#include "solarus/core/Arguments.h"
+#include "solarus/core/MainLoop.h"
+#include "solarus/core/Point.h"
 #include <cstdint>
 #include <memory>
 

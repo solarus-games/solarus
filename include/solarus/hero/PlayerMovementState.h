@@ -17,7 +17,7 @@
 #ifndef SOLARUS_HERO_PLAYER_MOVEMENT_STATE_H
 #define SOLARUS_HERO_PLAYER_MOVEMENT_STATE_H
 
-#include "solarus/Common.h"
+#include "solarus/core/Common.h"
 #include "solarus/hero/HeroState.h"
 #include <cstdint>
 #include <memory>

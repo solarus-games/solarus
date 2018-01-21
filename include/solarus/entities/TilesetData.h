@@ -17,12 +17,12 @@
 #ifndef SOLARUS_TILESET_DATA_H
 #define SOLARUS_TILESET_DATA_H
 
-#include "solarus/Common.h"
-#include "solarus/EnumInfo.h"
+#include "solarus/core/Common.h"
+#include "solarus/core/EnumInfo.h"
+#include "solarus/core/Rectangle.h"
 #include "solarus/entities/BorderSet.h"
 #include "solarus/entities/Ground.h"
-#include "solarus/lowlevel/Color.h"
-#include "solarus/lowlevel/Rectangle.h"
+#include "solarus/graphics/Color.h"
 #include "solarus/lua/LuaData.h"
 #include <iosfwd>
 #include <map>

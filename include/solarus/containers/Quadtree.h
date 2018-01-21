@@ -17,11 +17,11 @@
 #ifndef SOLARUS_QUADTREE_H
 #define SOLARUS_QUADTREE_H
 
-#include "solarus/Common.h"
-#include "solarus/lowlevel/Color.h"
-#include "solarus/lowlevel/Rectangle.h"
-#include "solarus/lowlevel/Size.h"
-#include "solarus/lowlevel/SurfacePtr.h"
+#include "solarus/core/Common.h"
+#include "solarus/core/Rectangle.h"
+#include "solarus/core/Size.h"
+#include "solarus/graphics/Color.h"
+#include "solarus/graphics/SurfacePtr.h"
 #include <array>
 #include <map>
 #include <memory>

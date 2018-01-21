@@ -17,9 +17,9 @@
 #ifndef SOLARUS_PIXEL_MOVEMENT_H
 #define SOLARUS_PIXEL_MOVEMENT_H
 
-#include "solarus/Common.h"
+#include "solarus/core/Common.h"
+#include "solarus/core/Point.h"
 #include "solarus/movements/Movement.h"
-#include "solarus/lowlevel/Point.h"
 #include <cstdint>
 #include <list>
 #include <string>

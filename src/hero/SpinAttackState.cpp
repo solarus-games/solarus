@@ -14,17 +14,17 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/audio/Sound.h"
+#include "solarus/core/Equipment.h"
+#include "solarus/core/Game.h"
+#include "solarus/core/Geometry.h"
+#include "solarus/core/QuestFiles.h"
 #include "solarus/entities/Enemy.h"
 #include "solarus/hero/FreeState.h"
 #include "solarus/hero/HeroSprites.h"
 #include "solarus/hero/SpinAttackState.h"
-#include "solarus/lowlevel/QuestFiles.h"
-#include "solarus/lowlevel/Geometry.h"
-#include "solarus/lowlevel/Sound.h"
 #include "solarus/movements/CircleMovement.h"
 #include "solarus/movements/StraightMovement.h"
-#include "solarus/Equipment.h"
-#include "solarus/Game.h"
 #include <memory>
 #include <sstream>
 #include <string>

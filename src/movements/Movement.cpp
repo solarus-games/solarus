@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/movements/Movement.h"
+#include "solarus/core/System.h"
+#include "solarus/core/Debug.h"
+#include "solarus/core/Map.h"
+#include "solarus/graphics/Drawable.h"
 #include "solarus/entities/Entity.h"
 #include "solarus/lua/LuaContext.h"
-#include "solarus/lowlevel/System.h"
-#include "solarus/lowlevel/Debug.h"
-#include "solarus/Map.h"
-#include "solarus/Drawable.h"
+#include "solarus/movements/Movement.h"
 #include <lua.hpp>
 
 namespace Solarus {

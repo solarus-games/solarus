@@ -17,8 +17,8 @@
 #ifndef SOLARUS_CHEST_H
 #define SOLARUS_CHEST_H
 
-#include "solarus/Common.h"
-#include "solarus/Treasure.h"
+#include "solarus/core/Common.h"
+#include "solarus/core/Treasure.h"
 #include "solarus/entities/Entity.h"
 #include <map>
 #include <string>

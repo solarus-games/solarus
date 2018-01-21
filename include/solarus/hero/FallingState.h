@@ -17,6 +17,7 @@
 #ifndef SOLARUS_HERO_FALLING_STATE_H
 #define SOLARUS_HERO_FALLING_STATE_H
 
+#include "solarus/core/Common.h"
 #include "solarus/hero/HeroState.h"
 
 namespace Solarus {

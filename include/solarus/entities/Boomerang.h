@@ -17,7 +17,7 @@
 #ifndef SOLARUS_BOOMERANG_H
 #define SOLARUS_BOOMERANG_H
 
-#include "solarus/Common.h"
+#include "solarus/core/Common.h"
 #include "solarus/entities/Entity.h"
 #include "solarus/entities/HeroPtr.h"
 #include <memory>

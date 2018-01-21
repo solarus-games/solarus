@@ -17,8 +17,8 @@
 #ifndef SOLARUS_TILE_INFO_H
 #define SOLARUS_TILE_INFO_H
 
-#include "solarus/Common.h"
-#include "solarus/lowlevel/Rectangle.h"
+#include "solarus/core/Common.h"
+#include "solarus/core/Rectangle.h"
 #include <string>
 
 namespace Solarus {

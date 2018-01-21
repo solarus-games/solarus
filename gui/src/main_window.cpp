@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/gui/about_dialog.h"
 #include "solarus/gui/gui_tools.h"
 #include "solarus/gui/main_window.h"
 #include "solarus/gui/quests_view.h"
 #include "solarus/gui/settings.h"
-#include "solarus/gui/about_dialog.h"
 #include <QDesktopWidget>
 #include <QFileDialog>
 #include <QMessageBox>

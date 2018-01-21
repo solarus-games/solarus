@@ -17,11 +17,11 @@
 #ifndef SOLARUS_CAMERA_H
 #define SOLARUS_CAMERA_H
 
-#include "solarus/Common.h"
+#include "solarus/core/Common.h"
+#include "solarus/core/Rectangle.h"
 #include "solarus/entities/Entity.h"
 #include "solarus/entities/EntityPtr.h"
-#include "solarus/lowlevel/Rectangle.h"
-#include "solarus/lowlevel/SurfacePtr.h"
+#include "solarus/graphics/SurfacePtr.h"
 #include <memory>
 
 namespace Solarus {

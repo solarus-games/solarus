@@ -15,8 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/entities/Wall.h"
-#include "solarus/entities/Hero.h"
-#include "solarus/lowlevel/QuestFiles.h"
 
 namespace Solarus {
 

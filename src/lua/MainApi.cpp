@@ -14,16 +14,16 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/core/CurrentQuest.h"
+#include "solarus/core/Geometry.h"
+#include "solarus/core/MainLoop.h"
+#include "solarus/core/QuestFiles.h"
+#include "solarus/core/QuestProperties.h"
+#include "solarus/core/QuestResources.h"
+#include "solarus/core/Settings.h"
+#include "solarus/core/System.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
-#include "solarus/lowlevel/Geometry.h"
-#include "solarus/lowlevel/QuestFiles.h"
-#include "solarus/lowlevel/System.h"
-#include "solarus/CurrentQuest.h"
-#include "solarus/QuestProperties.h"
-#include "solarus/QuestResources.h"
-#include "solarus/MainLoop.h"
-#include "solarus/Settings.h"
 #include <lua.hpp>
 
 namespace Solarus {

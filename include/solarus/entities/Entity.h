@@ -17,16 +17,16 @@
 #ifndef SOLARUS_ENTITY_H
 #define SOLARUS_ENTITY_H
 
-#include "solarus/Common.h"
-#include "solarus/lua/ExportableToLua.h"
+#include "solarus/core/Rectangle.h"
+#include "solarus/core/GameCommand.h"
+#include "solarus/core/Common.h"
 #include "solarus/entities/EntityType.h"
 #include "solarus/entities/Ground.h"
 #include "solarus/entities/CollisionMode.h"
 #include "solarus/entities/EnemyAttack.h"
 #include "solarus/entities/EnemyReaction.h"
-#include "solarus/lowlevel/Rectangle.h"
-#include "solarus/GameCommand.h"
-#include "solarus/SpritePtr.h"
+#include "solarus/graphics/SpritePtr.h"
+#include "solarus/lua/ExportableToLua.h"
 #include <list>
 #include <memory>
 #include <set>

@@ -17,8 +17,8 @@
 #ifndef SOLARUS_ENEMY_H
 #define SOLARUS_ENEMY_H
 
-#include "solarus/Common.h"
-#include "solarus/Treasure.h"
+#include "solarus/core/Common.h"
+#include "solarus/core/Treasure.h"
 #include "solarus/entities/EnemyAttack.h"
 #include "solarus/entities/EnemyReaction.h"
 #include "solarus/entities/Entity.h"

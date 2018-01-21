@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/core/Game.h"
+#include "solarus/core/QuestFiles.h"
 #include "solarus/entities/Destination.h"
-#include "solarus/Sprite.h"
-#include "solarus/Game.h"
-#include "solarus/lowlevel/QuestFiles.h"
+#include "solarus/graphics/Sprite.h"
 
 namespace Solarus {
 

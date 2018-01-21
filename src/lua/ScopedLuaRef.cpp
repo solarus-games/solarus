@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/lua/ScopedLuaRef.h"
 #include "solarus/lua/LuaTools.h"
+#include "solarus/lua/ScopedLuaRef.h"
 #include <lua.hpp>
 
 namespace Solarus {

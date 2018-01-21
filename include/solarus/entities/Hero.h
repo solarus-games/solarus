@@ -17,11 +17,11 @@
 #ifndef SOLARUS_HERO_H
 #define SOLARUS_HERO_H
 
+#include "solarus/core/Point.h"
 #include "solarus/entities/EnemyAttack.h"
 #include "solarus/entities/Entity.h"
 #include "solarus/entities/Ground.h"
 #include "solarus/hero/HeroSprites.h"
-#include "solarus/lowlevel/Point.h"
 #include <memory>
 #include <string>
 

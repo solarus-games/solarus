@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/core/CommandsEffects.h"
+#include "solarus/core/Equipment.h"
 #include "solarus/entities/Jumper.h"
 #include "solarus/hero/HeroState.h"
 #include "solarus/hero/SwordSwingingState.h"
 #include "solarus/lua/LuaContext.h"
-#include "solarus/CommandsEffects.h"
-#include "solarus/Equipment.h"
 
 namespace Solarus {
 

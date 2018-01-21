@@ -16,9 +16,9 @@
  */
 #include "solarus/gui/main_window.h"
 #include "solarus/gui/settings.h"
-#include "solarus/lowlevel/Debug.h"
-#include "solarus/Arguments.h"
-#include "solarus/MainLoop.h"
+#include "solarus/core/Arguments.h"
+#include "solarus/core/Debug.h"
+#include "solarus/core/MainLoop.h"
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QFile>

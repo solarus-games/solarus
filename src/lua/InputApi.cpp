@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/core/InputEvent.h"
+#include "solarus/core/Rectangle.h"
+#include "solarus/graphics/Video.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
-#include "solarus/lowlevel/Rectangle.h"
-#include "solarus/lowlevel/InputEvent.h"
-#include "solarus/lowlevel/Video.h"
 
 namespace Solarus {
 

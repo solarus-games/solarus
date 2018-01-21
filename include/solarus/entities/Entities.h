@@ -17,8 +17,9 @@
 #ifndef SOLARUS_ENTITIES_H
 #define SOLARUS_ENTITIES_H
 
-#include "solarus/Common.h"
+#include "solarus/core/Common.h"
 #include "solarus/containers/Quadtree.h"
+#include "solarus/graphics/Transition.h"
 #include "solarus/entities/Camera.h"
 #include "solarus/entities/CameraPtr.h"
 #include "solarus/entities/EntityPtr.h"
@@ -26,7 +27,6 @@
 #include "solarus/entities/Ground.h"
 #include "solarus/entities/HeroPtr.h"
 #include "solarus/entities/TilePtr.h"
-#include "solarus/Transition.h"
 #include <list>
 #include <map>
 #include <memory>

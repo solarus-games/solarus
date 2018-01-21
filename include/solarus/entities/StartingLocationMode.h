@@ -17,8 +17,8 @@
 #ifndef SOLARUS_STARTING_LOCATION_MODE_H
 #define SOLARUS_STARTING_LOCATION_MODE_H
 
-#include "solarus/Common.h"
-#include "solarus/EnumInfo.h"
+#include "solarus/core/Common.h"
+#include "solarus/core/EnumInfo.h"
 
 namespace Solarus {
 

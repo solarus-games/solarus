@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/core/QuestFiles.h"
+#include "solarus/core/Map.h"
 #include "solarus/entities/Tile.h"
 #include "solarus/entities/TileInfo.h"
 #include "solarus/entities/Tileset.h"
 #include "solarus/entities/TilePattern.h"
-#include "solarus/lowlevel/Surface.h"
-#include "solarus/lowlevel/QuestFiles.h"
-#include "solarus/Map.h"
+#include "solarus/graphics/Surface.h"
 
 namespace Solarus {
 

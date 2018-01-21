@@ -17,9 +17,9 @@
 #ifndef SOLARUS_CRYSTAL_H
 #define SOLARUS_CRYSTAL_H
 
-#include "solarus/Common.h"
+#include "solarus/core/Common.h"
+#include "solarus/core/Point.h"
 #include "solarus/entities/Entity.h"
-#include "solarus/lowlevel/Point.h"
 #include <list>
 #include <string>
 

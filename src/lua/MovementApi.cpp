@@ -14,9 +14,13 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/core/Debug.h"
+#include "solarus/core/Game.h"
+#include "solarus/core/MainLoop.h"
+#include "solarus/core/Map.h"
 #include "solarus/entities/Entities.h"
 #include "solarus/entities/Hero.h"
-#include "solarus/lowlevel/Debug.h"
+#include "solarus/graphics/Drawable.h"
 #include "solarus/lua/ExportableToLua.h"
 #include "solarus/lua/ExportableToLuaPtr.h"
 #include "solarus/lua/LuaContext.h"
@@ -29,10 +33,6 @@
 #include "solarus/movements/RandomMovement.h"
 #include "solarus/movements/RandomPathMovement.h"
 #include "solarus/movements/TargetMovement.h"
-#include "solarus/Drawable.h"
-#include "solarus/Game.h"
-#include "solarus/MainLoop.h"
-#include "solarus/Map.h"
 
 namespace Solarus {
 

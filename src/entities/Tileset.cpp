@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/core/Debug.h"
 #include "solarus/entities/AnimatedTilePattern.h"
 #include "solarus/entities/GroundInfo.h"
 #include "solarus/entities/ParallaxScrollingTilePattern.h"
@@ -22,8 +23,7 @@
 #include "solarus/entities/Tileset.h"
 #include "solarus/entities/TilesetData.h"
 #include "solarus/entities/TimeScrollingTilePattern.h"
-#include "solarus/lowlevel/Debug.h"
-#include "solarus/lowlevel/Surface.h"
+#include "solarus/graphics/Surface.h"
 #include "solarus/lua/LuaData.h"
 #include "solarus/lua/LuaTools.h"
 #include <lua.hpp>

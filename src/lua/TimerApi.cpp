@@ -14,16 +14,16 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/core/Debug.h"
+#include "solarus/core/Game.h"
+#include "solarus/core/MainLoop.h"
+#include "solarus/core/Map.h"
+#include "solarus/core/System.h"
+#include "solarus/core/Timer.h"
 #include "solarus/entities/Entity.h"
-#include "solarus/lowlevel/Debug.h"
-#include "solarus/lowlevel/System.h"
 #include "solarus/lua/ExportableToLuaPtr.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
-#include "solarus/Game.h"
-#include "solarus/MainLoop.h"
-#include "solarus/Map.h"
-#include "solarus/Timer.h"
 #include <list>
 #include <sstream>
 

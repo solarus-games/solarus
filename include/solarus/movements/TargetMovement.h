@@ -17,9 +17,9 @@
 #ifndef SOLARUS_TARGET_MOVEMENT_H
 #define SOLARUS_TARGET_MOVEMENT_H
 
-#include "solarus/Common.h"
+#include "solarus/core/Common.h"
+#include "solarus/core/Point.h"
 #include "solarus/entities/EntityPtr.h"
-#include "solarus/lowlevel/Point.h"
 #include "solarus/movements/StraightMovement.h"
 #include <cstdint>
 #include <string>

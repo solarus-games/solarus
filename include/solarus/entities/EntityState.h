@@ -17,7 +17,7 @@
 #ifndef SOLARUS_ENTITY_STATE_H
 #define SOLARUS_ENTITY_STATE_H
 
-#include "solarus/Common.h"
+#include "solarus/core/Common.h"
 #include "solarus/entities/CarriedObject.h"
 #include "solarus/entities/Hero.h"
 #include <cstdint>

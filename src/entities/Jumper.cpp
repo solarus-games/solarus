@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/entities/Jumper.h"
+#include "solarus/core/Debug.h"
+#include "solarus/core/QuestFiles.h"
 #include "solarus/entities/Hero.h"
-#include "solarus/lowlevel/QuestFiles.h"
-#include "solarus/lowlevel/Debug.h"
+#include "solarus/entities/Jumper.h"
 
 namespace Solarus {
 

@@ -17,9 +17,9 @@
 #ifndef SOLARUS_RANDOM_MOVEMENT_H
 #define SOLARUS_RANDOM_MOVEMENT_H
 
-#include "solarus/Common.h"
+#include "solarus/core/Common.h"
+#include "solarus/core/Rectangle.h"
 #include "solarus/movements/StraightMovement.h"
-#include "solarus/lowlevel/Rectangle.h"
 #include <cstdint>
 #include <string>
 

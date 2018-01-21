@@ -17,11 +17,11 @@
 #ifndef SOLARUS_LUA_TOOLS_H
 #define SOLARUS_LUA_TOOLS_H
 
-#include "solarus/Common.h"
-#include "solarus/EnumInfo.h"
-#include "solarus/lowlevel/Debug.h"
+#include "solarus/core/Common.h"
+#include "solarus/core/Debug.h"
+#include "solarus/core/EnumInfo.h"
+#include "solarus/core/SolarusFatal.h"
 #include "solarus/lua/LuaException.h"
-#include "solarus/SolarusFatal.h"
 #include <map>
 #include <string>
 #include <lua.hpp>

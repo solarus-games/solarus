@@ -14,21 +14,21 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/hero/RunningState.h"
+#include "solarus/audio/Sound.h"
+#include "solarus/core/Equipment.h"
+#include "solarus/core/Game.h"
+#include "solarus/core/GameCommands.h"
+#include "solarus/core/Geometry.h"
+#include "solarus/core/Map.h"
+#include "solarus/core/System.h"
 #include "solarus/hero/FreeState.h"
 #include "solarus/hero/HeroSprites.h"
+#include "solarus/hero/RunningState.h"
 #include "solarus/entities/Enemy.h"
 #include "solarus/entities/Jumper.h"
 #include "solarus/entities/Stream.h"
-#include "solarus/movements/StraightMovement.h"
 #include "solarus/movements/JumpMovement.h"
-#include "solarus/lowlevel/System.h"
-#include "solarus/lowlevel/Sound.h"
-#include "solarus/lowlevel/Geometry.h"
-#include "solarus/Game.h"
-#include "solarus/GameCommands.h"
-#include "solarus/Map.h"
-#include "solarus/Equipment.h"
+#include "solarus/movements/StraightMovement.h"
 #include <memory>
 
 namespace Solarus {

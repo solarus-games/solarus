@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/lowlevel/Color.h"
+#include "solarus/core/Map.h"
+#include "solarus/graphics/Color.h"
 #include "solarus/lua/LuaException.h"
 #include "solarus/lua/LuaTools.h"
-#include "solarus/lua/ScopedLuaRef.h"
 #include "solarus/lua/LuaContext.h"
-#include "solarus/Map.h"
+#include "solarus/lua/ScopedLuaRef.h"
 #include <cctype>
 #include <sstream>
 

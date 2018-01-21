@@ -17,7 +17,7 @@
 #ifndef SOLARUS_SENSOR_H
 #define SOLARUS_SENSOR_H
 
-#include "solarus/Common.h"
+#include "solarus/core/Common.h"
 #include "solarus/entities/Entity.h"
 #include <string>
 

@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/core/CurrentQuest.h"
+#include "solarus/graphics/Sprite.h"
+#include "solarus/graphics/SpriteAnimationSet.h"
+#include "solarus/graphics/SpriteAnimation.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
-#include "solarus/Sprite.h"
-#include "solarus/SpriteAnimationSet.h"
-#include "solarus/SpriteAnimation.h"
-#include "solarus/CurrentQuest.h"
 #include <sstream>
 
 namespace Solarus {

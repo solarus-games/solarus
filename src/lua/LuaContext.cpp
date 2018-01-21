@@ -14,6 +14,17 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/core/AbilityInfo.h"
+#include "solarus/core/CurrentQuest.h"
+#include "solarus/core/Debug.h"
+#include "solarus/core/Equipment.h"
+#include "solarus/core/EquipmentItem.h"
+#include "solarus/core/Logger.h"
+#include "solarus/core/Map.h"
+#include "solarus/core/QuestFiles.h"
+#include "solarus/core/QuestProperties.h"
+#include "solarus/core/Timer.h"
+#include "solarus/core/Treasure.h"
 #include "solarus/entities/Block.h"
 #include "solarus/entities/Chest.h"
 #include "solarus/entities/CustomEntity.h"
@@ -27,20 +38,9 @@
 #include "solarus/entities/ShopTreasure.h"
 #include "solarus/entities/Switch.h"
 #include "solarus/entities/Tileset.h"
-#include "solarus/lowlevel/Debug.h"
-#include "solarus/lowlevel/Logger.h"
-#include "solarus/lowlevel/QuestFiles.h"
 #include "solarus/lua/ExportableToLuaPtr.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
-#include "solarus/AbilityInfo.h"
-#include "solarus/CurrentQuest.h"
-#include "solarus/Equipment.h"
-#include "solarus/EquipmentItem.h"
-#include "solarus/Map.h"
-#include "solarus/QuestProperties.h"
-#include "solarus/Timer.h"
-#include "solarus/Treasure.h"
 #include <sstream>
 
 namespace Solarus {

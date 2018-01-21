@@ -34,8 +34,8 @@
 #include "solarus/entities/Stream.h"
 #include "solarus/entities/Switch.h"
 #include "solarus/entities/Teletransporter.h"
+#include "solarus/graphics/Sprite.h"
 #include "solarus/lua/LuaContext.h"
-#include "solarus/Sprite.h"
 #include <lua.hpp>
 
 namespace Solarus {

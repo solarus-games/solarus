@@ -14,14 +14,14 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/graphics/Color.h"
+#include "solarus/graphics/Sprite.h"
+#include "solarus/graphics/Surface.h"
+#include "solarus/graphics/TransitionFade.h"
+#include "solarus/graphics/Video.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
-#include "solarus/lowlevel/Color.h"
-#include "solarus/lowlevel/Surface.h"
-#include "solarus/lowlevel/Video.h"
 #include "solarus/movements/Movement.h"
-#include "solarus/Sprite.h"
-#include "solarus/TransitionFade.h"
 
 namespace Solarus {
 

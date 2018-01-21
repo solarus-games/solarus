@@ -17,7 +17,7 @@
 #ifndef SOLARUS_JUMP_MOVEMENT_H
 #define SOLARUS_JUMP_MOVEMENT_H
 
-#include "solarus/Common.h"
+#include "solarus/core/Common.h"
 #include "solarus/movements/PixelMovement.h"
 #include <string>
 

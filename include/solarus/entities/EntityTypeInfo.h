@@ -17,8 +17,8 @@
 #ifndef SOLARUS_ENTITY_TYPE_INFO_H
 #define SOLARUS_ENTITY_TYPE_INFO_H
 
-#include "solarus/Common.h"
-#include "solarus/EnumInfo.h"
+#include "solarus/core/Common.h"
+#include "solarus/core/EnumInfo.h"
 #include "solarus/entities/EntityType.h"
 #include <map>
 #include <string>

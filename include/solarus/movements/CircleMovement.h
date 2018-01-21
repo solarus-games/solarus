@@ -17,7 +17,7 @@
 #ifndef SOLARUS_CIRCLE_MOVEMENT_H
 #define SOLARUS_CIRCLE_MOVEMENT_H
 
-#include "solarus/Common.h"
+#include "solarus/core/Common.h"
 #include "solarus/entities/EntityPtr.h"
 #include "solarus/movements/Movement.h"
 #include <cstdint>

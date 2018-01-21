@@ -17,9 +17,9 @@
 #ifndef SOLARUS_HOOKSHOT_H
 #define SOLARUS_HOOKSHOT_H
 
-#include "solarus/Common.h"
+#include "solarus/core/Common.h"
 #include "solarus/entities/Entity.h"
-#include "solarus/Sprite.h"
+#include "solarus/graphics/Sprite.h"
 
 namespace Solarus {
 

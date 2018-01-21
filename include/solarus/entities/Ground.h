@@ -17,7 +17,7 @@
 #ifndef SOLARUS_GROUND_H
 #define SOLARUS_GROUND_H
 
-#include "solarus/Common.h"
+#include "solarus/core/Common.h"
 
 namespace Solarus {
 

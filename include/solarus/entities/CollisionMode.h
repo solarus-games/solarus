@@ -17,7 +17,7 @@
 #ifndef SOLARUS_COLLISION_MODE_H
 #define SOLARUS_COLLISION_MODE_H
 
-#include "solarus/EnumInfo.h"
+#include "solarus/core/EnumInfo.h"
 
 namespace Solarus {
 

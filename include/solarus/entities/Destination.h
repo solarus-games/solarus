@@ -17,7 +17,7 @@
 #ifndef SOLARUS_DESTINATION_H
 #define SOLARUS_DESTINATION_H
 
-#include "solarus/Common.h"
+#include "solarus/core/Common.h"
 #include "solarus/entities/Entity.h"
 #include "solarus/entities/StartingLocationMode.h"
 #include <string>

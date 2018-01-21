@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/core/Map.h"
+#include "solarus/core/QuestFiles.h"
 #include "solarus/entities/Stream.h"
 #include "solarus/entities/StreamAction.h"
-#include "solarus/Map.h"
-#include "solarus/Sprite.h"
-#include "solarus/lowlevel/QuestFiles.h"
+#include "solarus/graphics/Sprite.h"
 #include <memory>
 
 namespace Solarus {

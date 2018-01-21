@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/movements/PathFindingMovement.h"
-#include "solarus/movements/PathFinding.h"
-#include "solarus/lua/LuaContext.h"
+#include "solarus/core/Debug.h"
+#include "solarus/core/Random.h"
+#include "solarus/core/System.h"
 #include "solarus/entities/Entity.h"
-#include "solarus/lowlevel/Random.h"
-#include "solarus/lowlevel/System.h"
-#include "solarus/lowlevel/Debug.h"
+#include "solarus/lua/LuaContext.h"
+#include "solarus/movements/PathFinding.h"
+#include "solarus/movements/PathFindingMovement.h"
 
 namespace Solarus {
 

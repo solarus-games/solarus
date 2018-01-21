@@ -17,8 +17,8 @@
 #ifndef SOLARUS_GROUND_INFO_H
 #define SOLARUS_GROUND_INFO_H
 
-#include "solarus/Common.h"
-#include "solarus/EnumInfo.h"
+#include "solarus/core/Common.h"
+#include "solarus/core/EnumInfo.h"
 #include "solarus/entities/Ground.h"
 #include <map>
 #include <string>

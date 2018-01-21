@@ -14,6 +14,14 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/audio/Sound.h"
+#include "solarus/core/Debug.h"
+#include "solarus/core/CommandsEffects.h"
+#include "solarus/core/Equipment.h"
+#include "solarus/core/EquipmentItem.h"
+#include "solarus/core/Game.h"
+#include "solarus/core/Map.h"
+#include "solarus/core/System.h"
 #include "solarus/entities/Block.h"
 #include "solarus/entities/Bomb.h"
 #include "solarus/entities/Boomerang.h"
@@ -32,6 +40,7 @@
 #include "solarus/entities/StreamAction.h"
 #include "solarus/entities/Switch.h"
 #include "solarus/entities/Teletransporter.h"
+#include "solarus/graphics/Sprite.h"
 #include "solarus/hero/BackToSolidGroundState.h"
 #include "solarus/hero/BoomerangState.h"
 #include "solarus/hero/BowState.h"
@@ -56,18 +65,9 @@
 #include "solarus/hero/TreasureState.h"
 #include "solarus/hero/UsingItemState.h"
 #include "solarus/hero/VictoryState.h"
-#include "solarus/lowlevel/Debug.h"
-#include "solarus/lowlevel/Sound.h"
-#include "solarus/lowlevel/System.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
 #include "solarus/movements/StraightMovement.h"
-#include "solarus/CommandsEffects.h"
-#include "solarus/Equipment.h"
-#include "solarus/EquipmentItem.h"
-#include "solarus/Game.h"
-#include "solarus/Map.h"
-#include "solarus/Sprite.h"
 #include <lua.hpp>
 #include <algorithm>
 #include <utility>

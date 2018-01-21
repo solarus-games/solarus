@@ -17,8 +17,8 @@
 #ifndef SOLARUS_PATH_FINDING_H
 #define SOLARUS_PATH_FINDING_H
 
-#include "solarus/Common.h"
-#include "solarus/lowlevel/Point.h"
+#include "solarus/core/Common.h"
+#include "solarus/core/Point.h"
 #include <list>
 #include <map>
 #include <string>

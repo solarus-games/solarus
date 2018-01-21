@@ -18,7 +18,7 @@
 #define SOLARUS_GUI_QUESTS_MODEL_H
 
 #include "solarus/gui/gui_common.h"
-#include "solarus/QuestProperties.h"
+#include "solarus/core/QuestProperties.h"
 #include <QAbstractListModel>
 #include <QIcon>
 #include <QMetaType>

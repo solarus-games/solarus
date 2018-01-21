@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/core/Map.h"
+#include "solarus/core/System.h"
 #include "solarus/entities/StreamAction.h"
 #include "solarus/entities/Stream.h"
-#include "solarus/lowlevel/System.h"
+#include "solarus/graphics/Sprite.h"
 #include "solarus/movements/Movement.h"
-#include "solarus/Map.h"
-#include "solarus/Sprite.h"
 #include <cmath>
 
 namespace Solarus {

@@ -1,7 +1,7 @@
 #ifndef SOLARUS_GUI_GUI_COMMON_H
 #define SOLARUS_GUI_GUI_COMMON_H
 
-#include "solarus/Common.h"
+#include "solarus/core/Common.h"
 
 /**
  * \file gui_common.h

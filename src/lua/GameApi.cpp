@@ -14,18 +14,18 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/lowlevel/Debug.h"
-#include "solarus/lowlevel/QuestFiles.h"
+#include "solarus/core/AbilityInfo.h"
+#include "solarus/core/CommandsEffects.h"
+#include "solarus/core/CurrentQuest.h"
+#include "solarus/core/Debug.h"
+#include "solarus/core/Equipment.h"
+#include "solarus/core/EquipmentItem.h"
+#include "solarus/core/Game.h"
+#include "solarus/core/MainLoop.h"
+#include "solarus/core/QuestFiles.h"
+#include "solarus/core/Savegame.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
-#include "solarus/AbilityInfo.h"
-#include "solarus/CommandsEffects.h"
-#include "solarus/CurrentQuest.h"
-#include "solarus/Equipment.h"
-#include "solarus/EquipmentItem.h"
-#include "solarus/Game.h"
-#include "solarus/MainLoop.h"
-#include "solarus/Savegame.h"
 
 namespace Solarus {
 

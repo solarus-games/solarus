@@ -17,8 +17,8 @@
 #ifndef SOLARUS_STRAIGHT_MOVEMENT_H
 #define SOLARUS_STRAIGHT_MOVEMENT_H
 
-#include "solarus/Common.h"
-#include "solarus/lowlevel/Point.h"
+#include "solarus/core/Common.h"
+#include "solarus/core/Point.h"
 #include "solarus/movements/Movement.h"
 #include <cstdint>
 #include <string>

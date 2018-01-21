@@ -17,6 +17,7 @@
 #ifndef SOLARUS_HERO_STATE_H
 #define SOLARUS_HERO_STATE_H
 
+#include "solarus/core/Common.h"
 #include "solarus/entities/EntityState.h"
 
 namespace Solarus {

@@ -17,11 +17,11 @@
 #ifndef SOLARUS_HERO_SPRITES_H
 #define SOLARUS_HERO_SPRITES_H
 
-#include "solarus/Common.h"
+#include "solarus/core/Common.h"
+#include "solarus/core/Rectangle.h"
 #include "solarus/entities/Ground.h"
-#include "solarus/lowlevel/Rectangle.h"
+#include "solarus/graphics/SpritePtr.h"
 #include "solarus/lua/ScopedLuaRef.h"
-#include "solarus/SpritePtr.h"
 #include <memory>
 #include <string>
 

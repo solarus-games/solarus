@@ -17,7 +17,7 @@
 #ifndef SOLARUS_SWITCH_H
 #define SOLARUS_SWITCH_H
 
-#include "solarus/Common.h"
+#include "solarus/core/Common.h"
 #include "solarus/entities/Entity.h"
 #include <map>
 #include <string>

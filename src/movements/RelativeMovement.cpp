@@ -14,9 +14,9 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/movements/RelativeMovement.h"
+#include "solarus/core/Debug.h"
 #include "solarus/entities/Entity.h"
-#include "solarus/lowlevel/Debug.h"
+#include "solarus/movements/RelativeMovement.h"
 
 namespace Solarus {
 

@@ -17,7 +17,7 @@
 #ifndef SOLARUS_LUA_DATA_FILE_H
 #define SOLARUS_LUA_DATA_FILE_H
 
-#include "solarus/Common.h"
+#include "solarus/core/Common.h"
 #include <iosfwd>
 #include <string>
 

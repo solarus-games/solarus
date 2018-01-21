@@ -14,6 +14,12 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/core/Debug.h"
+#include "solarus/core/Game.h"
+#include "solarus/core/Geometry.h"
+#include "solarus/core/MainLoop.h"
+#include "solarus/core/Map.h"
+#include "solarus/core/System.h"
 #include "solarus/entities/CollisionMode.h"
 #include "solarus/entities/Destructible.h"
 #include "solarus/entities/Door.h"
@@ -27,16 +33,10 @@
 #include "solarus/entities/StreamAction.h"
 #include "solarus/entities/Switch.h"
 #include "solarus/entities/Tileset.h"
-#include "solarus/lowlevel/Debug.h"
-#include "solarus/lowlevel/Geometry.h"
-#include "solarus/lowlevel/System.h"
+#include "solarus/graphics/Sprite.h"
+#include "solarus/graphics/SpriteAnimationSet.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/movements/Movement.h"
-#include "solarus/Game.h"
-#include "solarus/MainLoop.h"
-#include "solarus/Map.h"
-#include "solarus/Sprite.h"
-#include "solarus/SpriteAnimationSet.h"
 #include <algorithm>
 #include <iterator>
 #include <list>

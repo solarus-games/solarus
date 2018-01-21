@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/lowlevel/QuestFiles.h"
-#include "solarus/lowlevel/FontResource.h"
-#include "solarus/lowlevel/TextSurface.h"
+#include "solarus/core/CurrentQuest.h"
+#include "solarus/core/FontResource.h"
+#include "solarus/core/QuestFiles.h"
+#include "solarus/graphics/TextSurface.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
-#include "solarus/CurrentQuest.h"
 
 namespace Solarus {
 

@@ -14,14 +14,14 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/movements/PlayerMovement.h"
+#include "solarus/core/Debug.h"
+#include "solarus/core/Game.h"
+#include "solarus/core/GameCommands.h"
+#include "solarus/core/Geometry.h"
 #include "solarus/entities/Entity.h"
 #include "solarus/entities/Stream.h"
 #include "solarus/entities/StreamAction.h"
-#include "solarus/lowlevel/Geometry.h"
-#include "solarus/lowlevel/Debug.h"
-#include "solarus/Game.h"
-#include "solarus/GameCommands.h"
+#include "solarus/movements/PlayerMovement.h"
 
 namespace Solarus {
 

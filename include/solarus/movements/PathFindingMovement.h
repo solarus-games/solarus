@@ -17,7 +17,7 @@
 #ifndef SOLARUS_PATH_FINDING_MOVEMENT_H
 #define SOLARUS_PATH_FINDING_MOVEMENT_H
 
-#include "solarus/Common.h"
+#include "solarus/core/Common.h"
 #include "solarus/entities/EntityPtr.h"
 #include "solarus/movements/PathMovement.h"
 #include <cstdint>

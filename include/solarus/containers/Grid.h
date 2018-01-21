@@ -17,10 +17,10 @@
 #ifndef SOLARUS_GRID_H
 #define SOLARUS_GRID_H
 
-#include "solarus/Common.h"
-#include "solarus/lowlevel/Debug.h"
-#include "solarus/lowlevel/Rectangle.h"
-#include "solarus/lowlevel/Size.h"
+#include "solarus/core/Common.h"
+#include "solarus/core/Debug.h"
+#include "solarus/core/Rectangle.h"
+#include "solarus/core/Size.h"
 #include <set>
 #include <vector>
 

@@ -17,11 +17,11 @@
 #ifndef SOLARUS_SHOP_TREASURE_H
 #define SOLARUS_SHOP_TREASURE_H
 
-#include "solarus/Common.h"
-#include "solarus/Treasure.h"
-#include "solarus/Sprite.h"
+#include "solarus/core/Common.h"
+#include "solarus/core/Treasure.h"
 #include "solarus/entities/Entity.h"
-#include "solarus/lowlevel/TextSurface.h"
+#include "solarus/graphics/Sprite.h"
+#include "solarus/graphics/TextSurface.h"
 #include <memory>
 #include <string>
 

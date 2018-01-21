@@ -14,20 +14,20 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/core/CommandsEffects.h"
+#include "solarus/core/Debug.h"
+#include "solarus/core/Game.h"
+#include "solarus/core/Logger.h"
+#include "solarus/core/Map.h"
+#include "solarus/core/Point.h"
+#include "solarus/core/System.h"
 #include "solarus/entities/Entities.h"
 #include "solarus/entities/Teletransporter.h"
 #include "solarus/hero/CarryingState.h"
 #include "solarus/hero/FreeState.h"
 #include "solarus/hero/HeroSprites.h"
 #include "solarus/hero/StairsState.h"
-#include "solarus/lowlevel/Debug.h"
-#include "solarus/lowlevel/Logger.h"
-#include "solarus/lowlevel/Point.h"
-#include "solarus/lowlevel/System.h"
 #include "solarus/movements/PathMovement.h"
-#include "solarus/CommandsEffects.h"
-#include "solarus/Game.h"
-#include "solarus/Map.h"
 #include <string>
 
 namespace Solarus {

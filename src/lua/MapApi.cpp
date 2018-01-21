@@ -14,6 +14,16 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/audio/Music.h"
+#include "solarus/audio/Sound.h"
+#include "solarus/core/Debug.h"
+#include "solarus/core/Equipment.h"
+#include "solarus/core/EquipmentItem.h"
+#include "solarus/core/Game.h"
+#include "solarus/core/MainLoop.h"
+#include "solarus/core/Map.h"
+#include "solarus/core/Timer.h"
+#include "solarus/core/Treasure.h"
 #include "solarus/entities/Block.h"
 #include "solarus/entities/Bomb.h"
 #include "solarus/entities/Chest.h"
@@ -45,19 +55,9 @@
 #include "solarus/entities/TilePattern.h"
 #include "solarus/entities/Tileset.h"
 #include "solarus/entities/Wall.h"
-#include "solarus/lowlevel/Debug.h"
-#include "solarus/lowlevel/Music.h"
-#include "solarus/lowlevel/Sound.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
 #include "solarus/movements/Movement.h"
-#include "solarus/Equipment.h"
-#include "solarus/EquipmentItem.h"
-#include "solarus/Game.h"
-#include "solarus/MainLoop.h"
-#include "solarus/Map.h"
-#include "solarus/Timer.h"
-#include "solarus/Treasure.h"
 #include <lua.hpp>
 #include <sstream>
 

@@ -16,9 +16,9 @@
  */
 #ifndef SOLARUS_NOMAIN
 
-#include "solarus/lowlevel/Debug.h"
-#include "solarus/Arguments.h"
-#include "solarus/MainLoop.h"
+#include "solarus/core/Arguments.h"
+#include "solarus/core/Debug.h"
+#include "solarus/core/MainLoop.h"
 #include <iostream>
 #include <string>
 

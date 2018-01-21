@@ -14,26 +14,26 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/audio/Sound.h"
+#include "solarus/core/Game.h"
+#include "solarus/core/Geometry.h"
+#include "solarus/core/Map.h"
+#include "solarus/core/System.h"
 #include "solarus/entities/CarriedObject.h"
+#include "solarus/entities/Crystal.h"
 #include "solarus/entities/Destructible.h"
 #include "solarus/entities/Hero.h"
 #include "solarus/entities/Enemy.h"
 #include "solarus/entities/Entities.h"
 #include "solarus/entities/Explosion.h"
+#include "solarus/entities/Npc.h"
 #include "solarus/entities/Sensor.h"
 #include "solarus/entities/Stairs.h"
 #include "solarus/entities/Switch.h"
-#include "solarus/entities/Crystal.h"
-#include "solarus/entities/Npc.h"
-#include "solarus/lowlevel/System.h"
-#include "solarus/lowlevel/Sound.h"
-#include "solarus/lowlevel/Geometry.h"
+#include "solarus/graphics/Sprite.h"
 #include "solarus/movements/PixelMovement.h"
 #include "solarus/movements/RelativeMovement.h"
 #include "solarus/movements/StraightMovement.h"
-#include "solarus/Sprite.h"
-#include "solarus/Game.h"
-#include "solarus/Map.h"
 #include <memory>
 
 namespace Solarus {

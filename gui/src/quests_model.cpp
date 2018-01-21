@@ -15,9 +15,9 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/gui/quests_model.h"
-#include "solarus/lowlevel/QuestFiles.h"
-#include "solarus/CurrentQuest.h"
-#include "solarus/QuestProperties.h"
+#include "solarus/core/CurrentQuest.h"
+#include "solarus/core/QuestFiles.h"
+#include "solarus/core/QuestProperties.h"
 #include <QApplication>
 #include <algorithm>
 

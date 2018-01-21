@@ -14,14 +14,14 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/lowlevel/BlendModeInfo.h"
-#include "solarus/lowlevel/Surface.h"
+#include "solarus/graphics/BlendModeInfo.h"
+#include "solarus/graphics/Drawable.h"
+#include "solarus/graphics/Surface.h"
+#include "solarus/graphics/TransitionFade.h"
 #include "solarus/lua/ExportableToLuaPtr.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
 #include "solarus/movements/Movement.h"
-#include "solarus/Drawable.h"
-#include "solarus/TransitionFade.h"
 #include <lua.hpp>
 
 /* This file contains common code for all drawable types known by Lua,

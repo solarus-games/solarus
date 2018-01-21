@@ -17,6 +17,7 @@
 #ifndef SOLARUS_HERO_SWORD_LOADING_STATE_H
 #define SOLARUS_HERO_SWORD_LOADING_STATE_H
 
+#include "solarus/core/Common.h"
 #include "solarus/hero/PlayerMovementState.h"
 #include <cstdint>
 

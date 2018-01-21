@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/lowlevel/Surface.h"
+#include "solarus/graphics/Surface.h"
 #include "solarus/lua/ExportableToLuaPtr.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"

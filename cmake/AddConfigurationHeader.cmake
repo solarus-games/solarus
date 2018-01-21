@@ -13,5 +13,5 @@ include(CheckIncludeFiles)
 check_include_files(unistd.h HAVE_UNISTD_H)
 
 
-configure_file("${CMAKE_SOURCE_DIR}/include/solarus/config.h.in" "${CMAKE_BINARY_DIR}/include/solarus/config.h")
+configure_file("${CMAKE_SOURCE_DIR}/include/solarus/core/config.h.in" "${CMAKE_BINARY_DIR}/include/solarus/core/config.h")
 

@@ -17,9 +17,9 @@
 #ifndef SOLARUS_CARRIED_OBJECT_H
 #define SOLARUS_CARRIED_OBJECT_H
 
-#include "solarus/Common.h"
+#include "solarus/core/Common.h"
 #include "solarus/entities/Entity.h"
-#include "solarus/SpritePtr.h"
+#include "solarus/graphics/SpritePtr.h"
 #include <string>
 
 namespace Solarus {

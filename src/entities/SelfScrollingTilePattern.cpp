@@ -16,7 +16,7 @@
  */
 #include "solarus/entities/SelfScrollingTilePattern.h"
 #include "solarus/entities/Tileset.h"
-#include "solarus/lowlevel/Surface.h"
+#include "solarus/graphics/Surface.h"
 
 namespace Solarus {
 

@@ -17,7 +17,7 @@
 #ifndef SOLARUS_EXPORTABLE_TO_LUA_H
 #define SOLARUS_EXPORTABLE_TO_LUA_H
 
-#include "solarus/Common.h"
+#include "solarus/core/Common.h"
 #include <memory>
 #include <string>
 

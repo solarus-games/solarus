@@ -17,9 +17,9 @@
 #ifndef SOLARUS_NPC_H
 #define SOLARUS_NPC_H
 
-#include "solarus/Common.h"
+#include "solarus/core/Common.h"
+#include "solarus/core/CommandsEffects.h"
 #include "solarus/entities/Entity.h"
-#include "solarus/CommandsEffects.h"
 #include <string>
 
 namespace Solarus {

@@ -50,6 +50,7 @@ Changes that do not introduce incompatibilities:
 Data files format changes
 -------------------------
 
+* Tilesets: add support of border sets (autotiles) (#1069).
 * Make the tileset entities image optional (#884).
 
 ___________________________

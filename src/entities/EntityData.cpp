@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "solarus/core/EntityData.h"
 #include "solarus/core/Debug.h"
+#include "solarus/entities/EntityData.h"
 #include "solarus/entities/EntityTypeInfo.h"
 #include "solarus/lua/LuaTools.h"
 #include <ostream>

@@ -26,7 +26,6 @@ file(
   include/solarus/core/DialogBoxSystem.h
   include/solarus/core/Dialog.h
   include/solarus/core/DialogResources.h
-  include/solarus/core/EntityData.h
   include/solarus/core/EnumInfo.h
   include/solarus/core/EnumInfo.inl
   include/solarus/core/Equipment.h
@@ -89,6 +88,7 @@ file(
   include/solarus/entities/EnemyReaction.h
   include/solarus/entities/Entities.h
   include/solarus/entities/Entity.h
+  include/solarus/entities/EntityData.h
   include/solarus/entities/EntityPtr.h
   include/solarus/entities/EntityState.h
   include/solarus/entities/EntityType.h
@@ -242,7 +242,6 @@ file(
   src/core/DialogBoxSystem.cpp
   src/core/Dialog.cpp
   src/core/DialogResources.cpp
-  src/core/EntityData.cpp
   src/core/Equipment.cpp
   src/core/EquipmentItem.cpp
   src/core/EquipmentItemUsage.cpp
@@ -295,6 +294,7 @@ file(
   src/entities/EnemyReaction.cpp
   src/entities/Entities.cpp
   src/entities/Entity.cpp
+  src/entities/EntityData.cpp
   src/entities/EntityState.cpp
   src/entities/EntityTypeInfo.cpp
   src/entities/Explosion.cpp

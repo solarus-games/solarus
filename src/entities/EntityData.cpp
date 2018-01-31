@@ -266,8 +266,6 @@ const std::map<EntityType, const EntityTypeDescription> entity_type_descriptions
             // No additional fields.
         }
     }
-
-    // TODO put direction, width, height with common properties?
 };
 
 
@@ -381,9 +379,10 @@ EntityData::EntityData() :
     name(),
     layer(0),
     xy(),
-    fields() {
+    user_properties() ,
+    specific_properties() {
 
-  initialize_fields();
+  initialize_specific_properties();
 }
 
 /**
@@ -395,9 +394,10 @@ EntityData::EntityData(EntityType type) :
     name(),
     layer(0),
     xy(),
-    fields() {
+    user_properties(),
+    specific_properties() {
 
-  initialize_fields();
+  initialize_specific_properties();
 }
 
 /**
@@ -422,7 +422,7 @@ void EntityData::set_type(EntityType type) {
   }
 
   this->type = type;
-  initialize_fields();
+  initialize_specific_properties();
 }
 
 /**
@@ -497,34 +497,112 @@ void EntityData::set_xy(const Point& xy) {
 }
 
 /**
- * \brief Initializes fields with their default values for the type.
+ * \brief Returns the user-defined properties of this entity.
+ * \return The user-defined properties.
  */
-void EntityData::initialize_fields() {
+const std::vector<EntityData::UserProperty> EntityData::get_user_properties() const {
+  return user_properties;
+}
 
-  fields.clear();
+/**
+ * \brief Returns the value of a user property.
+ * \param key Key of the property to get.
+ * \return The corresponding value or an empty string.
+ */
+const std::string& EntityData::get_user_property(const std::string& key) const {
+
+  int index = get_user_property_index(key);
+  if (index == -1) {
+    static const std::string empty_string;
+    return empty_string;
+  }
+
+  return user_properties[index].second;
+}
+
+/**
+ * \brief Sets the value of a user property.
+ * \param key Key of the property to set.
+ * \param value The value to set.
+ */
+void EntityData::set_user_property(const std::string& key, const std::string& value) {
+
+  int index = get_user_property_index(key);
+  if (index == -1) {
+    return;
+  }
+
+  user_properties[index].second = value;
+}
+
+/**
+ * \brief Removes the given user property if it exists.
+ * \param key Key of the property to remove.
+ */
+void EntityData::remove_user_property(const std::string& key) {
+
+  int index = get_user_property_index(key);
+  if (index == -1) {
+    return;
+  }
+  user_properties.erase(user_properties.begin() + index);
+}
+
+/**
+ * \brief Returns the index of a user property in the user property list.
+ * \param key Key of the property to get.
+ * \return The corresponding index, or -1 if there is no such property.
+ */
+int EntityData::get_user_property_index(const std::string& key) const {
+
+  int index = 0;
+  for (const UserProperty& user_property : user_properties) {
+    if (user_property.first == key) {
+      return index;
+    }
+    ++index;
+  }
+  return -1;
+}
+
+/**
+ * \brief Returns whether a user property exists with the given key.
+ * \param key Key of the property to get.
+ * \return \c true if the entity has such a property.
+ */
+bool EntityData::has_user_property(const std::string& key) const {
+  return get_user_property_index(key);
+}
+
+/**
+ * \brief Initializes specific properties with their default values for the type.
+ */
+void EntityData::initialize_specific_properties() {
+
+  specific_properties.clear();
   const EntityTypeDescription& type_description = entity_type_descriptions.at(type);
   for (const EntityFieldDescription& field_description : type_description) {
-    fields.emplace(field_description.key, field_description.default_value);
+    specific_properties.emplace(field_description.key, field_description.default_value);
   }
 }
 
 /**
- * \brief Returns all fields of this entity.
- * \return The fields.
+ * \brief Returns all specific properties of this entity.
+ * \return The entity properties that are specific to its type.
  */
-const std::map<std::string, FieldValue>& EntityData::get_fields() const {
-  return fields;
+const std::map<std::string, FieldValue>& EntityData::get_specific_properties() const {
+  return specific_properties;
 }
 
 /**
- * \brief Returns a field of this entity if it exists.
- * \param key Key of the field to get.
- * \return The corresponding field or a nil field.
+ * \brief Returns a specific property of this entity if it exists.
+ * \param key Key of the specific property to get.
+ * \return The corresponding specific property or a nil field.
  */
-FieldValue EntityData::get_field(const std::string& key) const {
+FieldValue EntityData::get_specific_property(const std::string& key) const {
 
-  const auto& it = fields.find(key);
-  if (it == fields.end()) {
+  const auto& it = specific_properties.find(key);
+  if (it == specific_properties.end()) {
     return FieldValue();
   }
 
@@ -532,28 +610,29 @@ FieldValue EntityData::get_field(const std::string& key) const {
 }
 
 /**
- * \brief Returns whether a field of this entity is a string.
- * \param key Key of the field to get.
- * \return \c true if the field exists and is a string.
+ * \brief Returns whether a specific property of this entity is a string.
+ * \param key Key of the specific property to get.
+ * \return \c true if the specific property exists and is a string.
  */
 bool EntityData::is_string(const std::string& key) const {
 
-  const auto& it = fields.find(key);
-  if (it == fields.end()) {
+  const auto& it = specific_properties.find(key);
+  if (it == specific_properties.end()) {
     return false;
   }
   return it->second.value_type == EntityFieldType::STRING;
 }
 
 /**
- * \brief Returns the value of a string field of this entity.
- * \param key Key of the field to get. It must exist and be a string.
+ * \brief Returns the value of a string specific property of this entity.
+ * \param key Key of the specific property to get.
+ * It must exist and be a string.
  * \return The string value.
  */
 const std::string& EntityData::get_string(const std::string& key) const {
 
-  const auto& it = fields.find(key);
-  Debug::check_assertion(it != fields.end(),
+  const auto& it = specific_properties.find(key);
+  Debug::check_assertion(it != specific_properties.end(),
       "No such entity field in " + get_type_name() + ": '" + key + "'");
 
   Debug::check_assertion(it->second.value_type == EntityFieldType::STRING,
@@ -563,14 +642,15 @@ const std::string& EntityData::get_string(const std::string& key) const {
 }
 
 /**
- * \brief Sets the value of a string field of this entity.
- * \param key Key of the field to set. It must exist and be a string.
+ * \brief Sets the value of a string specific property of this entity.
+ * \param key Key of the specific property to set.
+ * It must exist and be a string.
  * \param value The string value.
  */
 void EntityData::set_string(const std::string& key, const std::string& value) {
 
-  const auto& it = fields.find(key);
-  Debug::check_assertion(it != fields.end(),
+  const auto& it = specific_properties.find(key);
+  Debug::check_assertion(it != specific_properties.end(),
       "No such entity field in " + get_type_name() + ": '" + key + "'");
 
   Debug::check_assertion(it->second.value_type == EntityFieldType::STRING,
@@ -580,28 +660,29 @@ void EntityData::set_string(const std::string& key, const std::string& value) {
 }
 
 /**
- * \brief Returns whether a field of this entity is an integer.
- * \param key Key of the field to get.
- * \return \c true if the field exists and is an integer.
+ * \brief Returns whether a specific property of this entity is an integer.
+ * \param key Key of the specific property to get.
+ * \return \c true if the specific property exists and is an integer.
  */
 bool EntityData::is_integer(const std::string& key) const {
 
-  const auto& it = fields.find(key);
-  if (it == fields.end()) {
+  const auto& it = specific_properties.find(key);
+  if (it == specific_properties.end()) {
     return false;
   }
   return it->second.value_type == EntityFieldType::INTEGER;
 }
 
 /**
- * \brief Returns the value of an integer field of this entity.
- * \param key Key of the field to get. It must exist and be an integer.
+ * \brief Returns the value of an integer specific property of this entity.
+ * \param key Key of the specific property to get.
+ * It must exist and be an integer.
  * \return The integer value.
  */
 int EntityData::get_integer(const std::string& key) const {
 
-  const auto& it = fields.find(key);
-  Debug::check_assertion(it != fields.end(),
+  const auto& it = specific_properties.find(key);
+  Debug::check_assertion(it != specific_properties.end(),
       "No such entity field in " + get_type_name() + ": '" + key + "'");
 
   Debug::check_assertion(it->second.value_type == EntityFieldType::INTEGER,
@@ -611,14 +692,15 @@ int EntityData::get_integer(const std::string& key) const {
 }
 
 /**
- * \brief Sets the value of an integer field of this entity.
- * \param key Key of the field to set. It must exist and be an integer.
+ * \brief Sets the value of an integer specific property of this entity.
+ * \param key Key of the specific property to set.
+ * It must exist and be an integer.
  * \param value The integer value.
  */
 void EntityData::set_integer(const std::string& key, int value) {
 
-  const auto& it = fields.find(key);
-  Debug::check_assertion(it != fields.end(),
+  const auto& it = specific_properties.find(key);
+  Debug::check_assertion(it != specific_properties.end(),
       "No such entity field in " + get_type_name() + ": '" + key + "'");
 
   Debug::check_assertion(it->second.value_type == EntityFieldType::INTEGER,
@@ -628,28 +710,29 @@ void EntityData::set_integer(const std::string& key, int value) {
 }
 
 /**
- * \brief Returns whether a field of this entity is a boolean.
- * \param key Key of the field to get.
- * \return \c true if the field exists and is a boolean.
+ * \brief Returns whether a specific property of this entity is a boolean.
+ * \param key Key of the specific property to get.
+ * \return \c true if the specific property exists and is a boolean.
  */
 bool EntityData::is_boolean(const std::string& key) const {
 
-  const auto& it = fields.find(key);
-  if (it == fields.end()) {
+  const auto& it = specific_properties.find(key);
+  if (it == specific_properties.end()) {
     return false;
   }
   return it->second.value_type == EntityFieldType::BOOLEAN;
 }
 
 /**
- * \brief Returns the value of a boolean field of this entity.
- * \param key Key of the field to get. It must exist and be a boolean.
+ * \brief Returns the value of a boolean specific property of this entity.
+ * \param key Key of the specific property to get.
+ * It must exist and be a boolean.
  * \return The boolean value.
  */
 bool EntityData::get_boolean(const std::string& key) const {
 
-  const auto& it = fields.find(key);
-  Debug::check_assertion(it != fields.end(),
+  const auto& it = specific_properties.find(key);
+  Debug::check_assertion(it != specific_properties.end(),
       "No such entity field in " + get_type_name() + ": '" + key + "'");
 
   Debug::check_assertion(it->second.value_type == EntityFieldType::BOOLEAN,
@@ -659,14 +742,15 @@ bool EntityData::get_boolean(const std::string& key) const {
 }
 
 /**
- * \brief Sets the value of a boolean field of this entity.
- * \param key Key of the field to set. It must exist and be a boolean.
+ * \brief Sets the value of a boolean specific property of this entity.
+ * \param key Key of the specific property to set.
+ * It must exist and be a boolean.
  * \param value The boolean value.
  */
 void EntityData::set_boolean(const std::string& key, bool value) {
 
-  const auto& it = fields.find(key);
-  Debug::check_assertion(it != fields.end(),
+  const auto& it = specific_properties.find(key);
+  Debug::check_assertion(it != specific_properties.end(),
       "No such entity field in " + get_type_name() + ": '" + key + "'");
 
   Debug::check_assertion(it->second.value_type == EntityFieldType::BOOLEAN,
@@ -676,21 +760,21 @@ void EntityData::set_boolean(const std::string& key, bool value) {
 }
 
 /**
- * \brief Returns whether a field exists for this type of entity.
- * \param key Key of the field to check.
- * \return \c true if such a field exists.
+ * \brief Returns whether a specific property exists for this type of entity.
+ * \param key Key of the specific property to check.
+ * \return \c true if such a specific property exists.
  */
-bool EntityData::has_field(const std::string& key) const {
+bool EntityData::has_specific_property(const std::string& key) const {
 
-  return get_field(key).value_type != EntityData::EntityFieldType::NIL;
+  return get_specific_property(key).value_type != EntityData::EntityFieldType::NIL;
 }
 
 /**
- * \brief Returns whether a field is optional.
- * \param key Key of the field to check.
- * \return \c true if the field exists and is optional.
+ * \brief Returns whether a specific property is optional.
+ * \param key Key of the specific property to check.
+ * \return \c true if the specific property exists and is optional.
  */
-bool EntityData::is_field_optional(const std::string& key) const {
+bool EntityData::is_specific_property_optional(const std::string& key) const {
 
   const EntityTypeDescription& type_description = entity_type_descriptions.at(type);
   for (const EntityFieldDescription& field_description : type_description) {
@@ -703,15 +787,15 @@ bool EntityData::is_field_optional(const std::string& key) const {
 }
 
 /**
- * \brief Returns whether a field is unset.
+ * \brief Returns whether a specific property is unset.
  *
- * A field can only be unset if it is optional.
+ * A specific property can only be unset if it is optional.
  *
- * \param key Key of the field to check.
- * \return \c true if the field exists, is optional and is equal to its
+ * \param key Key of the specific property to check.
+ * \return \c true if the specific property exists, is optional and is equal to its
  * default value.
  */
-bool EntityData::is_field_unset(const std::string& key) const {
+bool EntityData::is_specific_property_unset(const std::string& key) const {
 
   const EntityTypeDescription& type_description = entity_type_descriptions.at(type);
   for (const EntityFieldDescription& field_description : type_description) {
@@ -720,7 +804,7 @@ bool EntityData::is_field_unset(const std::string& key) const {
     }
 
     if (field_description.optional != OptionalFlag::OPTIONAL) {
-      // Mandatory field: always set.
+      // Mandatory specific property: always set.
       return false;
     }
 
@@ -742,7 +826,7 @@ bool EntityData::is_field_unset(const std::string& key) const {
     }
   }
 
-  // The field does not exist.
+  // The specific property does not exist.
   return false;
 }
 

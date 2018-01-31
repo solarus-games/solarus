@@ -44,8 +44,8 @@ void check_entity(const EntityData& entity) {
   Debug::check_assertion(imported_entity.get_name() == entity.get_name(), "Entity name differs");
   Debug::check_assertion(imported_entity.get_layer() == entity.get_layer(), "Entity layer differs");
   Debug::check_assertion(imported_entity.get_xy() == entity.get_xy(), "Entity xy differs");
-  Debug::check_assertion(imported_entity.get_fields() == entity.get_fields(), "Entity fields differ");
-
+  Debug::check_assertion(imported_entity.get_user_properties() == entity.get_user_properties(), "Entity user properties differ");
+  Debug::check_assertion(imported_entity.get_specific_properties() == entity.get_specific_properties(), "Entity specific properties differ");
 }
 
 /**

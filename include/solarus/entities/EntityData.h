@@ -31,15 +31,18 @@ namespace Solarus {
 /**
  * \brief Stores the properties of a map entity.
  *
- * Properties includes its name, layer, coordinates and properties specific
- * to each entity type.
+ * Some properties (or fields) are common to all entity types:
+ * name (except tiles), layer, x, y and custom properties.
+ *
+ * Properties that are specific to each entity type
+ * and are called entity specific fields.
  */
 class SOLARUS_API EntityData : public LuaData {
 
   public:
 
     /**
-     * \brief Type of a field of an entity in the map data file.
+     * \brief Type of an entity specific field in the map data file.
      */
     enum class EntityFieldType {
         NIL,      /**< A field that does not exist. */
@@ -49,7 +52,7 @@ class SOLARUS_API EntityData : public LuaData {
     };
 
     /**
-     * \brief Stores the value of one field of the entity.
+     * \brief Stores the value of an entity specific field of the entity.
      */
     struct SOLARUS_API FieldValue {
 
@@ -68,7 +71,7 @@ class SOLARUS_API EntityData : public LuaData {
     };
 
     /**
-     * \brief Whether a field is optional for an entity of some type.
+     * \brief Whether an entity specific field is optional.
      */
     enum class OptionalFlag {
         MANDATORY,
@@ -76,17 +79,24 @@ class SOLARUS_API EntityData : public LuaData {
     };
 
     /**
-     * \brief Describes a field of an entity type.
+     * \brief Describes an entity specific field.
      */
     struct EntityFieldDescription {
 
         std::string key;              /**< Name of the field. */
         OptionalFlag optional;        /**< Whether the field is optional. */
         FieldValue default_value;     /**< Default value (also determines the value type). */
-
     };
 
+    /**
+     * \brief List of entity specific fields for an entity type.
+     */
     using EntityTypeDescription = std::vector<EntityFieldDescription>;
+
+    /**
+     * \brief Property defined by the user as any string key-value pair.
+     */
+    using UserProperty = std::pair<std::string, std::string>;
 
     EntityData();
     explicit EntityData(EntityType type);
@@ -96,6 +106,7 @@ class SOLARUS_API EntityData : public LuaData {
     const std::string& get_type_name() const;
     bool is_dynamic() const;
 
+    // Common properties.
     bool has_name() const;
     std::string get_name() const;
     void set_name(const std::string& name);
@@ -103,10 +114,17 @@ class SOLARUS_API EntityData : public LuaData {
     void set_layer(int layer);
     Point get_xy() const;
     void set_xy(const Point& xy);
+    const std::vector<UserProperty> get_user_properties() const;
+    const std::string& get_user_property(const std::string& key) const;
+    void set_user_property(const std::string& key, const std::string& value);
+    void remove_user_property(const std::string& key);
+    int get_user_property_index(const std::string& key) const;
+    bool has_user_property(const std::string& key) const;
 
-    void initialize_fields();
-    const std::map<std::string, FieldValue>& get_fields() const;
-    FieldValue get_field(const std::string& key) const;
+    // Specific properties.
+    void initialize_specific_properties();
+    const std::map<std::string, FieldValue>& get_specific_properties() const;
+    FieldValue get_specific_property(const std::string& key) const;
     bool is_string(const std::string& key) const;
     const std::string& get_string(const std::string& key) const;
     void set_string(const std::string& key, const std::string& value);
@@ -116,9 +134,9 @@ class SOLARUS_API EntityData : public LuaData {
     bool is_boolean(const std::string& key) const;
     bool get_boolean(const std::string& key) const;
     void set_boolean(const std::string& key, bool value);
-    bool has_field(const std::string& key) const;
-    bool is_field_optional(const std::string& key) const;
-    bool is_field_unset(const std::string& key) const;
+    bool has_specific_property(const std::string& key) const;
+    bool is_specific_property_optional(const std::string& key) const;
+    bool is_specific_property_unset(const std::string& key) const;
 
     bool import_from_lua(lua_State* l) override;
     bool export_to_lua(std::ostream& out) const override;
@@ -128,13 +146,18 @@ class SOLARUS_API EntityData : public LuaData {
 
   private:
 
-    EntityType type;    /**< Type of entity. */
-    std::string name;   /**< Unique name of the entity on the map. */
-    int layer;          /**< Layer of the entity on the map. */
-    Point xy;           /**< Entity position on the map. */
+    EntityType type;              /**< Type of entity. */
 
+    // Common properties.
+    std::string name;             /**< Unique name of the entity on the map. */
+    int layer;                    /**< Layer of the entity on the map. */
+    Point xy;                     /**< Entity position on the map. */
+    std::vector<UserProperty>
+        user_properties;          /**< User-defined properties. */
+
+    // Specific properties.
     std::map<std::string, FieldValue>
-        fields;         /**< Fields specific to the entity type. */
+        specific_properties;      /**< Additional properties specific to the entity type. */
 
 };
 

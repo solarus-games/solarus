@@ -18,8 +18,8 @@
 #define SOLARUS_MAP_DATA_H
 
 #include "solarus/core/Common.h"
-#include "solarus/core/EntityData.h"
 #include "solarus/core/Size.h"
+#include "solarus/entities/EntityData.h"
 #include <array>
 #include <deque>
 #include <iosfwd>

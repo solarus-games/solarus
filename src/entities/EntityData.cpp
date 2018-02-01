@@ -500,52 +500,8 @@ void EntityData::set_xy(const Point& xy) {
  * \brief Returns the user-defined properties of this entity.
  * \return The user-defined properties.
  */
-const std::vector<EntityData::UserProperty> EntityData::get_user_properties() const {
+const std::vector<EntityData::UserProperty>& EntityData::get_user_properties() const {
   return user_properties;
-}
-
-/**
- * \brief Returns the value of a user property.
- * \param key Key of the property to get.
- * \return The corresponding value or an empty string.
- */
-const std::string& EntityData::get_user_property(const std::string& key) const {
-
-  int index = get_user_property_index(key);
-  if (index == -1) {
-    static const std::string empty_string;
-    return empty_string;
-  }
-
-  return user_properties[index].second;
-}
-
-/**
- * \brief Sets the value of a user property.
- * \param key Key of the property to set.
- * \param value The value to set.
- */
-void EntityData::set_user_property(const std::string& key, const std::string& value) {
-
-  int index = get_user_property_index(key);
-  if (index == -1) {
-    return;
-  }
-
-  user_properties[index].second = value;
-}
-
-/**
- * \brief Removes the given user property if it exists.
- * \param key Key of the property to remove.
- */
-void EntityData::remove_user_property(const std::string& key) {
-
-  int index = get_user_property_index(key);
-  if (index == -1) {
-    return;
-  }
-  user_properties.erase(user_properties.begin() + index);
 }
 
 /**
@@ -572,6 +528,37 @@ int EntityData::get_user_property_index(const std::string& key) const {
  */
 bool EntityData::has_user_property(const std::string& key) const {
   return get_user_property_index(key);
+}
+
+/**
+ * \brief Returns the value of a user property.
+ * \param key Key of the property to get.
+ * \return The corresponding value or an empty string.
+ */
+const std::string& EntityData::get_user_property_value(const std::string& key) const {
+
+  int index = get_user_property_index(key);
+  if (index == -1) {
+    static const std::string empty_string;
+    return empty_string;
+  }
+
+  return user_properties[index].second;
+}
+
+/**
+ * \brief Sets the value of a user property.
+ * \param key Key of the property to set.
+ * \param value The value to set.
+ */
+void EntityData::set_user_property_value(const std::string& key, const std::string& value) {
+
+  int index = get_user_property_index(key);
+  if (index == -1) {
+    return;
+  }
+
+  user_properties[index].second = value;
 }
 
 /**

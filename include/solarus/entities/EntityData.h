@@ -114,12 +114,18 @@ class SOLARUS_API EntityData : public LuaData {
     void set_layer(int layer);
     Point get_xy() const;
     void set_xy(const Point& xy);
-    const std::vector<UserProperty> get_user_properties() const;
-    const std::string& get_user_property(const std::string& key) const;
-    void set_user_property(const std::string& key, const std::string& value);
-    void remove_user_property(const std::string& key);
+
+    const std::vector<UserProperty>& get_user_properties() const;
+    int get_user_property_count() const;
+    const UserProperty& get_user_property(int index) const;
+    void set_user_property(int index, const UserProperty& user_property);
+    void add_user_property(const UserProperty& user_property);
+    void remove_user_property(int index);
+
     int get_user_property_index(const std::string& key) const;
     bool has_user_property(const std::string& key) const;
+    const std::string& get_user_property_value(const std::string& key) const;
+    void set_user_property_value(const std::string& key, const std::string& value);
 
     // Specific properties.
     void initialize_specific_properties();

@@ -591,7 +591,7 @@ int EntityData::get_user_property_index(const std::string& key) const {
  * \return \c true if the entity has such a property.
  */
 bool EntityData::has_user_property(const std::string& key) const {
-  return get_user_property_index(key);
+  return get_user_property_index(key) != -1;
 }
 
 /**
@@ -901,7 +901,22 @@ EntityData EntityData::check_entity_data(lua_State* l, int index, EntityType typ
   entity.set_layer(layer);
   entity.set_xy({ x, y });
 
-  // Additional fields for this type.
+  // User-defined properties.
+  lua_getfield(l, index, "properties");
+  if (!lua_isnil(l, -1)) {
+    LuaTools::check_type(l, -1, LUA_TTABLE);
+    lua_pushnil(l);
+    while (lua_next(l, -2) != 0) {
+      LuaTools::check_type(l, -1, LUA_TTABLE);
+      const std::string& key = LuaTools::check_string_field(l, -1, "key");
+      const std::string& value = LuaTools::check_string_field(l, -1, "value");
+      entity.add_user_property(std::make_pair(key, value));
+      lua_pop(l, 1);
+    }
+  }
+  lua_pop(l, 1);
+
+  // Additional properties specific to the entity type.
   const EntityTypeDescription& type_description = entity_type_descriptions.at(type);
   for (const EntityFieldDescription& field_description : type_description) {
 
@@ -1040,11 +1055,11 @@ void EntityData::export_user_properties(std::ostream& out) const {
     return;
   }
 
-  out << "  properties = {";
+  out << "  properties = {\n";
   for (const UserProperty& user_property : user_properties) {
     out << "    {\n";
-    out << "      key = \"" << escape_string(user_property.first) << "\",";
-    out << "      value = \"" << escape_string(user_property.second) << "\",";
+    out << "      key = \"" << escape_string(user_property.first) << "\",\n";
+    out << "      value = \"" << escape_string(user_property.second) << "\",\n";
     out << "    },\n";
   }
   out << "  },\n";

@@ -68,6 +68,16 @@ enemy{
   layer = 0,
   x = 24,
   y = 221,
+  properties = {
+    {
+      key = "my_custom_property",
+      value = "something",
+    },
+    {
+      key = "another_property",
+      value = "stuff",
+    },
+  },
   direction = 3,
   breed = "test_enemy",
 }

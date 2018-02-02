@@ -876,6 +876,8 @@ class LuaContext {
       entity_api_set_optimization_distance,
       entity_api_is_in_same_region,
       entity_api_get_state,
+      entity_api_get_property,
+      entity_api_set_property,
       hero_api_teleport,
       hero_api_get_direction,
       hero_api_set_direction,

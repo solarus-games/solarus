@@ -48,7 +48,7 @@ int get_positive_index(lua_State* l, int index) {
 /**
  * \brief Returns whether the specified name is a valid Lua identifier.
  * \param name The name to check.
- * \return true if the name only contains alphanumeric characters or '_' and
+ * \return \c true if the name only contains alphanumeric characters or '_' and
  * does not start with a digit.
  */
 bool is_valid_lua_identifier(const std::string& name) {

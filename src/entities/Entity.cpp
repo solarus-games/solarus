@@ -67,6 +67,7 @@ Entity::Entity(
   origin(0, 0),
   name(name),
   direction(direction),
+  user_properties(),
   sprites(),
   default_sprite_name(),
   visible(true),
@@ -1222,6 +1223,61 @@ int Entity::get_optimization_distance2() const {
 void Entity::set_optimization_distance(int distance) {
   this->optimization_distance = distance;
   this->optimization_distance2 = distance * distance;
+}
+
+/**
+ * \brief Returns the user-defined properties of this entity.
+ * \return The user-defined properties.
+ */
+const std::vector<Entity::UserProperty>& Entity::get_user_properties() const {
+  return user_properties;
+}
+
+/**
+ * \brief Sets the user-defined properties of this entity.
+ * \param user_properties The user-defined properties to set.
+ */
+void Entity::set_user_properties(const std::vector<UserProperty>& user_properties) {
+
+  this->user_properties = user_properties;
+}
+
+/**
+ * \brief Returns the value of a user property.
+ * \param key Key of the property to get.
+ * \return The corresponding value or an empty string.
+ */
+const std::string& Entity::get_user_property_value(const std::string& key) const {
+
+  for (const UserProperty& user_property : user_properties) {
+    if (user_property.first == key) {
+      return user_property.second;
+    }
+  }
+
+  static const std::string empty_string;
+  return empty_string;
+}
+
+/**
+ * \brief Sets the value of a user property.
+ *
+ * Creates the property if it does not exists yet.
+ *
+ * \param key Key of the property to set.
+ * \param value The value to set.
+ */
+void Entity::set_user_property_value(const std::string& key, const std::string& value) {
+
+  for (UserProperty& user_property : user_properties) {
+    if (user_property.first == key) {
+      user_property.second = value;
+      return;
+    }
+  }
+
+  // Not found: add a new property.
+  user_properties.emplace_back(std::make_pair(key, value));
 }
 
 /**

@@ -497,6 +497,21 @@ void EntityData::set_xy(const Point& xy) {
 }
 
 /**
+ * \brief Returns whether a string is a valid key for a user property.
+ *
+ * It should only contain alphanumeric characters or '_' and
+ * not start with a digit.
+ *
+ * \param key The string to check.
+ * \return \c true if this is a valid user property key.
+ */
+bool EntityData::is_user_property_key_valid(const std::string& key) {
+
+  // Same rules as Lua identifiers.
+  return LuaTools::is_valid_lua_identifier(key);
+}
+
+/**
  * \brief Returns the user-defined properties of this entity.
  * \return The user-defined properties.
  */
@@ -534,11 +549,28 @@ void EntityData::set_user_property(int index, const UserProperty& user_property)
   Debug::check_assertion(index >= 0 && index < get_user_property_count(),
       "Invalid user property index");
 
+  Debug::check_assertion(is_user_property_key_valid(user_property.first),
+      "Invalid user property key");
+
   int existing_index = get_user_property_index(user_property.first);
   Debug::check_assertion(existing_index == -1 || existing_index == index,
       "This user property already exists");
 
   user_properties[index] = user_property;
+}
+
+/**
+ * \brief Sets all user-defined properties.
+ * \param user_properties The properties to set. Keys must be unique.
+ */
+void EntityData::set_user_properties(const std::vector<UserProperty>& user_properties) {
+
+  for (const UserProperty& user_property : user_properties) {
+    Debug::check_assertion(is_user_property_key_valid(user_property.first),
+        "Invalid user property key");
+  }
+
+  this->user_properties = user_properties;
 }
 
 /**
@@ -549,6 +581,9 @@ void EntityData::set_user_property(int index, const UserProperty& user_property)
  * \param user_property The new key and value to add.
  */
 void EntityData::add_user_property(const UserProperty& user_property) {
+
+  Debug::check_assertion(is_user_property_key_valid(user_property.first),
+      "Invalid user property key");
 
   Debug::check_assertion(!has_user_property(user_property.first),
       "This user property already exists");
@@ -592,37 +627,6 @@ int EntityData::get_user_property_index(const std::string& key) const {
  */
 bool EntityData::has_user_property(const std::string& key) const {
   return get_user_property_index(key) != -1;
-}
-
-/**
- * \brief Returns the value of a user property.
- * \param key Key of the property to get.
- * \return The corresponding value or an empty string.
- */
-const std::string& EntityData::get_user_property_value(const std::string& key) const {
-
-  int index = get_user_property_index(key);
-  if (index == -1) {
-    static const std::string empty_string;
-    return empty_string;
-  }
-
-  return user_properties[index].second;
-}
-
-/**
- * \brief Sets the value of a user property.
- * \param key Key of the property to set.
- * \param value The value to set.
- */
-void EntityData::set_user_property_value(const std::string& key, const std::string& value) {
-
-  int index = get_user_property_index(key);
-  if (index == -1) {
-    return;
-  }
-
-  user_properties[index].second = value;
 }
 
 /**
@@ -910,6 +914,12 @@ EntityData EntityData::check_entity_data(lua_State* l, int index, EntityType typ
       LuaTools::check_type(l, -1, LUA_TTABLE);
       const std::string& key = LuaTools::check_string_field(l, -1, "key");
       const std::string& value = LuaTools::check_string_field(l, -1, "value");
+      if (entity.has_user_property(key)) {
+        LuaTools::error(l, "Duplicate property '" + key + "'");
+      }
+      if (!EntityData::is_user_property_key_valid(key)) {
+        LuaTools::error(l, "Invalid property key: '" + key + "'");
+      }
       entity.add_user_property(std::make_pair(key, value));
       lua_pop(l, 1);
     }

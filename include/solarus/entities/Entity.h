@@ -85,6 +85,8 @@ class SOLARUS_API Entity: public ExportableToLua {
 
   public:
 
+    using UserProperty = std::pair<std::string, std::string>;
+
     struct NamedSprite {
       std::string name;
       SpritePtr sprite;
@@ -116,7 +118,7 @@ class SOLARUS_API Entity: public ExportableToLua {
     virtual void notify_command_pressed(GameCommand command);
     virtual void notify_command_released(GameCommand command);
 
-    // adding to a map
+    // Adding to a map.
     bool is_initialized() const;
     bool is_on_map() const;
     void set_map(Map& map);
@@ -129,7 +131,7 @@ class SOLARUS_API Entity: public ExportableToLua {
     Game& get_game();
     const Game& get_game() const;
 
-    // position in the map
+    // Position in the map.
     int get_layer() const;
     void set_layer(int layer);
     Ground get_ground_below() const;
@@ -184,7 +186,7 @@ class SOLARUS_API Entity: public ExportableToLua {
     void set_enabled(bool enable);
     virtual void notify_enabled(bool enabled);
 
-    // properties
+    // Properties.
     const std::string& get_name() const;
     void set_name(const std::string& name);
     bool has_name() const;
@@ -192,6 +194,11 @@ class SOLARUS_API Entity: public ExportableToLua {
     int get_direction() const;
     void set_direction(int direction);
     virtual void notify_direction_changed();
+
+    const std::vector<UserProperty>& get_user_properties() const;
+    void set_user_properties(const std::vector<UserProperty>& user_properties);
+    const std::string& get_user_property_value(const std::string& key) const;
+    void set_user_property_value(const std::string& key, const std::string& value);
 
     // Sprites.
     bool has_sprite() const;
@@ -243,7 +250,7 @@ class SOLARUS_API Entity: public ExportableToLua {
     virtual void notify_facing_entity_changed(Entity* facing_entity);
     static const Point& direction_to_xy_move(int direction8);
 
-    // geometry
+    // Geometry.
     bool overlaps(const Rectangle& rectangle) const;
     bool overlaps(const Point& point) const;
     bool overlaps(int x, int y) const;
@@ -457,7 +464,8 @@ class SOLARUS_API Entity: public ExportableToLua {
     std::string name;                           /**< Name of the entity or an empty string.
                                                  * The name uniquely identifies the entity in the map. */
 
-    int direction;                              /**< direction of the entity, not used for all kinds of entities */
+    int direction;                              /**< Direction of the entity, not used for all kinds of entities */
+    std::vector<UserProperty> user_properties;  /**< List of user-defined properties. */
 
     std::vector<NamedSprite>
         sprites;                                /**< Sprites representing the entity. */

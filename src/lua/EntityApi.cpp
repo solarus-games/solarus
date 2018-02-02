@@ -141,7 +141,9 @@ void LuaContext::register_entity_module() {
   if (CurrentQuest::is_format_at_least({ 1, 6 })) {
     common_methods.insert(common_methods.end(), {
         { "get_layer", entity_api_get_layer },
-        { "set_layer", entity_api_set_layer }
+        { "set_layer", entity_api_set_layer },
+        { "get_property", entity_api_get_property },
+        { "set_property", entity_api_set_property }
     });
   }
 
@@ -1673,6 +1675,45 @@ int LuaContext::entity_api_get_state(lua_State* l) {
     }
     return 1;
   });
+}
+
+/**
+ * \brief Implementation of entity:get_property().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_get_property(lua_State* l) {
+
+  const Entity& entity = *check_entity(l, 1);
+  const std::string& key = LuaTools::check_string(l, 2);
+
+  const std::string& value = entity.get_user_property_value(key);
+  if (value.empty()) {
+    lua_pushnil(l);
+  }
+  else {
+    push_string(l, value);
+  }
+  return 1;
+}
+
+/**
+ * \brief Implementation of entity:set_property().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_set_property(lua_State* l) {
+
+  Entity& entity = *check_entity(l, 1);
+  const std::string& key = LuaTools::check_string(l, 2);
+  const std::string& value = LuaTools::check_string(l, 3);
+
+  if (!EntityData::is_user_property_key_valid(key)) {
+    LuaTools::arg_error(l, 2, "Invalid property key: '" + key + "'");
+  }
+  entity.set_user_property_value(key, value);
+
+  return 0;
 }
 
 /**

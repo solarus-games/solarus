@@ -38,6 +38,7 @@ Changes that do not introduce incompatibilities:
 * Add a function sol.main.get_quest_version() (#1058) by Nate-Devv.
 * Add a function sol.main.get_resource_ids() to get the resource lists (#959).
 * Add abilities push, grab and pull to game:get/set_ability() (#788).
+* Add methods entity:get_property() and entity:set_property() (#1094).
 * Add methods entity:get_layer() and entity:set_layer().
 * Add methods enemy:get/set_attacking_collision_mode() (#1066).
 * Add a method sprite:get_frame_src_xy() (#1093).
@@ -50,6 +51,7 @@ Changes that do not introduce incompatibilities:
 Data files format changes
 -------------------------
 
+* Maps: add support of custom properties for entities (#1094).
 * Tilesets: add support of border sets (autotiles) (#1069).
 * Make the tileset entities image optional (#884).
 

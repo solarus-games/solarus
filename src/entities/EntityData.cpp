@@ -505,6 +505,70 @@ const std::vector<EntityData::UserProperty>& EntityData::get_user_properties() c
 }
 
 /**
+ * \brief Returns the number of user-defined properties of this entity.
+ * \return The number of user-defined properties.
+ */
+int EntityData::get_user_property_count() const {
+  return static_cast<int>(user_properties.size());
+}
+
+/**
+ * \brief Returns the user property at the given index.
+ * \param index An index between \c 0 and <tt>get_user_property_count() - 1</tt>.
+ * \return The user property at this index.
+ */
+const EntityData::UserProperty& EntityData::get_user_property(int index) const {
+
+  Debug::check_assertion(index >= 0 && index < get_user_property_count(),
+      "Invalid user property index");
+  return user_properties.at(index);
+}
+
+/**
+ * \brief Sets the user property at the given index.
+ * \param index An index between \c 0 and <tt>get_user_property_count() - 1</tt>.
+ * \param user_property The new key and value to set.
+ */
+void EntityData::set_user_property(int index, const UserProperty& user_property) {
+
+  Debug::check_assertion(index >= 0 && index < get_user_property_count(),
+      "Invalid user property index");
+
+  int existing_index = get_user_property_index(user_property.first);
+  Debug::check_assertion(existing_index == -1 || existing_index == index,
+      "This user property already exists");
+
+  user_properties[index] = user_property;
+}
+
+/**
+ * \brief Adds a user property.
+ *
+ * The key of the property should not already exist.
+ *
+ * \param user_property The new key and value to add.
+ */
+void EntityData::add_user_property(const UserProperty& user_property) {
+
+  Debug::check_assertion(!has_user_property(user_property.first),
+      "This user property already exists");
+
+  user_properties.emplace_back(user_property);
+}
+
+/**
+ * \brief Returns a user property.
+ * \param index An index between \c 0 and <tt>get_user_property_count() - 1</tt>.
+ */
+void EntityData::remove_user_property(int index) {
+
+  Debug::check_assertion(index >= 0 && index < get_user_property_count(),
+      "Invalid user property index");
+
+  user_properties.erase(user_properties.begin() + index);
+}
+
+/**
  * \brief Returns the index of a user property in the user property list.
  * \param key Key of the property to get.
  * \return The corresponding index, or -1 if there is no such property.

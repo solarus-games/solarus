@@ -1018,7 +1018,45 @@ bool EntityData::export_to_lua(std::ostream& out) const {
       << "  x = " << get_xy().x << ",\n"
       << "  y = " << get_xy().y << ",\n";
 
-  // Properties specific to a type of entity.
+  // User-defined properties.
+  export_user_properties(out);
+
+  // Properties specific to the type of entity.
+  export_specific_properties(out);
+
+  out << "}\n\n";
+
+  return true;
+}
+
+/**
+ * \brief Exports the user-defined properties to a stream.
+ * \param out Output stream to write.
+ */
+void EntityData::export_user_properties(std::ostream& out) const {
+
+  const std::vector<UserProperty>& user_properties = get_user_properties();
+  if (user_properties.empty()) {
+    return;
+  }
+
+  out << "  properties = {";
+  for (const UserProperty& user_property : user_properties) {
+    out << "    {\n";
+    out << "      key = \"" << escape_string(user_property.first) << "\",";
+    out << "      value = \"" << escape_string(user_property.second) << "\",";
+    out << "    },\n";
+  }
+  out << "  },\n";
+}
+
+/**
+ * \brief Exports the properties to the entity type to a stream.
+ * \param out Output stream to write.
+ */
+void EntityData::export_specific_properties(std::ostream& out) const {
+
+  // Properties specific to the type of entity.
   const EntityTypeDescription& type_description = entity_type_descriptions.at(get_type());
 
   for (const EntityFieldDescription& field_description : type_description) {
@@ -1069,9 +1107,6 @@ bool EntityData::export_to_lua(std::ostream& out) const {
         break;
     }
   }
-  out << "}\n\n";
-
-  return true;
 }
 
 }  // namespace Solarus

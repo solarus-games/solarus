@@ -152,6 +152,9 @@ class SOLARUS_API EntityData : public LuaData {
 
   private:
 
+    void export_user_properties(std::ostream& out) const;
+    void export_specific_properties(std::ostream& out) const;
+
     EntityType type;              /**< Type of entity. */
 
     // Common properties.

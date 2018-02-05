@@ -1,0 +1,46 @@
+properties{
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  min_layer = 0,
+  max_layer = 2,
+  tileset = "castle",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  pattern = "3",
+}
+
+destination{
+  name = "destination",
+  layer = 0,
+  x = 24,
+  y = 29,
+  direction = 1,
+}
+
+sensor{
+  name = "sensor_1",
+  layer = 0,
+  x = 24,
+  y = 61,
+  properties = {
+    {
+      key = "my_prop",
+      value = "val",
+    },
+    {
+      key = "other",
+      value = "1",
+    },
+  },
+  width = 16,
+  height = 16,
+}
+

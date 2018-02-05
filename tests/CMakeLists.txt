@@ -63,6 +63,7 @@ set(lua_test_maps
   "bugs/946_reused_movement_callback"
   "bugs/954_entity_name_nil_after_removed"
   "bugs/1076_treasure_dialog_optional"
+  "bugs/1094_entity_properties"
 )
 
 # Build the Solarus testing library.

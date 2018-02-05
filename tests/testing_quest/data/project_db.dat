@@ -1,6 +1,7 @@
 map{ id = "all_entities", description = "All entities" }
 map{ id = "basic_test", description = "Basic test" }
 map{ id = "bugs/1076_treasure_dialog_optional", description = "#1076: Treasure dialog should be optional" }
+map{ id = "bugs/1094_entity_properties", description = "#1094: Entity user-defined properties" }
 map{ id = "bugs/486_diagonal_dynamic_tiles", description = "#486: Wrong obstacles with diagonal dynamic tiles" }
 map{ id = "bugs/496_stream_speed_0", description = "#496: Allow streams to have a speed of zero" }
 map{ id = "bugs/526_get_entities_same_region", description = "#526: map:get_entities_in_same_region()" }
@@ -260,4 +261,5 @@ language{ id = "en", description = "English" }
 
 font{ id = "8_bit", description = "8 bit" }
 font{ id = "minecraftia", description = "Minecraftia" }
+
 

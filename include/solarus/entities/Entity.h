@@ -199,6 +199,7 @@ class SOLARUS_API Entity: public ExportableToLua {
     void set_user_properties(const std::vector<UserProperty>& user_properties);
     const std::string& get_user_property_value(const std::string& key) const;
     void set_user_property_value(const std::string& key, const std::string& value);
+    void remove_user_property(const std::string& key);
 
     // Sprites.
     bool has_sprite() const;

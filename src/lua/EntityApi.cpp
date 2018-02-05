@@ -1684,17 +1684,19 @@ int LuaContext::entity_api_get_state(lua_State* l) {
  */
 int LuaContext::entity_api_get_property(lua_State* l) {
 
-  const Entity& entity = *check_entity(l, 1);
-  const std::string& key = LuaTools::check_string(l, 2);
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Entity& entity = *check_entity(l, 1);
+    const std::string& key = LuaTools::check_string(l, 2);
 
-  const std::string& value = entity.get_user_property_value(key);
-  if (value.empty()) {
-    lua_pushnil(l);
-  }
-  else {
-    push_string(l, value);
-  }
-  return 1;
+    const std::string& value = entity.get_user_property_value(key);
+    if (value.empty()) {
+      lua_pushnil(l);
+    }
+    else {
+      push_string(l, value);
+    }
+    return 1;
+  });
 }
 
 /**
@@ -1704,16 +1706,24 @@ int LuaContext::entity_api_get_property(lua_State* l) {
  */
 int LuaContext::entity_api_set_property(lua_State* l) {
 
-  Entity& entity = *check_entity(l, 1);
-  const std::string& key = LuaTools::check_string(l, 2);
-  const std::string& value = LuaTools::check_string(l, 3);
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Entity& entity = *check_entity(l, 1);
+    const std::string& key = LuaTools::check_string(l, 2);
 
-  if (!EntityData::is_user_property_key_valid(key)) {
-    LuaTools::arg_error(l, 2, "Invalid property key: '" + key + "'");
-  }
-  entity.set_user_property_value(key, value);
+    if (lua_isnil(l, 3)) {
+      entity.remove_user_property(key);
+    }
+    else {
+      const std::string& value = LuaTools::check_string(l, 3);
 
-  return 0;
+      if (!EntityData::is_user_property_key_valid(key)) {
+        LuaTools::arg_error(l, 2, "Invalid property key: '" + key + "'");
+      }
+      entity.set_user_property_value(key, value);
+    }
+
+    return 0;
+  });
 }
 
 /**

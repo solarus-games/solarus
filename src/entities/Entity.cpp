@@ -1281,6 +1281,20 @@ void Entity::set_user_property_value(const std::string& key, const std::string& 
 }
 
 /**
+ * \brief Removes a user property if it exists.
+ * \param key Key of the property to remove.
+ */
+void Entity::remove_user_property(const std::string& key) {
+
+  for (auto it = user_properties.begin(); it != user_properties.end(); ++it) {
+    if (it->first == key) {
+      user_properties.erase(it);
+      return;
+    }
+  }
+}
+
+/**
  * \brief Returns whether the entity has at least one sprite.
  * \return true if the entity has at least one sprite.
  */

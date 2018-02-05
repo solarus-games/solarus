@@ -1,11 +1,18 @@
+local function format_value(value)
+
+  if type(value) == "string" then
+    return "'" .. value .. "'"
+  end
+  return tostring(value)
+end
+
 function assert_equal(actual, expected)
 
   if actual ~= expected then
-    error("equality assertion failed: expected '" ..
-        tostring(expected) .. "', got '" ..
-        tostring(actual) .. "'")
+    error("equality assertion failed: expected " ..
+        format_value(expected) .. ", got " ..
+        format_value(actual) .. "")
   end
-
 end
 
 function sol.main.on_started()

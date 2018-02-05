@@ -1243,6 +1243,22 @@ void Entity::set_user_properties(const std::vector<UserProperty>& user_propertie
 }
 
 /**
+ * \brief Returns whether the entity has a user-defined property.
+ * \param key Key of the user-defined property to check.
+ * \return \c true if such a property exists.
+ */
+bool Entity::has_user_property(const std::string& key) const {
+
+  for (const UserProperty& user_property : user_properties) {
+    if (user_property.first == key) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/**
  * \brief Returns the value of a user property.
  * \param key Key of the property to get.
  * \return The corresponding value or an empty string.

@@ -1688,11 +1688,11 @@ int LuaContext::entity_api_get_property(lua_State* l) {
     const Entity& entity = *check_entity(l, 1);
     const std::string& key = LuaTools::check_string(l, 2);
 
-    const std::string& value = entity.get_user_property_value(key);
-    if (value.empty()) {
+    if (!entity.has_user_property(key)) {
       lua_pushnil(l);
     }
     else {
+      const std::string& value = entity.get_user_property_value(key);
       push_string(l, value);
     }
     return 1;

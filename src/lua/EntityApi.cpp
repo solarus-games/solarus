@@ -143,7 +143,9 @@ void LuaContext::register_entity_module() {
         { "get_layer", entity_api_get_layer },
         { "set_layer", entity_api_set_layer },
         { "get_property", entity_api_get_property },
-        { "set_property", entity_api_set_property }
+        { "set_property", entity_api_set_property },
+        { "get_properties", entity_api_get_properties },
+        { "set_properties", entity_api_set_properties }
     });
   }
 
@@ -1723,6 +1725,64 @@ int LuaContext::entity_api_set_property(lua_State* l) {
     }
 
     return 0;
+  });
+}
+
+/**
+ * \brief Implementation of entity:get_properties().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_get_properties(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Entity& entity = *check_entity(l, 1);
+
+    const std::vector<Entity::UserProperty>& properties = entity.get_user_properties();
+    lua_createtable(l, properties.size(), 0);
+    int i = 1;
+    for (const Entity::UserProperty& property : properties) {
+      lua_createtable(l, 0, 2);
+      push_string(l, property.first);
+      lua_setfield(l, -2, "key");
+      push_string(l, property.second);
+      lua_setfield(l, -2, "value");
+      lua_rawseti(l, -2, i);
+      ++i;
+    }
+
+    return 1;
+  });
+}
+
+/**
+ * \brief Implementation of entity:set_properties().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_set_properties(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Entity& entity = *check_entity(l, 1);
+    LuaTools::check_type(l, 2, LUA_TTABLE);
+
+    entity.set_user_properties({});
+    lua_pushnil(l);
+    while (lua_next(l, 2) != 0) {
+      LuaTools::check_type(l, -1, LUA_TTABLE);
+      const std::string& key = LuaTools::check_string_field(l, -1, "key");
+      const std::string& value = LuaTools::check_string_field(l, -1, "value");
+      if (entity.has_user_property(key)) {
+        LuaTools::error(l, "Duplicate property '" + key + "'");
+      }
+      if (!EntityData::is_user_property_key_valid(key)) {
+        LuaTools::error(l, "Invalid property key: '" + key + "'");
+      }
+      entity.set_user_property_value(key, value);
+      lua_pop(l, 1);
+    }
+
+    return 1;
   });
 }
 

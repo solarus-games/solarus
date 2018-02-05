@@ -486,8 +486,8 @@ std::string check_string(
             + luaL_typename(l, index) + ")"
     );
   }
-
-  return lua_tostring(l, index);
+  size_t str_len = lua_strlen(l,index);
+  return {lua_tostring(l, index),str_len};
 }
 
 /**

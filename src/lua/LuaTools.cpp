@@ -492,7 +492,9 @@ std::string check_string(
     );
   }
 
-  return lua_tostring(l, index);
+  size_t str_len=0;
+  const char* c_str = lua_tolstring(l,index,&str_len);
+  return {c_str,str_len};
 }
 
 /**

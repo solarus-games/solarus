@@ -86,6 +86,8 @@ class Surface: public Drawable {
     void set_opacity(uint8_t opacity);
 
     std::string get_pixels() const;
+    void set_pixels(const std::string& buffer);
+
     void apply_pixel_filter(const SoftwarePixelFilter& pixel_filter, Surface& dst_surface);
 
     void render(SDL_Texture& render_target);

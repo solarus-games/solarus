@@ -286,6 +286,47 @@ std::string Surface::get_pixels() const {
 }
 
 /**
+ * @brief Set pixels of this surface from a RGBA buffer
+ * @param buffer a string considerer as array of bytes with pixels in RGBA
+ */
+void Surface::set_pixels(const std::string& buffer) {
+    const int pixels_size = get_width() * get_height() * 4;
+    const size_t buffer_size = buffer.size() > pixels_size ? pixels_size : buffer.size();
+
+    if (internal_surface->format->format == SDL_PIXELFORMAT_ABGR8888) {
+      // No conversion needed.
+      char* pixels = static_cast<char*>(internal_surface->pixels);
+      std::copy(buffer.begin(),buffer.end(),pixels);
+      return;
+    }
+    uint8_t pixels[buffer_size];
+    std::copy(buffer.begin(),buffer.end(),pixels);
+    SDL_PixelFormat* format_rgba = SDL_AllocFormat(SDL_PIXELFORMAT_ABGR8888); //TODO keep this object :)
+    SDL_Surface_UniquePtr rgba_surf(SDL_CreateRGBSurfaceFrom(
+          pixels,
+          get_width(),
+          get_height(),
+          format_rgba->BitsPerPixel,
+          format_rgba->BytesPerPixel*get_width(),
+          format_rgba->Rmask,
+          format_rgba->Gmask,
+          format_rgba->Bmask,
+          format_rgba->Amask
+      ));
+    SDL_FreeFormat(format_rgba);
+    //Convert from RGBA
+    SDL_PixelFormat* pixel_format = Video::get_pixel_format();
+    SDL_Surface_UniquePtr converted_surf(SDL_ConvertSurface(
+         rgba_surf.get(),
+         pixel_format,
+         0
+    ));
+    internal_surface = std::move(converted_surf);
+    SDL_SetSurfaceAlphaMod(internal_surface.get(), opacity);  // Re-apply the alpha.
+    SDL_SetSurfaceBlendMode(internal_surface.get(), SDL_BLENDMODE_BLEND);
+}
+
+/**
  * \brief Clears this surface.
  *
  * The surface becomes fully transparent and its size remains unchanged.

@@ -295,24 +295,21 @@ std::string Surface::get_pixels() const {
  * @param buffer a string considerer as array of bytes with pixels in RGBA
  */
 void Surface::set_pixels(const std::string& buffer) {
-    const size_t pixels_size = get_width() * get_height() * 4;
-    const size_t buffer_size = buffer.size() > pixels_size ? pixels_size : buffer.size();
 
     if (internal_surface->format->format == SDL_PIXELFORMAT_ABGR8888) {
       // No conversion needed.
       char* pixels = static_cast<char*>(internal_surface->pixels);
-      std::copy(buffer.begin(),buffer.end(),pixels);
+      std::copy(buffer.begin(), buffer.end(), pixels);
       return;
     }
-    uint8_t pixels[buffer_size];
-    std::copy(buffer.begin(),buffer.end(),pixels);
-    SDL_PixelFormat* format_rgba = SDL_AllocFormat(SDL_PIXELFORMAT_ABGR8888); //TODO keep this object :)
+
+    SDL_PixelFormat* format_rgba = SDL_AllocFormat(SDL_PIXELFORMAT_ABGR8888); // TODO keep this object :)
     SDL_Surface_UniquePtr rgba_surf(SDL_CreateRGBSurfaceFrom(
-          pixels,
+          const_cast<char*>(buffer.data()),
           get_width(),
           get_height(),
           format_rgba->BitsPerPixel,
-          format_rgba->BytesPerPixel*get_width(),
+          format_rgba->BytesPerPixel * get_width(),
           format_rgba->Rmask,
           format_rgba->Gmask,
           format_rgba->Bmask,

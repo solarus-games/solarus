@@ -319,7 +319,7 @@ void Surface::set_pixels(const std::string& buffer) {
           format_rgba->Amask
       ));
     SDL_FreeFormat(format_rgba);
-    //Convert from RGBA
+    // Convert from RGBA.
     SDL_PixelFormat* pixel_format = Video::get_pixel_format();
     SDL_Surface_UniquePtr converted_surf(SDL_ConvertSurface(
          rgba_surf.get(),

@@ -47,6 +47,8 @@ Changes that do not introduce incompatibilities:
 * sprite:get_frame_delay() can now optionally take an animation.
 * sprite:get_size() can now optionally take an animation and direction.
 * sprite:get_origin() can now optionally take an animation and direction.
+* Add a method surface:get_pixels() (#452).
+* Add a method surface:set_pixels() (#466) by stdgregwar.
 * Add method get_angle() to more movement types (#1122) by stdgregwar.
 
 Data files format changes

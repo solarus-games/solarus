@@ -295,7 +295,7 @@ std::string Surface::get_pixels() const {
  * @param buffer a string considerer as array of bytes with pixels in RGBA
  */
 void Surface::set_pixels(const std::string& buffer) {
-    const int pixels_size = get_width() * get_height() * 4;
+    const size_t pixels_size = get_width() * get_height() * 4;
     const size_t buffer_size = buffer.size() > pixels_size ? pixels_size : buffer.size();
 
     if (internal_surface->format->format == SDL_PIXELFORMAT_ABGR8888) {

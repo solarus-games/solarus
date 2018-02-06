@@ -255,11 +255,12 @@ int LuaContext::surface_api_get_pixels(lua_State* l) {
  * \return Number of values to return to Lua.
  */
 int LuaContext::surface_api_set_pixels(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    // TODO
-    return 0;
-  });
+    return LuaTools::exception_boundary_handle(l, [&] {
+        Surface& surface = *check_surface(l,1);
+        const std::string& buffer = LuaTools::check_string(l,2);
+        surface.set_pixels(buffer);
+        return 0;
+    });
 }
 
 }

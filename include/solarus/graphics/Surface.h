@@ -89,7 +89,10 @@ class Surface: public Drawable {
 
     SDL_Surface* get_internal_surface();
     bool is_pixel_transparent(int index) const;
+
     std::string get_pixels() const;
+    void set_pixels(const std::string& buffer);
+
     void apply_pixel_filter(const SoftwarePixelFilter& pixel_filter, Surface& dst_surface);
 
     // Implementation from Drawable.

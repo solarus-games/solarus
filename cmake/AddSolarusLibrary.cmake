@@ -3,8 +3,6 @@ file(
   GLOB
   solarus_SOURCES
 
-  include/solarus/apple/AppleInterface.h
-
   include/solarus/audio/ItDecoder.h
   include/solarus/audio/Music.h
   include/solarus/audio/OggDecoder.h
@@ -441,8 +439,8 @@ file(
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   set(solarus_SOURCES
     ${solarus_SOURCES}
-    src/lowlevel/apple/AppleInterface.mm
-    include/solarus/lowlevel/apple/AppleInterface.h
+    src/core/AppleInterface.mm
+    include/solarus/core/AppleInterface.h
   )
 endif()
 

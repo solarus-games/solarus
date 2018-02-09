@@ -18,7 +18,7 @@
 #define SOLARUS_GL_TEXTURE_HANDLE_H
 
 #include "solarus/core/Common.h"
-#include <GL/gl.h>  // TODO what about GLES?
+#include <SDL_opengl.h> // TODO what about GLES?
 
 namespace Solarus {
 

@@ -69,7 +69,7 @@ std::string Shader::get_error() const {
  *
  * There should be an error message when \c is_valid() returns \c false.
  *
- * \return The error message or an empty string.
+ * \param error The error message or an empty string.
  */
 void Shader::set_error(const std::string& error) {
   this->error = error;
@@ -94,6 +94,7 @@ const ShaderData& Shader::get_data() const {
 
 /**
  * \brief Sets the shader information.
+ * \param data The shader data.
  */
 void Shader::set_data(const ShaderData& data) {
   this->data = data;
@@ -199,18 +200,18 @@ bool Shader::set_uniform_texture(const std::string&, const SurfacePtr&) {
 }
 
 /**
- * \fn Shader::render()
+ * \fn Shader::render
  * \brief Draws the quest surface on the screen in a shader-allowed context.
  * It will perform the render using the OpenGL API directly.
  * \param quest_surface the surface to render on the screen
  */
-void Shader::render(const SurfacePtr& /* quest_surface */) {
+void Shader::render(const SurfacePtr&) {
   // TODO make pure virtual
 }
 
 
 /**
- * \fn Shader::load()
+ * \fn Shader::load
  * \brief Loads this shader.
  *
  * Parses the shader data file and compiles GLSL shaders.

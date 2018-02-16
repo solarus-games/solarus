@@ -236,6 +236,7 @@ void GlArbShader::load() {
  * \brief Compile a shader from source.
  * \param type The type of the shader to fill and compile.
  * \param source Sources to compile.
+ * \return The shader created and compiled.
  */
 GLhandleARB GlArbShader::create_shader(unsigned int type, const char* source) {
 
@@ -279,9 +280,7 @@ void GlArbShader::set_rendering_settings() {
 }
 
 /**
- * \brief Draws the quest surface on the screen in a shader-allowed context.
- * It will perform the render using the OpenGL API directly.
- * \param quest_surface The surface to render on the screen.
+ * \copydoc Shader::render
  */
 void GlArbShader::render(const SurfacePtr& quest_surface) {
 
@@ -507,6 +506,7 @@ bool GlArbShader::set_uniform_texture(const std::string& uniform_name, const Sur
 
 /**
  * \brief Creates an OpenGL texture from the given surface.
+ * \param surface The source surface.
  * \return The OpenGL texture or an empty handle in case of failure.
  */
 GlTextureHandle GlArbShader::create_gl_texture(const SurfacePtr& surface) {

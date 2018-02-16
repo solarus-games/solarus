@@ -221,6 +221,7 @@ void GlShader::load() {
  * \brief Compile a shader from source.
  * \param type The type of the shader to fill and compile.
  * \param source Sources to compile.
+ * \return The shader created and compiled.
  */
 GLuint GlShader::create_shader(GLenum type, const char* source) {
 
@@ -293,9 +294,7 @@ void GlShader::check_gl_error() {
 }
 
 /**
- * \brief Draws the quest surface on the screen in a shader-allowed context.
- * It will perform the render using the OpenGL API directly.
- * \param quest_surface the surface to render on the screen
+ * \copydoc Shader::render
  */
 void GlShader::render(const SurfacePtr& quest_surface) {
 

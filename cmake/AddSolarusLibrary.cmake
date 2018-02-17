@@ -43,8 +43,8 @@ file(
   include/solarus/core/Point.h
   include/solarus/core/Point.inl
   include/solarus/core/QuestFiles.h
+  include/solarus/core/QuestDatabase.h
   include/solarus/core/QuestProperties.h
-  include/solarus/core/QuestResources.h
   include/solarus/core/Random.h
   include/solarus/core/Rectangle.h
   include/solarus/core/ResourceProvider.h
@@ -255,8 +255,8 @@ file(
   src/core/PixelBits.cpp
   src/core/Point.cpp
   src/core/QuestFiles.cpp
+  src/core/QuestDatabase.cpp
   src/core/QuestProperties.cpp
-  src/core/QuestResources.cpp
   src/core/Random.cpp
   src/core/Rectangle.cpp
   src/core/ResourceProvider.cpp

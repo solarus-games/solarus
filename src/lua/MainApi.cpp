@@ -18,8 +18,8 @@
 #include "solarus/core/Geometry.h"
 #include "solarus/core/MainLoop.h"
 #include "solarus/core/QuestFiles.h"
+#include "solarus/core/QuestDatabase.h"
 #include "solarus/core/QuestProperties.h"
-#include "solarus/core/QuestResources.h"
 #include "solarus/core/Settings.h"
 #include "solarus/core/System.h"
 #include "solarus/lua/LuaContext.h"
@@ -357,7 +357,7 @@ int LuaContext::main_api_get_resource_ids(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
 
     ResourceType resource_type = LuaTools::check_enum<ResourceType>(l, 1);
-    const QuestResources::ResourceMap& elements = CurrentQuest::get_resources().get_elements(resource_type);
+    const QuestDatabase::ResourceMap& elements = CurrentQuest::get_resources().get_elements(resource_type);
 
     // Build a Lua array containing the ids.
     lua_settop(l, 0);

@@ -19,8 +19,8 @@
 #include "solarus/core/DialogResources.h"
 #include "solarus/core/Logger.h"
 #include "solarus/core/QuestFiles.h"
+#include "solarus/core/QuestDatabase.h"
 #include "solarus/core/QuestProperties.h"
-#include "solarus/core/QuestResources.h"
 #include "solarus/core/StringResources.h"
 #include <lua.hpp>
 
@@ -40,7 +40,7 @@ bool initialized = false;
 void initialize() {
 
   // Read the quest resource list file.
-  QuestResources& resources = get_resources();
+  QuestDatabase& resources = get_resources();
   resources.import_from_quest_file("project_db.dat");
 
   // Read the quest properties file.
@@ -114,11 +114,11 @@ QuestProperties& get_properties() {
  * \brief Returns the resource list of the current quest.
  * \return The current quest resource list.
  */
-QuestResources& get_resources() {
+QuestDatabase& get_resources() {
 
   // The resources object must be in a function to avoid static initialization
   // order problems.
-  static QuestResources resources;
+  static QuestDatabase resources;
   return resources;
 }
 

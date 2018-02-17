@@ -16,8 +16,8 @@
  */
 #include "solarus/core/Debug.h"
 #include "solarus/core/CurrentQuest.h"
+#include "solarus/core/QuestDatabase.h"
 #include "solarus/core/QuestFiles.h"
-#include "solarus/core/QuestResources.h"
 #include "solarus/core/ResourceType.h"
 #include "solarus/graphics/SpriteData.h"
 #include "test_tools/TestEnvironment.h"

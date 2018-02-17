@@ -15,8 +15,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/core/Debug.h"
+#include "solarus/core/QuestDatabase.h"
 #include "solarus/core/QuestFiles.h"
-#include "solarus/core/QuestResources.h"
 #include "solarus/lua/LuaTools.h"
 #include <ostream>
 #include <sstream>
@@ -51,7 +51,7 @@ namespace {
     return LuaTools::exception_boundary_handle(l, [&] {
 
       lua_getfield(l, LUA_REGISTRYINDEX, "resources");
-      QuestResources& resources = *(static_cast<QuestResources*>(
+      QuestDatabase& resources = *(static_cast<QuestDatabase*>(
           lua_touserdata(l, -1)
       ));
       lua_pop(l, 1);
@@ -70,9 +70,9 @@ namespace {
 }
 
 /**
- * \brief Creates an empty quest resources object.
+ * \brief Creates an empty quest database object.
  */
-QuestResources::QuestResources() {
+QuestDatabase::QuestDatabase() {
 
   for (size_t i = 0 ; i < EnumInfoTraits<ResourceType>::names.size(); ++i) {
     resource_maps.emplace(static_cast<ResourceType>(i), ResourceMap());
@@ -80,9 +80,9 @@ QuestResources::QuestResources() {
 }
 
 /**
- * \brief Removes all resource elements.
+ * \brief Removes all resource elements and file information.
  */
-void QuestResources::clear() {
+void QuestDatabase::clear() {
 
   for (size_t i = 0 ; i < EnumInfoTraits<ResourceType>::names.size(); ++i) {
     resource_maps[static_cast<ResourceType>(i)].clear();
@@ -90,24 +90,24 @@ void QuestResources::clear() {
 }
 
 /**
- * \brief Returns whether there exists an element with the specified id.
+ * \brief Returns whether there exists a resource element with the specified id.
  * \param resource_type A type of resource.
  * \param id The id to look for.
  * \return \c true if there exists an element with the specified id in this
  * resource type.
  */
-bool QuestResources::exists(ResourceType resource_type, const std::string& id) const {
+bool QuestDatabase::exists(ResourceType resource_type, const std::string& id) const {
 
   const ResourceMap& resource = get_elements(resource_type);
   return resource.find(id) != resource.end();
 }
 
 /**
- * \brief Returns the list of element IDs of the specified resource type.
+ * \brief Returns the list of element ids of the specified resource type.
  * \param resource_type A type of resource.
  * \return The ids of all declared element of this type
  */
-const QuestResources::ResourceMap& QuestResources::get_elements(
+const QuestDatabase::ResourceMap& QuestDatabase::get_elements(
     ResourceType resource_type) const {
 
   return resource_maps.find(resource_type)->second;
@@ -118,7 +118,7 @@ const QuestResources::ResourceMap& QuestResources::get_elements(
  * \param resource_type A type of resource.
  * \return The ids of all declared element of this type
  */
-QuestResources::ResourceMap& QuestResources::get_elements(
+QuestDatabase::ResourceMap& QuestDatabase::get_elements(
     ResourceType resource_type) {
 
   return resource_maps.find(resource_type)->second;
@@ -132,7 +132,7 @@ QuestResources::ResourceMap& QuestResources::get_elements(
  * \return \c true if the element was added, \c false if an element with
  * this id already exists.
  */
-bool QuestResources::add(
+bool QuestDatabase::add(
     ResourceType resource_type,
     const std::string& id,
     const std::string& description
@@ -149,7 +149,7 @@ bool QuestResources::add(
  * \return \c true if the element was removed, \c false if such an element
  * did not exist.
  */
-bool QuestResources::remove(
+bool QuestDatabase::remove(
     ResourceType resource_type,
     const std::string& id
 ) {
@@ -165,7 +165,7 @@ bool QuestResources::remove(
  * \return \c true in case of success, \c false if the old id does not
  * exist or if the new id already exists.
  */
-bool QuestResources::rename(
+bool QuestDatabase::rename(
     ResourceType resource_type,
     const std::string& old_id,
     const std::string& new_id
@@ -189,7 +189,7 @@ bool QuestResources::rename(
  * \return description The element description.
  * Returns an empty string if the element does not exist.
  */
-std::string QuestResources::get_description(
+std::string QuestDatabase::get_description(
     ResourceType resource_type,
     const std::string& id
 ) const {
@@ -211,7 +211,7 @@ std::string QuestResources::get_description(
  * \return \c true in case of success, \c false if such an element does not
  * exist.
  */
-bool QuestResources::set_description(
+bool QuestDatabase::set_description(
     ResourceType resource_type,
     const std::string& id,
     const std::string& description
@@ -228,7 +228,7 @@ bool QuestResources::set_description(
 /**
  * \copydoc LuaData::import_from_lua
  */
-bool QuestResources::import_from_lua(lua_State* l) {
+bool QuestDatabase::import_from_lua(lua_State* l) {
 
   lua_pushlightuserdata(l, this);
   lua_setfield(l, LUA_REGISTRYINDEX, "resources");
@@ -254,7 +254,7 @@ bool QuestResources::import_from_lua(lua_State* l) {
 /**
  * \copydoc LuaData::export_to_lua
  */
-bool QuestResources::export_to_lua(std::ostream& out) const {
+bool QuestDatabase::export_to_lua(std::ostream& out) const {
 
   // Save each resource.
   for (const auto& kvp: EnumInfoTraits<ResourceType>::names) {

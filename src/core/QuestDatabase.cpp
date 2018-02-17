@@ -228,6 +228,50 @@ bool QuestDatabase::set_description(
 }
 
 /**
+ * \brief Returns the file information of the given path.
+ * \param path A file or directory.
+ * \return The file information or an empty object.
+ */
+const QuestDatabase::FileInfo& QuestDatabase::get_file_info(const std::string& path) {
+
+  const auto& it = files.find(path);
+  if (it == files.end()) {
+    static const FileInfo empty_info;
+    return empty_info;
+  }
+  return it->second;
+}
+
+/**
+ * \brief Sets the file information of the given path.
+ * \param path A file or directory.
+ * \param file_info The file information to set.
+ */
+void QuestDatabase::set_file_info(const std::string& path, const FileInfo& file_info) {
+
+  files[path] = file_info;
+}
+
+/**
+ * \brief Returns whether there exists file information for the given path.
+ * \param path A file or directory.
+ * \return \c true if there are file information for this path.
+ */
+bool QuestDatabase::has_file_info(const std::string& path) {
+
+  return files.find(path) != files.end();
+}
+
+/**
+ * \brief Removes the file information of the given path if any.
+ * \param path A file or directory.
+ */
+void QuestDatabase::clear_file_info(const std::string& path) {
+
+  files.erase(path);
+}
+
+/**
  * \copydoc LuaData::import_from_lua
  */
 bool QuestDatabase::import_from_lua(lua_State* l) {

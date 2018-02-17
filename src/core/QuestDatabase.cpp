@@ -41,33 +41,58 @@ const EnumInfo<ResourceType>::names_type EnumInfoTraits<ResourceType>::names = {
 
 namespace {
 
-  /**
-   * \brief Implementation of the resource() function.
-   * \param l The Lua state of the quest resource file.
-   * \return Number of values to return to Lua.
-   */
-  int l_resource_element(lua_State* l) {
+/**
+ * \brief Implementation of the resource() function.
+ * \param l The Lua state of the quest database file.
+ * \return Number of values to return to Lua.
+ */
+int l_resource_element(lua_State* l) {
 
-    return LuaTools::exception_boundary_handle(l, [&] {
+  return LuaTools::exception_boundary_handle(l, [&] {
 
-      lua_getfield(l, LUA_REGISTRYINDEX, "resources");
-      QuestDatabase& resources = *(static_cast<QuestDatabase*>(
-          lua_touserdata(l, -1)
-      ));
-      lua_pop(l, 1);
+    lua_getfield(l, LUA_REGISTRYINDEX, "database");
+    QuestDatabase& database = *(static_cast<QuestDatabase*>(
+        lua_touserdata(l, -1)
+    ));
+    lua_pop(l, 1);
 
-      ResourceType resource_type =
-          LuaTools::check_enum<ResourceType>(l, 1);
-      const std::string& id = LuaTools::check_string_field(l, 2, "id");
-      const std::string& description = LuaTools::check_string_field(l, 2, "description");
+    ResourceType resource_type =
+        LuaTools::check_enum<ResourceType>(l, 1);
+    const std::string& id = LuaTools::check_string_field(l, 2, "id");
+    const std::string& description = LuaTools::check_string_field(l, 2, "description");
 
-      resources.add(resource_type, id, description);
+    database.add(resource_type, id, description);
 
-      return 0;
-    });
-  }
-
+    return 0;
+  });
 }
+
+/**
+ * \brief Implementation of the file() function.
+ * \param l The Lua state of the quest database file.
+ * \return Number of values to return to Lua.
+ */
+int l_file(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+
+    lua_getfield(l, LUA_REGISTRYINDEX, "database");
+    QuestDatabase& database = *(static_cast<QuestDatabase*>(
+        lua_touserdata(l, -1)
+    ));
+    lua_pop(l, 1);
+
+    const std::string& path = LuaTools::check_string_field(l, 1, "path");
+    const std::string& author = LuaTools::opt_string_field(l, 1, "author", "");
+    const std::string& license = LuaTools::opt_string_field(l, 1, "license", "");
+
+    database.set_file_info(path, { author, license });
+
+    return 0;
+  });
+}
+
+}  // Anonymous namespace.
 
 /**
  * \brief Creates an empty quest database object.
@@ -277,7 +302,7 @@ void QuestDatabase::clear_file_info(const std::string& path) {
 bool QuestDatabase::import_from_lua(lua_State* l) {
 
   lua_pushlightuserdata(l, this);
-  lua_setfield(l, LUA_REGISTRYINDEX, "resources");
+  lua_setfield(l, LUA_REGISTRYINDEX, "database");
 
   // We register only one C function for all resource types.
   lua_register(l, "resource", l_resource_element);
@@ -287,6 +312,8 @@ bool QuestDatabase::import_from_lua(lua_State* l) {
       << kvp.second << "', t) end";
     luaL_dostring(l, oss.str().c_str());
   }
+
+  lua_register(l, "file", l_file);
 
   if (lua_pcall(l, 0, 0, 0) != 0) {
     Debug::error(std::string("Failed to load quest resource list 'project_db.dat': ") + lua_tostring(l, -1));
@@ -319,6 +346,29 @@ bool QuestDatabase::export_to_lua(std::ostream& out) const {
           << "\" }\n";
     }
     out << "\n";
+  }
+
+  // Save file information.
+  for (const auto& kvp : files) {
+    const std::string& path = kvp.first;
+    const FileInfo& info = kvp.second;
+    if (info.empty()) {
+      continue;
+    }
+    out << "file{ path = \""
+        << escape_string(path)
+        << "\",";
+    if (!info.author.empty()) {
+      out << " author = \""
+        << escape_string(info.author)
+        << "\",";
+    }
+    if (!info.license.empty()) {
+      out << " license = \""
+        << escape_string(info.license)
+        << "\",";
+    }
+    out << " }\n";
   }
 
   return true;

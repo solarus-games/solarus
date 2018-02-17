@@ -357,7 +357,7 @@ int LuaContext::main_api_get_resource_ids(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
 
     ResourceType resource_type = LuaTools::check_enum<ResourceType>(l, 1);
-    const QuestDatabase::ResourceMap& elements = CurrentQuest::get_resources().get_elements(resource_type);
+    const QuestDatabase::ResourceMap& elements = CurrentQuest::get_database().get_resource_elements(resource_type);
 
     // Build a Lua array containing the ids.
     lua_settop(l, 0);

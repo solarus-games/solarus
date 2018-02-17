@@ -64,7 +64,7 @@ int main(int argc, char** argv) {
   TestEnvironment env(argc, argv);
 
   const std::map<std::string, std::string>& tileset_elements =
-      CurrentQuest::get_resources().get_elements(ResourceType::TILESET);
+      CurrentQuest::get_database().get_resource_elements(ResourceType::TILESET);
   Debug::check_assertion(!tileset_elements.empty(), "No tilesets");
   for (const auto& kvp : tileset_elements) {
     const std::string& tileset_id = kvp.first;

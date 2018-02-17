@@ -41,7 +41,7 @@ SOLARUS_API bool is_initialized();
 
 SOLARUS_API QuestProperties& get_properties();
 
-SOLARUS_API QuestDatabase& get_resources();
+SOLARUS_API QuestDatabase& get_database();
 SOLARUS_API bool resource_exists(ResourceType resource_type, const std::string& id);
 SOLARUS_API const std::map<std::string, std::string>& get_resources(ResourceType resource_type);
 

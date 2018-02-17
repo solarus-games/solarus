@@ -50,15 +50,23 @@ class SOLARUS_API QuestDatabase : public LuaData {
      */
     using ResourceMap = std::map<std::string, std::string>;
 
+    /**
+     * Information about a file of the quest.
+     */
+    struct FileInfo {
+      std::string author;   /**< Author of a file or directory. */
+      std::string license;  /**< License of a file or directory. */
+    };
+
     QuestDatabase();
 
     void clear();
 
-    bool exists(ResourceType resource_type, const std::string& id) const;
-    const ResourceMap& get_elements(
+    bool resource_exists(ResourceType resource_type, const std::string& id) const;
+    const ResourceMap& get_resource_elements(
         ResourceType resource_type
     ) const;
-    ResourceMap& get_elements(
+    ResourceMap& get_resource_elements(
         ResourceType resource_type
     );
 
@@ -92,6 +100,7 @@ class SOLARUS_API QuestDatabase : public LuaData {
   private:
 
     std::map<ResourceType, ResourceMap> resource_maps;
+    std::map<std::string, FileInfo> files;
 
 };
 

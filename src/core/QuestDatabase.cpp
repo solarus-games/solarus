@@ -84,9 +84,11 @@ QuestDatabase::QuestDatabase() {
  */
 void QuestDatabase::clear() {
 
-  for (size_t i = 0 ; i < EnumInfoTraits<ResourceType>::names.size(); ++i) {
+  for (size_t i = 0; i < EnumInfoTraits<ResourceType>::names.size(); ++i) {
     resource_maps[static_cast<ResourceType>(i)].clear();
   }
+
+  files.clear();
 }
 
 /**
@@ -96,9 +98,9 @@ void QuestDatabase::clear() {
  * \return \c true if there exists an element with the specified id in this
  * resource type.
  */
-bool QuestDatabase::exists(ResourceType resource_type, const std::string& id) const {
+bool QuestDatabase::resource_exists(ResourceType resource_type, const std::string& id) const {
 
-  const ResourceMap& resource = get_elements(resource_type);
+  const ResourceMap& resource = get_resource_elements(resource_type);
   return resource.find(id) != resource.end();
 }
 
@@ -107,7 +109,7 @@ bool QuestDatabase::exists(ResourceType resource_type, const std::string& id) co
  * \param resource_type A type of resource.
  * \return The ids of all declared element of this type
  */
-const QuestDatabase::ResourceMap& QuestDatabase::get_elements(
+const QuestDatabase::ResourceMap& QuestDatabase::get_resource_elements(
     ResourceType resource_type) const {
 
   return resource_maps.find(resource_type)->second;
@@ -118,7 +120,7 @@ const QuestDatabase::ResourceMap& QuestDatabase::get_elements(
  * \param resource_type A type of resource.
  * \return The ids of all declared element of this type
  */
-QuestDatabase::ResourceMap& QuestDatabase::get_elements(
+QuestDatabase::ResourceMap& QuestDatabase::get_resource_elements(
     ResourceType resource_type) {
 
   return resource_maps.find(resource_type)->second;
@@ -137,7 +139,7 @@ bool QuestDatabase::add(
     const std::string& id,
     const std::string& description
 ) {
-  ResourceMap& resource = get_elements(resource_type);
+  ResourceMap& resource = get_resource_elements(resource_type);
   auto result = resource.emplace(id, description);
   return result.second;
 }
@@ -153,7 +155,7 @@ bool QuestDatabase::remove(
     ResourceType resource_type,
     const std::string& id
 ) {
-  ResourceMap& resource = get_elements(resource_type);
+  ResourceMap& resource = get_resource_elements(resource_type);
   return resource.erase(id) > 0;
 }
 
@@ -170,10 +172,10 @@ bool QuestDatabase::rename(
     const std::string& old_id,
     const std::string& new_id
 ) {
-  if (!exists(resource_type, old_id)) {
+  if (!resource_exists(resource_type, old_id)) {
     return false;
   }
-  if (exists(resource_type, new_id)) {
+  if (resource_exists(resource_type, new_id)) {
     return false;
   }
   const std::string& description = get_description(resource_type, old_id);
@@ -194,7 +196,7 @@ std::string QuestDatabase::get_description(
     const std::string& id
 ) const {
 
-  const ResourceMap& resource = get_elements(resource_type);
+  const ResourceMap& resource = get_resource_elements(resource_type);
 
   const auto& it = resource.find(id);
   if (it == resource.end()) {
@@ -216,11 +218,11 @@ bool QuestDatabase::set_description(
     const std::string& id,
     const std::string& description
 ) {
-  if (!exists(resource_type, id)) {
+  if (!resource_exists(resource_type, id)) {
     return false;
   }
 
-  ResourceMap& resource = get_elements(resource_type);
+  ResourceMap& resource = get_resource_elements(resource_type);
   resource[id] = description;
   return true;
 }
@@ -259,7 +261,7 @@ bool QuestDatabase::export_to_lua(std::ostream& out) const {
   // Save each resource.
   for (const auto& kvp: EnumInfoTraits<ResourceType>::names) {
 
-    const ResourceMap& resource = get_elements(kvp.first);
+    const ResourceMap& resource = get_resource_elements(kvp.first);
     for (const auto& element: resource) {
 
       const std::string& id = element.first;

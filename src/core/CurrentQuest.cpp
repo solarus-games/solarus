@@ -39,9 +39,9 @@ bool initialized = false;
  */
 void initialize() {
 
-  // Read the quest resource list file.
-  QuestDatabase& resources = get_resources();
-  resources.import_from_quest_file("project_db.dat");
+  // Read the quest database file.
+  QuestDatabase& database = get_database();
+  database .import_from_quest_file("project_db.dat");
 
   // Read the quest properties file.
   QuestProperties& properties = get_properties();
@@ -82,7 +82,7 @@ void initialize() {
  */
 void quit() {
 
-  get_resources().clear();
+  get_database().clear();
   get_strings().clear();
   get_dialogs().clear();
 
@@ -111,15 +111,15 @@ QuestProperties& get_properties() {
 }
 
 /**
- * \brief Returns the resource list of the current quest.
+ * \brief Returns the database of the current quest.
  * \return The current quest resource list.
  */
-QuestDatabase& get_resources() {
+QuestDatabase& get_database() {
 
-  // The resources object must be in a function to avoid static initialization
+  // The database object must be in a function to avoid static initialization
   // order problems.
-  static QuestDatabase resources;
-  return resources;
+  static QuestDatabase database;
+  return database;
 }
 
 /**
@@ -131,7 +131,7 @@ QuestDatabase& get_resources() {
  */
 bool resource_exists(ResourceType resource_type, const std::string& id) {
 
-  return get_resources().exists(resource_type, id);
+  return get_database().resource_exists(resource_type, id);
 }
 
 /**
@@ -143,7 +143,7 @@ bool resource_exists(ResourceType resource_type, const std::string& id) {
 const std::map<std::string, std::string>&
 get_resources(ResourceType resource_type) {
 
-  return get_resources().get_elements(resource_type);
+  return get_database().get_resource_elements(resource_type);
 }
 
 /**

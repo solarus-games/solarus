@@ -366,7 +366,7 @@ bool QuestDatabase::export_to_lua(std::ostream& out) const {
     if (!info.license.empty()) {
       out << " license = \""
         << escape_string(info.license)
-        << "\",";
+        << "\"";
     }
     out << " }\n";
   }

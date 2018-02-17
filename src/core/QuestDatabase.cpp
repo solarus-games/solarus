@@ -352,7 +352,7 @@ bool QuestDatabase::export_to_lua(std::ostream& out) const {
   for (const auto& kvp : files) {
     const std::string& path = kvp.first;
     const FileInfo& info = kvp.second;
-    if (info.empty()) {
+    if (info.is_empty()) {
       continue;
     }
     out << "file{ path = \""

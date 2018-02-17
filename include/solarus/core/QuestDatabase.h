@@ -54,6 +54,11 @@ class SOLARUS_API QuestDatabase : public LuaData {
      * Information about a file of the quest.
      */
     struct FileInfo {
+
+      bool is_empty() const {
+        return author.empty() && license.empty();
+      }
+
       std::string author;   /**< Author of a file or directory. */
       std::string license;  /**< License of a file or directory. */
     };

@@ -274,6 +274,11 @@ const QuestDatabase::FileInfo& QuestDatabase::get_file_info(const std::string& p
  */
 void QuestDatabase::set_file_info(const std::string& path, const FileInfo& file_info) {
 
+  if (file_info.is_empty()) {
+    files.erase(path);
+    return;
+  }
+
   files[path] = file_info;
 }
 

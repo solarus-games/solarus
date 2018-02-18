@@ -257,7 +257,7 @@ bool QuestDatabase::set_description(
  * \param path A file or directory.
  * \return The file information or an empty object.
  */
-const QuestDatabase::FileInfo& QuestDatabase::get_file_info(const std::string& path) {
+const QuestDatabase::FileInfo& QuestDatabase::get_file_info(const std::string& path) const {
 
   const auto& it = files.find(path);
   if (it == files.end()) {
@@ -287,7 +287,7 @@ void QuestDatabase::set_file_info(const std::string& path, const FileInfo& file_
  * \param path A file or directory.
  * \return \c true if there are file information for this path.
  */
-bool QuestDatabase::has_file_info(const std::string& path) {
+bool QuestDatabase::has_file_info(const std::string& path) const {
 
   return files.find(path) != files.end();
 }

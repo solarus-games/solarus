@@ -20,6 +20,8 @@
 #include "solarus/core/Common.h"
 #include <iosfwd>
 
+#include <glm/vec2.hpp>
+
 namespace Solarus {
 
 /**
@@ -42,6 +44,8 @@ class Point {
 
     Point& operator+=(const Point& other);
     Point& operator-=(const Point& other);
+
+    operator glm::vec2() const;
 
     Point& operator*=(int factor);
     Point& operator/=(int divisor);

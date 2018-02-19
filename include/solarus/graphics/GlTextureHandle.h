@@ -42,7 +42,6 @@ public:
   bool is_empty() const;
   GLuint get() const;
   void clear();
-
 private:
 
   GLuint texture;       /**< The wrapped texture handle. */

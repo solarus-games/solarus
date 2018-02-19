@@ -89,7 +89,7 @@ constexpr Rectangle::Rectangle(const Point& top_left, const Point& bottom_right)
  * \return the x coordinate of the top-left corner
  */
 inline int Rectangle::get_x() const {
-  return rect.x;
+	return rect.x;
 }
 
 /**
@@ -97,7 +97,7 @@ inline int Rectangle::get_x() const {
  * \return the y coordinate of the top-left corner
  */
 inline int Rectangle::get_y() const {
-  return rect.y;
+	return rect.y;
 }
 
 /**
@@ -105,7 +105,7 @@ inline int Rectangle::get_y() const {
  * \return the coordinates of the top-left corner
  */
 inline Point Rectangle::get_xy() const {
-  return { get_x(), get_y() };
+	return { get_x(), get_y() };
 }
 
 /**
@@ -116,7 +116,7 @@ inline Point Rectangle::get_xy() const {
  * \return The bottom coordinate.
  */
 inline int Rectangle::get_bottom() const {
-  return get_top() + get_height();
+	return get_top() + get_height();
 }
 
 /**
@@ -127,7 +127,7 @@ inline int Rectangle::get_bottom() const {
  * \return The bottom-left point.
  */
 inline Point Rectangle::get_bottom_left() const {
-  return { get_left(), get_bottom() };
+	return { get_left(), get_bottom() };
 }
 
 /**
@@ -138,7 +138,7 @@ inline Point Rectangle::get_bottom_left() const {
  * \return The bottom-right point.
  */
 inline Point Rectangle::get_bottom_right() const {
-  return { get_right(), get_bottom() };
+	return { get_right(), get_bottom() };
 }
 
 /**
@@ -146,10 +146,10 @@ inline Point Rectangle::get_bottom_right() const {
  * \return The center point.
  */
 inline Point Rectangle::get_center() const {
-  return {
-      get_left() + get_width() / 2,
-      get_top() + get_height() / 2,
-  };
+	return {
+		  get_left() + get_width() / 2,
+			get_top() + get_height() / 2,
+	};
 }
 
 /**
@@ -157,7 +157,7 @@ inline Point Rectangle::get_center() const {
  * \return The left coordinate.
  */
 inline int Rectangle::get_left() const {
-  return rect.x;
+	return rect.x;
 }
 
 /**
@@ -168,7 +168,7 @@ inline int Rectangle::get_left() const {
  * \return The right coordinate.
  */
 inline int Rectangle::get_right() const {
-  return get_left() + get_width();
+	return get_left() + get_width();
 }
 
 /**
@@ -176,7 +176,7 @@ inline int Rectangle::get_right() const {
  * \return The top coordinate.
  */
 inline int Rectangle::get_top() const {
-  return rect.y;
+	return rect.y;
 }
 
 /**
@@ -187,7 +187,7 @@ inline int Rectangle::get_top() const {
  * \return The top-left point.
  */
 inline Point Rectangle::get_top_left() const {
-  return { get_left(), get_top() };
+	return { get_left(), get_top() };
 }
 
 /**
@@ -198,7 +198,7 @@ inline Point Rectangle::get_top_left() const {
  * \return The top-right point.
  */
 inline Point Rectangle::get_top_right() const {
-  return { get_right(), get_top() };
+	return { get_right(), get_top() };
 }
 
 /**
@@ -206,7 +206,7 @@ inline Point Rectangle::get_top_right() const {
  * \return the width
  */
 inline int Rectangle::get_width()  const {
-  return rect.w;
+	return rect.w;
 }
 
 /**
@@ -214,7 +214,7 @@ inline int Rectangle::get_width()  const {
  * \return the height
  */
 inline int Rectangle::get_height() const {
-  return rect.h;
+	return rect.h;
 }
 
 /**
@@ -222,7 +222,7 @@ inline int Rectangle::get_height() const {
  * \return the size
  */
 inline Size Rectangle::get_size() const {
-  return { get_width(), get_height() };
+	return { get_width(), get_height() };
 }
 
 /**
@@ -230,7 +230,7 @@ inline Size Rectangle::get_size() const {
  * \return true if the width or the height is 0.
  */
 inline bool Rectangle::is_flat() const {
-  return get_width() == 0 || get_height() == 0;
+	return get_width() == 0 || get_height() == 0;
 }
 
 /**
@@ -238,7 +238,7 @@ inline bool Rectangle::is_flat() const {
  * \param x the new x coordinate
  */
 inline void Rectangle::set_x(int x) {
-  rect.x = x;
+	rect.x = x;
 }
 
 /**
@@ -246,7 +246,7 @@ inline void Rectangle::set_x(int x) {
  * \param y the new y coordinate
  */
 inline void Rectangle::set_y(int y) {
-  rect.y = y;
+	rect.y = y;
 }
 
 /**
@@ -254,7 +254,7 @@ inline void Rectangle::set_y(int y) {
  * \param width the new width
  */
 inline void Rectangle::set_width(int width) {
-  rect.w = width;
+	rect.w = width;
 }
 
 /**
@@ -262,7 +262,7 @@ inline void Rectangle::set_width(int width) {
  * \param height the new height
  */
 inline void Rectangle::set_height(int height) {
-  rect.h = height;
+	rect.h = height;
 }
 
 /**
@@ -271,8 +271,8 @@ inline void Rectangle::set_height(int height) {
  * \param y the new y coordinate
  */
 inline void Rectangle::set_xy(int x, int y) {
-  set_x(x);
-  set_y(y);
+	set_x(x);
+	set_y(y);
 }
 
 /**
@@ -280,7 +280,7 @@ inline void Rectangle::set_xy(int x, int y) {
  * \param xy the new coordinates
  */
 inline void Rectangle::set_xy(const Point& xy) {
-  set_xy(xy.x, xy.y);
+	set_xy(xy.x, xy.y);
 }
 
 /**
@@ -289,7 +289,7 @@ inline void Rectangle::set_xy(const Point& xy) {
  * \param y y coordinate of the center
  */
 inline void Rectangle::set_center(int x, int y) {
-  set_xy(x - rect.w/2, y - rect.h/2);
+	set_xy(x - rect.w/2, y - rect.h/2);
 }
 
 /**
@@ -297,7 +297,7 @@ inline void Rectangle::set_center(int x, int y) {
  * \param center coordinate of the rectangle center.
  */
 inline void Rectangle::set_center(const Point &xy) {
-  return set_center(xy.x, xy.y);
+	return set_center(xy.x, xy.y);
 }
 
 /**
@@ -306,8 +306,8 @@ inline void Rectangle::set_center(const Point &xy) {
  * \param height the new height
  */
 inline void Rectangle::set_size(int width, int height) {
-  set_width(width);
-  set_height(height);
+	set_width(width);
+	set_height(height);
 }
 
 /**
@@ -315,7 +315,7 @@ inline void Rectangle::set_size(int width, int height) {
  * \param size the new size
  */
 inline void Rectangle::set_size(const Size& size) {
-  set_size(size.width, size.height);
+	set_size(size.width, size.height);
 }
 
 /**
@@ -323,7 +323,7 @@ inline void Rectangle::set_size(const Size& size) {
  * \param dx the value to add
  */
 inline void Rectangle::add_x(int dx) {
-  set_x(get_x() + dx);
+	set_x(get_x() + dx);
 }
 
 /**
@@ -331,7 +331,7 @@ inline void Rectangle::add_x(int dx) {
  * \param dy the value to add
  */
 inline void Rectangle::add_y(int dy) {
-  set_y(get_y() + dy);
+	set_y(get_y() + dy);
 }
 
 /**
@@ -339,7 +339,7 @@ inline void Rectangle::add_y(int dy) {
  * \param dw the value to add
  */
 inline void Rectangle::add_width(int dw) {
-  set_width(get_width() + dw);
+	set_width(get_width() + dw);
 }
 
 /**
@@ -347,7 +347,7 @@ inline void Rectangle::add_width(int dw) {
  * \param dh the value to add
  */
 inline void Rectangle::add_height(int dh) {
-  set_height(get_height() + dh);
+	set_height(get_height() + dh);
 }
 
 /**
@@ -356,8 +356,8 @@ inline void Rectangle::add_height(int dh) {
  * \param dy change to the y coordinate
  */
 inline void Rectangle::add_xy(int dx, int dy) {
-  add_x(dx);
-  add_y(dy);
+	add_x(dx);
+	add_y(dy);
 }
 
 /**
@@ -365,7 +365,7 @@ inline void Rectangle::add_xy(int dx, int dy) {
  * \param dxy coordinates that should be added to the current's
  */
 inline void Rectangle::add_xy(const Point& dxy) {
-  add_xy(dxy.x, dxy.y);
+	add_xy(dxy.x, dxy.y);
 }
 
 /**
@@ -375,8 +375,8 @@ inline void Rectangle::add_xy(const Point& dxy) {
  * \return true if the point is in this rectangle
  */
 inline bool Rectangle::contains(int x, int y) const {
-  return x >= get_x() && x < get_x() + get_width()
-      && y >= get_y() && y < get_y() + get_height();
+	return x >= get_x() && x < get_x() + get_width()
+	    && y >= get_y() && y < get_y() + get_height();
 }
 
 /**
@@ -385,7 +385,7 @@ inline bool Rectangle::contains(int x, int y) const {
  * \return true if \a point is in this rectangle
  */
 inline bool Rectangle::contains(const Point& point) const {
-  return contains(point.x, point.y);
+	return contains(point.x, point.y);
 }
 
 /**
@@ -394,8 +394,8 @@ inline bool Rectangle::contains(const Point& point) const {
  * \return true if the specified rectangle is inside this rectangle
  */
 inline bool Rectangle::contains(const Rectangle& other) const {
-  return contains(other.get_x(), other.get_y())
-      && contains(other.get_x() + other.get_width() - 1, other.get_y() + other.get_height() - 1);
+	return contains(other.get_x(), other.get_y())
+	    && contains(other.get_x() + other.get_width() - 1, other.get_y() + other.get_height() - 1);
 }
 
 /**
@@ -405,21 +405,21 @@ inline bool Rectangle::contains(const Rectangle& other) const {
  */
 inline bool Rectangle::overlaps(const Rectangle& other) const {
 
-  int x1 = get_x();
-  int x2 = x1 + get_width();
-  int x3 = other.get_x();
-  int x4 = x3 + other.get_width();
+	int x1 = get_x();
+	int x2 = x1 + get_width();
+	int x3 = other.get_x();
+	int x4 = x3 + other.get_width();
 
-  bool overlap_x = (x3 < x2 && x1 < x4);
+	bool overlap_x = (x3 < x2 && x1 < x4);
 
-  int y1 = get_y();
-  int y2 = y1 + get_height();
-  int y3 = other.get_y();
-  int y4 = y3 + other.get_height();
+	int y1 = get_y();
+	int y2 = y1 + get_height();
+	int y3 = other.get_y();
+	int y4 = y3 + other.get_height();
 
-  bool overlap_y = (y3 < y2 && y1 < y4);
+	bool overlap_y = (y3 < y2 && y1 < y4);
 
-  return overlap_x && overlap_y && !is_flat() && !other.is_flat();
+	return overlap_x && overlap_y && !is_flat() && !other.is_flat();
 }
 
 /**
@@ -431,7 +431,7 @@ inline bool Rectangle::overlaps(const Rectangle& other) const {
  * \return the internal rectangle encapsulated
  */
 inline SDL_Rect* Rectangle::get_internal_rect() {
-  return &rect;
+	return &rect;
 }
 
 /**
@@ -443,7 +443,7 @@ inline SDL_Rect* Rectangle::get_internal_rect() {
  * \return the internal rectangle encapsulated
  */
 inline const SDL_Rect* Rectangle::get_internal_rect() const {
-  return &rect;
+	return &rect;
 }
 
 /**
@@ -452,7 +452,7 @@ inline const SDL_Rect* Rectangle::get_internal_rect() const {
  * \return The intersection or an empty rectangle.
  */
 inline Rectangle Rectangle::get_intersection(const Rectangle& other) const {
-  return *this & other;
+	return *this & other;
 }
 
 /**
@@ -461,8 +461,8 @@ inline Rectangle Rectangle::get_intersection(const Rectangle& other) const {
  * \return The intersection or an empty rectangle.
  */
 inline Rectangle Rectangle::operator&(const Rectangle& other) const {
-  Rectangle copy(*this);
-  return copy &= other;
+	Rectangle copy(*this);
+	return copy &= other;
 }
 
 /**
@@ -472,19 +472,23 @@ inline Rectangle Rectangle::operator&(const Rectangle& other) const {
  */
 inline Rectangle& Rectangle::operator&=(const Rectangle& other) {
 
-  Rectangle intersection;
-  const bool intersects = SDL_IntersectRect(
-      this->get_internal_rect(),
-      other.get_internal_rect(),
-      intersection.get_internal_rect()
-  );
-  if (intersects) {
-    *this = intersection;
-  }
-  else {
-    *this = Rectangle(0, 0, 0, 0);
-  }
-  return *this;
+	Rectangle intersection;
+	const bool intersects = SDL_IntersectRect(
+	    this->get_internal_rect(),
+	    other.get_internal_rect(),
+	    intersection.get_internal_rect()
+	);
+	if (intersects) {
+		*this = intersection;
+	}
+	else {
+		*this = Rectangle(0, 0, 0, 0);
+	}
+	return *this;
+}
+
+inline Rectangle::operator const SDL_Rect*() const {
+	return get_internal_rect();
 }
 
 /**
@@ -493,8 +497,8 @@ inline Rectangle& Rectangle::operator&=(const Rectangle& other) {
  * \return The smallest rectangle that contains both.
  */
 inline Rectangle Rectangle::operator|(const Rectangle& other) const {
-  Rectangle copy(*this);
-  return copy |= other;
+	Rectangle copy(*this);
+	return copy |= other;
 }
 
 /**
@@ -504,14 +508,14 @@ inline Rectangle Rectangle::operator|(const Rectangle& other) const {
  */
 inline Rectangle& Rectangle::operator|=(const Rectangle& other) {
 
-  Rectangle result;
-  SDL_UnionRect(
-      this->get_internal_rect(),
-      other.get_internal_rect(),
-      result.get_internal_rect()
-  );
-  *this = result;
-  return *this;
+	Rectangle result;
+	SDL_UnionRect(
+	    this->get_internal_rect(),
+	    other.get_internal_rect(),
+	    result.get_internal_rect()
+	);
+	*this = result;
+	return *this;
 }
 
 /**
@@ -521,8 +525,8 @@ inline Rectangle& Rectangle::operator|=(const Rectangle& other) {
  * \return true if both rectangles have the same coordinates and size
  */
 inline bool operator==(const Rectangle& lhs, const Rectangle& rhs) {
-  return lhs.get_xy() == rhs.get_xy()
-      && lhs.get_size() == rhs.get_size();
+	return lhs.get_xy() == rhs.get_xy()
+	    && lhs.get_size() == rhs.get_size();
 }
 
 /**
@@ -532,7 +536,7 @@ inline bool operator==(const Rectangle& lhs, const Rectangle& rhs) {
  * \return true if the rectangles are not equal
  */
 inline bool operator!=(const Rectangle& lhs, const Rectangle& rhs) {
-  return !(rhs == lhs);
+	return !(rhs == lhs);
 }
 
 }

@@ -52,6 +52,7 @@ namespace Video {
 
     SDL_Texture* get_render_target();
     SDL_PixelFormat* get_pixel_format();
+    SDL_PixelFormat* get_rgba_format();
     const std::string& get_rendering_driver_name();
     void show_window();
 

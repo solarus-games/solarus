@@ -33,7 +33,10 @@
 #include <memory>
 #include <sstream>
 #include <utility>
+
+#include <SDL.h>
 #include <SDL_render.h>
+#include <SDL_hints.h>
 
 namespace Solarus {
 
@@ -47,6 +50,7 @@ struct VideoContext {
   SDL_Window* main_window = nullptr;        /**< The window. */
   SDL_Renderer* main_renderer = nullptr;    /**< The screen renderer. */
   SDL_PixelFormat* pixel_format = nullptr;  /**< The pixel color format to use. */
+  SDL_PixelFormat* rgba_format = nullptr;
   std::string rendering_driver_name;        /**< The name of the rendering driver. */
   bool disable_window = false;              /**< Indicates that no window is displayed (used for unit tests). */
   bool fullscreen_window = false;           /**< True if the window is in fullscreen. */
@@ -136,6 +140,7 @@ void create_window() {
       break;
     }
   }
+  context.rgba_format = SDL_AllocFormat(SDL_PIXELFORMAT_ABGR8888);
 
   Debug::check_assertion(context.pixel_format != nullptr, "No compatible pixel format");
 
@@ -310,6 +315,14 @@ SDL_PixelFormat* get_pixel_format() {
 }
 
 /**
+ * @brief Return the ABGR8888 format
+ * @return
+ */
+SDL_PixelFormat* get_rgba_format() {
+  return context.rgba_format;
+}
+
+/**
  * \brief Get the default rendering driver for the current platform.
  * \return a string containing the rendering driver name.
  */
@@ -345,7 +358,7 @@ void render(const SurfacePtr& quest_surface) {
   if (software_filter != nullptr) {
     Debug::check_assertion(context.scaled_surface != nullptr,
         "Missing destination surface for scaling");
-    quest_surface->apply_pixel_filter(*software_filter, *context.scaled_surface);
+    //quest_surface->apply_pixel_filter(*software_filter, *context.scaled_surface); //TODO
     surface_to_render = context.scaled_surface;
   }
 
@@ -355,11 +368,11 @@ void render(const SurfacePtr& quest_surface) {
   }
   else {
     // SDL rendering.
+    SDL_SetRenderTarget(context.main_renderer,nullptr);
     SDL_SetRenderDrawColor(context.main_renderer, 0, 0, 0, 255);
     SDL_RenderSetClipRect(context.main_renderer, nullptr);
     SDL_RenderClear(context.main_renderer);
-    surface_to_render->render(*context.render_target);
-    SDL_RenderCopy(context.main_renderer, context.render_target, nullptr, nullptr);
+    SDL_RenderCopy(context.main_renderer, surface_to_render->get_internal_surface().get_nonconst_texture(), nullptr, nullptr);
     SDL_RenderPresent(context.main_renderer);
   }
 }

@@ -23,10 +23,15 @@
 #include "solarus/graphics/Surface.h"
 #include "solarus/graphics/Transition.h"
 #include "solarus/graphics/Video.h"
+#include "solarus/graphics/RenderTexture.h"
+#include "solarus/graphics/Texture.h"
 #include "solarus/lua/LuaContext.h"
+
 #include <algorithm>
 #include <iostream>
 #include <sstream>
+
+#include <SDL_image.h>
 
 namespace Solarus {
 
@@ -37,26 +42,22 @@ namespace Solarus {
  */
 Surface::Surface(int width, int height):
   Drawable(),
-  internal_surface(nullptr),
-  opacity(255) {
+  opacity(255),
+  internal_surface(nullptr)
+{
 
   Debug::check_assertion(width > 0 && height > 0,
-      "Attempt to create a surface with an empty size");
+                         "Attempt to create a surface with an empty size");
 
-  SDL_PixelFormat* format = Video::get_pixel_format();
-  internal_surface = SDL_Surface_UniquePtr(SDL_CreateRGBSurface(
-      0,
-      width,
-      height,
-      32,
-      format->Rmask,
-      format->Gmask,
-      format->Bmask,
-      format->Amask
-  ));
+  internal_surface.reset(new RenderTexture(width,height));
+  internal_surface->_parent = this;
+}
 
-  Debug::check_assertion(internal_surface != nullptr,
-      std::string("Failed to create SDL surface: ") + SDL_GetError());
+Surface::Surface(SDL_Surface *surf)
+  : opacity(255),
+    internal_surface(new Texture(surf))
+{
+  internal_surface->_parent = this;
 }
 
 /**
@@ -68,31 +69,19 @@ Surface::Surface(int width, int height):
  * \param internal_surface The internal surface data.
  * The created surface takes ownership of this object.
  */
-Surface::Surface(SDL_Surface* internal_surface):
+Surface::Surface(SurfaceImpl* impl):
   Drawable(),
-  internal_surface(internal_surface),
-  opacity(255) {
-
-  // Convert to the preferred pixel format.
-  SDL_PixelFormat* pixel_format = Video::get_pixel_format();
-  if (internal_surface->format->format != pixel_format->format) {
-
-    SDL_Surface* converted_surface = SDL_ConvertSurface(
-        internal_surface,
-        pixel_format,
-        0
-    );
-    Debug::check_assertion(converted_surface != nullptr,
-                           std::string("Failed to convert surface") + SDL_GetError());
-    this->internal_surface = SDL_Surface_UniquePtr(converted_surface);
-  }
+  opacity(255),
+  internal_surface(impl) //TODO refactor this...
+{
+  internal_surface->_parent = this;
 }
 
 /**
  * \brief Destructor.
  */
 Surface::~Surface() {
-
+  internal_surface.reset();
 }
 
 
@@ -131,16 +120,15 @@ SurfacePtr Surface::create(const Size& size) {
  * \return The surface created, or nullptr if the file could not be loaded.
  */
 SurfacePtr Surface::create(const std::string& file_name,
-    ImageDirectory base_directory) {
+                           ImageDirectory base_directory) {
 
-  SDL_Surface* sdl_surface = get_surface_from_file(file_name, base_directory);
+  SurfaceImpl* surface = get_surface_from_file(file_name, base_directory);
 
-  if (sdl_surface == nullptr) {
+  if (surface == nullptr) {
     return nullptr;
   }
 
-  SurfacePtr surface = std::make_shared<Surface>(sdl_surface);
-  return surface;
+  return std::make_shared<Surface>(surface);
 }
 
 /**
@@ -152,7 +140,7 @@ SurfacePtr Surface::create(const std::string& file_name,
  * \param base_directory The base directory to use.
  * \return The SDL surface created.
  */
-SDL_Surface* Surface::get_surface_from_file(
+SurfaceImpl *Surface::get_surface_from_file(
     const std::string& file_name,
     ImageDirectory base_directory) {
 
@@ -181,11 +169,11 @@ SDL_Surface* Surface::get_surface_from_file(
   SDL_RWclose(rw);
 
   Debug::check_assertion(surface != nullptr,
-      std::string("Cannot load image '") + prefixed_file_name + "'");
+                         std::string("Cannot load image '") + prefixed_file_name + "'");
 
-  SDL_PixelFormat* pixel_format = Video::get_pixel_format();
+  SDL_PixelFormat* pixel_format = Video::get_rgba_format();
   if (surface->format->format == pixel_format->format) {
-    return surface;
+    return new Texture(surface);
   }
 
   // Convert to the preferred pixel format.
@@ -203,7 +191,7 @@ SDL_Surface* Surface::get_surface_from_file(
   SDL_SetSurfaceAlphaMod(converted_surface, opacity);  // Re-apply the alpha.
   SDL_SetSurfaceBlendMode(converted_surface, SDL_BLENDMODE_BLEND);
 
-  return converted_surface;
+  return new Texture(converted_surface);
 }
 
 /**
@@ -211,7 +199,7 @@ SDL_Surface* Surface::get_surface_from_file(
  * \return the width in pixels
  */
 int Surface::get_width() const {
-  return internal_surface->w;
+  return internal_surface->get_width();
 }
 
 /**
@@ -219,7 +207,7 @@ int Surface::get_width() const {
  * \return the height in pixels
  */
 int Surface::get_height() const {
-  return internal_surface->h;
+  return internal_surface->get_height();
 }
 
 /**
@@ -243,20 +231,15 @@ uint8_t Surface::get_opacity() const {
  * \param opacity The opacity (0 to 255).
  */
 void Surface::set_opacity(uint8_t opacity) {
-
   this->opacity = opacity;
-  int error = SDL_SetSurfaceAlphaMod(internal_surface.get(), opacity);
-  if (error != 0) {
-    Debug::error(SDL_GetError());
-  }
 }
 
 /**
  * \brief Returns the SDL surface wrapped.
  * \return The internal SDL surface.
  */
-SDL_Surface* Surface::get_internal_surface() {
-  return internal_surface.get();
+SurfaceImpl &Surface::get_internal_surface() {
+  return *internal_surface.get();
 }
 
 /**
@@ -267,25 +250,24 @@ SDL_Surface* Surface::get_internal_surface() {
  * \return The pixel buffer.
  */
 std::string Surface::get_pixels() const {
-
   const int num_pixels = get_width() * get_height();
+  SDL_Surface* surface = internal_surface->get_nonconst_surface();
 
-  if (internal_surface->format->format == SDL_PIXELFORMAT_ABGR8888) {
+  if (surface->format->format == SDL_PIXELFORMAT_ABGR8888) {
     // No conversion needed.
-    const char* buffer = static_cast<const char*>(internal_surface->pixels);
+    const char* buffer = static_cast<const char*>(surface->pixels);
     return std::string(buffer, num_pixels * 4);
   }
 
   // Convert to RGBA format.
-  SDL_PixelFormat* format = SDL_AllocFormat(SDL_PIXELFORMAT_ABGR8888);  // TODO keep this object
+  SDL_PixelFormat* format = Video::get_rgba_format();
   SDL_Surface_UniquePtr converted_surface(SDL_ConvertSurface(
-      internal_surface.get(),
-      format,
-      0
-  ));
-  SDL_FreeFormat(format);
+                                            surface,
+                                            format,
+                                            0
+                                            ));
   Debug::check_assertion(converted_surface != nullptr,
-      std::string("Failed to convert pixels to RGBA format") + SDL_GetError());
+                         std::string("Failed to convert pixels to RGBA format") + SDL_GetError());
   const char* buffer = static_cast<const char*>(converted_surface->pixels);
   return std::string(buffer, num_pixels * 4);
 }
@@ -295,37 +277,44 @@ std::string Surface::get_pixels() const {
  * @param buffer a string considerer as array of bytes with pixels in RGBA
  */
 void Surface::set_pixels(const std::string& buffer) {
+  //TODO notify pixels changed
+  SDL_Surface* surface = internal_surface->get_nonconst_surface();
+  if (surface->format->format == SDL_PIXELFORMAT_ABGR8888) {
+    // No conversion needed.
+    char* pixels = static_cast<char*>(surface->pixels);
+    std::copy(buffer.begin(), buffer.end(), pixels);
+    return;
+  }
 
-    if (internal_surface->format->format == SDL_PIXELFORMAT_ABGR8888) {
-      // No conversion needed.
-      char* pixels = static_cast<char*>(internal_surface->pixels);
-      std::copy(buffer.begin(), buffer.end(), pixels);
-      return;
-    }
+  SDL_PixelFormat* format_rgba = Video::get_rgba_format(); // TODO keep this object :)
+  SDL_Surface_UniquePtr rgba_surf(SDL_CreateRGBSurfaceFrom(
+                                    const_cast<char*>(buffer.data()),
+                                    get_width(),
+                                    get_height(),
+                                    format_rgba->BitsPerPixel,
+                                    format_rgba->BytesPerPixel * get_width(),
+                                    format_rgba->Rmask,
+                                    format_rgba->Gmask,
+                                    format_rgba->Bmask,
+                                    format_rgba->Amask
+                                    ));
+  // Convert from RGBA.
+  SDL_PixelFormat* pixel_format = Video::get_pixel_format();
+  SDL_Surface* converted_surf(SDL_ConvertSurface(
+                                         rgba_surf.get(),
+                                         pixel_format,
+                                         0
+                                         ));
+  internal_surface.reset(new Texture(converted_surf));
+}
 
-    SDL_PixelFormat* format_rgba = SDL_AllocFormat(SDL_PIXELFORMAT_ABGR8888); // TODO keep this object :)
-    SDL_Surface_UniquePtr rgba_surf(SDL_CreateRGBSurfaceFrom(
-          const_cast<char*>(buffer.data()),
-          get_width(),
-          get_height(),
-          format_rgba->BitsPerPixel,
-          format_rgba->BytesPerPixel * get_width(),
-          format_rgba->Rmask,
-          format_rgba->Gmask,
-          format_rgba->Bmask,
-          format_rgba->Amask
-      ));
-    SDL_FreeFormat(format_rgba);
-    // Convert from RGBA.
-    SDL_PixelFormat* pixel_format = Video::get_pixel_format();
-    SDL_Surface_UniquePtr converted_surf(SDL_ConvertSurface(
-         rgba_surf.get(),
-         pixel_format,
-         0
-    ));
-    internal_surface = std::move(converted_surf);
-    SDL_SetSurfaceAlphaMod(internal_surface.get(), opacity);  // Re-apply the alpha.
-    SDL_SetSurfaceBlendMode(internal_surface.get(), SDL_BLENDMODE_BLEND);
+RenderTexture &Surface::request_render() {
+  SurfaceImpl* old = internal_surface.get();
+  RenderTexture* rt = internal_surface->to_render_texture();
+  if(old != rt) {
+    internal_surface.reset(rt);
+  }
+  return *rt;
 }
 
 /**
@@ -335,12 +324,7 @@ void Surface::set_pixels(const std::string& buffer) {
  * The opacity property of the surface is preserved.
  */
 void Surface::clear() {
-
-  SDL_FillRect(
-      internal_surface.get(),
-      nullptr,
-      get_color_value(Color::transparent)
-  );
+  request_render().clear();
 }
 
 /**
@@ -351,13 +335,8 @@ void Surface::clear() {
  *
  * \param where The rectangle to clear.
  */
-void Surface::clear(const Rectangle& where) {
-
-  SDL_FillRect(
-      internal_surface.get(),
-      where.get_internal_rect(),
-      get_color_value(Color::transparent)
-  );
+void Surface::clear(const Rectangle& where) { //TODO deprecate
+  request_render().clear();
 }
 
 /**
@@ -369,7 +348,7 @@ void Surface::clear(const Rectangle& where) {
  * \param color A color.
  */
 void Surface::fill_with_color(const Color& color) {
-  fill_with_color(color, Rectangle(Point(0, 0), get_size()));
+  fill_with_color(color,Rectangle(0,0,get_width(),get_height()));
 }
 
 /**
@@ -382,38 +361,7 @@ void Surface::fill_with_color(const Color& color) {
  * \param where The rectangle to fill.
  */
 void Surface::fill_with_color(const Color& color, const Rectangle& where) {
-
-  if (color.get_alpha() == 255) {
-    // Opaque color: directly replace the pixel values.
-    SDL_FillRect(internal_surface.get(), where.get_internal_rect(), get_color_value(color));
-  }
-  else {
-    // We need an intermediate surface to perform alpha blending.
-    if (alpha_color_surface == nullptr) {
-      SDL_PixelFormat* format = Video::get_pixel_format();
-      alpha_color_surface = SDL_Surface_UniquePtr(SDL_CreateRGBSurface(
-          0,
-          where.get_width(),
-          where.get_height(),
-          32,
-          format->Rmask,
-          format->Gmask,
-          format->Bmask,
-          format->Amask
-      ));
-
-      Debug::check_assertion(alpha_color_surface != nullptr,
-          std::string("Failed to create SDL surface: ") + SDL_GetError());
-    }
-
-    SDL_FillRect(alpha_color_surface.get(), nullptr, get_color_value(color));
-    SDL_BlitSurface(
-        alpha_color_surface.get(),
-        nullptr,
-        internal_surface.get(),
-        Rectangle(where).get_internal_rect()
-    );
-  }
+  request_render().fill_with_color(color,where);
 }
 
 /**
@@ -422,9 +370,7 @@ void Surface::fill_with_color(const Color& color, const Rectangle& where) {
  * \param dst_position Coordinates on the destination surface.
  */
 void Surface::raw_draw(Surface& dst_surface, const Point& dst_position) {
-
-  Rectangle region(0, 0, get_width(), get_height());
-  raw_draw_region(region, dst_surface, dst_position);
+  dst_surface.request_render().draw_other(*internal_surface,dst_position);
 }
 
 /**
@@ -437,17 +383,7 @@ void Surface::raw_draw_region(
     const Rectangle& region,
     Surface& dst_surface,
     const Point& dst_position) {
-
-  SDL_SetSurfaceBlendMode(
-        this->internal_surface.get(),
-        get_sdl_blend_mode()
-  );
-  SDL_BlitSurface(
-      this->internal_surface.get(),
-      region.get_internal_rect(),
-      dst_surface.internal_surface.get(),
-      Rectangle(dst_position).get_internal_rect()
-  );
+  dst_surface.request_render().draw_region_other(region,*internal_surface,dst_position);
 }
 
 /**
@@ -456,45 +392,6 @@ void Surface::raw_draw_region(
  */
 void Surface::draw_transition(Transition& transition) {
   transition.draw(*this);
-}
-
-/**
- * \brief Draws this software surface with a pixel filter on another software
- * surface.
- * \param pixel_filter The pixel filter to apply.
- * \param dst_surface The destination surface. It must have the size of the
- * this surface multiplied by the scaling factor of the filter.
- */
-void Surface::apply_pixel_filter(
-    const SoftwarePixelFilter& pixel_filter, Surface& dst_surface) {
-
-  const int factor = pixel_filter.get_scaling_factor();
-  Debug::check_assertion(dst_surface.get_width() == get_width() * factor,
-      "Wrong destination surface size");
-  Debug::check_assertion(dst_surface.get_height() == get_height() * factor,
-      "Wrong destination surface size");
-
-  SDL_Surface* src_internal_surface = this->internal_surface.get();
-  SDL_Surface* dst_internal_surface = dst_surface.internal_surface.get();
-
-  if (src_internal_surface == nullptr) {
-    // This is possible if nothing was drawn on the surface yet.
-    return;
-  }
-
-  Debug::check_assertion(dst_internal_surface != nullptr,
-      "Missing software destination surface for pixel filter");
-
-  SDL_LockSurface(src_internal_surface);
-  SDL_LockSurface(dst_internal_surface);
-
-  uint32_t* src = static_cast<uint32_t*>(src_internal_surface->pixels);
-  uint32_t* dst = static_cast<uint32_t*>(dst_internal_surface->pixels);
-
-  pixel_filter.filter(src, get_width(), get_height(), dst);
-
-  SDL_UnlockSurface(dst_internal_surface);
-  SDL_UnlockSurface(src_internal_surface);
 }
 
 /**
@@ -516,36 +413,36 @@ Surface& Surface::get_transition_surface() {
  * \return The value of this pixel.
  */
 uint32_t Surface::get_pixel(int index) const {
-
-  SDL_PixelFormat* format = internal_surface->format;
+  SDL_Surface* surface = internal_surface->get_nonconst_surface();
+  SDL_PixelFormat* format = surface->format;
 
   // Test from the most common to the most exotic.
   switch (format->BytesPerPixel) {
 
-    case 1:
-      {
-        uint8_t* pixels = static_cast<uint8_t*>(internal_surface->pixels);
-        return pixels[index];
-      }
+  case 1:
+  {
+    uint8_t* pixels = static_cast<uint8_t*>(surface->pixels);
+    return pixels[index];
+  }
 
-    case 4:
-      {
-        uint32_t* pixels = static_cast<uint32_t*>(internal_surface->pixels);
-        return pixels[index];
-      }
+  case 4:
+  {
+    uint32_t* pixels = static_cast<uint32_t*>(surface->pixels);
+    return pixels[index];
+  }
 
-    case 2:
-      {
-        uint16_t* pixels = static_cast<uint16_t*>(internal_surface->pixels);
-        return pixels[index];
-      }
+  case 2:
+  {
+    uint16_t* pixels = static_cast<uint16_t*>(surface->pixels);
+    return pixels[index];
+  }
 
-    case 3:
-      {
-        // Manual cast of the pixel into uint32_t.
-        uint8_t* bytes = static_cast<uint8_t*>(internal_surface->pixels);
-        return *reinterpret_cast<uint32_t*>(&bytes[index * 3]) & 0xffffff00 >> 8;
-      }
+  case 3:
+  {
+    // Manual cast of the pixel into uint32_t.
+    uint8_t* bytes = static_cast<uint8_t*>(surface->pixels);
+    return *reinterpret_cast<uint32_t*>(&bytes[index * 3]) & 0xffffff00 >> 8;
+  }
   }
 
   std::ostringstream oss;
@@ -563,18 +460,18 @@ uint32_t Surface::get_pixel(int index) const {
  * \return \c true if the pixel is transparent.
  */
 bool Surface::is_pixel_transparent(int index) const {
-
   uint32_t pixel = get_pixel(index);
   uint32_t colorkey;
-  bool with_colorkey = SDL_GetColorKey(internal_surface.get(), &colorkey) == 0;
+  SDL_Surface* surface = internal_surface->get_nonconst_surface();
+  bool with_colorkey = SDL_GetColorKey(surface, &colorkey) == 0;
 
   if (with_colorkey && pixel == colorkey) {
     // The pixel has the transparency color.
     return true;
   }
 
-  if (internal_surface->format->Amask != 0               // There exists an alpha channel.
-      && (pixel & internal_surface->format->Amask) == 0  // The pixel is fully transparent.
+  if (surface->format->Amask != 0               // There exists an alpha channel.
+      && (pixel & surface->format->Amask) == 0  // The pixel is fully transparent.
   ) {
     return true;
   }
@@ -621,13 +518,7 @@ SDL_BlendMode Surface::get_sdl_blend_mode() const {
  * \brief Renders this surface onto a hardware texture.
  */
 void Surface::render(SDL_Texture& render_target) {
-
-  SDL_UpdateTexture(
-      &render_target,
-      nullptr,
-      internal_surface->pixels,
-      internal_surface->pitch
-  );
+  //TODO deprecate
 }
 
 /**

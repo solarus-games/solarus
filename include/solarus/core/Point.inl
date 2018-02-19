@@ -36,6 +36,11 @@ constexpr Point::Point(int x, int y):
   y(y) {
 }
 
+
+inline Point::operator glm::vec2() const {
+  return glm::vec2(x,y);
+}
+
 /**
  * \brief Adds another point to this one.
  * \param other Another point.

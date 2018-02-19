@@ -301,7 +301,7 @@ void GlArbShader::render(const SurfacePtr& quest_surface) {
   SDL_RenderClear(renderer);
 
   // Draw on the render target.
-  quest_surface->render(*render_target);
+  SDL_Texture* texture = const_cast<SDL_Texture*>(quest_surface->get_internal_surface().get_texture());
 
   SDL_SetRenderTarget(renderer, nullptr);
   set_rendering_settings();
@@ -315,7 +315,7 @@ void GlArbShader::render(const SurfacePtr& quest_surface) {
   set_uniform_2f("sol_output_size", output_size.width, output_size.height);
 
   glActiveTextureARB(GL_TEXTURE0_ARB + 0);  // Texture unit 0.
-  SDL_GL_BindTexture(render_target, nullptr, nullptr);
+  SDL_GL_BindTexture(texture, nullptr, nullptr);
 
   // Draw.
   const GLfloat square_texcoord[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
@@ -332,7 +332,7 @@ void GlArbShader::render(const SurfacePtr& quest_surface) {
   glVertex3f(-1.0f, -1.0f, 0.0f);  // Bottom left.
   glEnd();
 
-  SDL_GL_UnbindTexture(render_target);
+  SDL_GL_UnbindTexture(texture);
 
   for (const auto& kvp : uniform_texture_units) {
     const GLuint texture_unit = kvp.second;
@@ -536,9 +536,9 @@ void GlArbShader::update_gl_texture(const SurfacePtr& surface, const GlTextureHa
   const Size& size = surface->get_size();
 
   // TODO Don't copy to an intermediate surface if the format is already RGBA or ABGR.
-  Surface::SDL_Surface_UniquePtr rgba_surface;
+  SDL_Surface_UniquePtr rgba_surface;
 #if SDL_BYTEORDER == SDL_LIL_ENDIAN     // OpenGL RGBA masks.
-  rgba_surface = Surface::SDL_Surface_UniquePtr(SDL_CreateRGBSurface(
+  rgba_surface = SDL_Surface_UniquePtr(SDL_CreateRGBSurface(
       0, size.width, size.height, 32,
       0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000
   ));
@@ -561,7 +561,7 @@ void GlArbShader::update_gl_texture(const SurfacePtr& surface, const GlTextureHa
   area.y = 0;
   area.w = size.width;
   area.h = size.height;
-  SDL_BlitSurface(surface->get_internal_surface(), &area, rgba_surface.get(), &area);
+  SDL_BlitSurface(const_cast<SDL_Surface*>(surface->get_internal_surface().get_surface()), &area, rgba_surface.get(), &area);
 
   // Restore the alpha blending attributes.
   surface->set_blend_mode(saved_mode);

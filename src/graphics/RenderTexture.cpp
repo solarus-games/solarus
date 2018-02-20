@@ -17,7 +17,7 @@ RenderTexture::RenderTexture(int width, int height, bool depth_buffer):
   Debug::check_assertion(tex!=nullptr,
                          std::string("Failed to create render texture : ") + SDL_GetError());
   target.reset(tex);
-
+  //clear();
 }
 
 int RenderTexture::get_width() const {
@@ -38,13 +38,12 @@ void RenderTexture::draw_other(const SurfaceImpl& texture, const Point& dst_posi
 }
 
 void RenderTexture::draw_region_other(const Rectangle& src_rect, const SurfaceImpl& texture, const Point& dst_position) {
-  surface_dirty = true;
-  Rectangle dst_rect(dst_position,src_rect.get_size());
-  SDL_Renderer* renderer = Video::get_renderer();
-  SDL_SetRenderTarget(renderer,target.get());
-  SDL_SetTextureAlphaMod(texture.get_nonconst_texture(),texture.parent().get_opacity());
-  SDL_SetTextureBlendMode(texture.get_nonconst_texture(),texture.parent().get_sdl_blend_mode());
-  SDL_RenderCopy(renderer,texture.get_nonconst_texture(),src_rect,dst_rect);
+  draw_env({
+   Rectangle dst_rect(dst_position,src_rect.get_size());
+   SDL_SetTextureAlphaMod(texture.get_nonconst_texture(),texture.parent().get_opacity());
+   SDL_SetTextureBlendMode(texture.get_nonconst_texture(),texture.parent().get_sdl_blend_mode());
+   SDL_RenderCopy(renderer,texture.get_nonconst_texture(),src_rect,dst_rect);
+ })
 }
 
 const SDL_Surface *RenderTexture::get_surface() const {
@@ -60,33 +59,26 @@ RenderTexture* RenderTexture::to_render_texture() {
   return this;
 }
 
-void RenderTexture::fill_with_color(const Color& color, const Rectangle& where) {
-  auto renderer = Video::get_renderer();
-  Uint8 r,g,b,a;
-  color.get_components(r,g,b,a);
-  SDL_SetRenderTarget(renderer,target.get());
-  SDL_SetRenderDrawColor(renderer,r,g,b,a);
-  SDL_SetRenderDrawBlendMode(renderer,SDL_BLENDMODE_BLEND);
-  SDL_RenderFillRect(renderer,where);
+void RenderTexture::fill_with_color(const Color& color, const Rectangle& where, SDL_BlendMode mode) {
+  draw_env({
+    Uint8 r,g,b,a;
+    color.get_components(r,g,b,a);
+    SDL_SetRenderDrawColor(renderer,r,g,b,a);
+    SDL_SetRenderDrawBlendMode(renderer,mode);
+    SDL_RenderFillRect(renderer,where);
+  })
 }
 
 void RenderTexture::clear() {
-  SDL_Renderer* renderer = Video::get_renderer();
-  SDL_SetRenderTarget(renderer,target.get());
-  SDL_SetRenderDrawColor(renderer,0,0,0,0);
-  SDL_SetTextureBlendMode(target.get(),SDL_BLENDMODE_BLEND);
-  SDL_RenderClear(renderer);
+  draw_env({
+    SDL_SetRenderDrawColor(renderer,0,0,0,0);
+    //SDL_SetTextureBlendMode(target.get(),SDL_BLENDMODE_BLEND);
+    SDL_RenderClear(renderer);
+  })
 }
 
 void RenderTexture::clear(const Rectangle& where) {
-  SDL_Renderer* renderer = Video::get_renderer();
-  SDL_SetRenderTarget(renderer,target.get());
-  Color c = Color::transparent;
-  Uint8 r,g,b,a;
-  c.get_components(r,g,b,a);
-  SDL_SetRenderDrawBlendMode(renderer,SDL_BLENDMODE_NONE);
-  SDL_SetRenderDrawColor(renderer,r,g,b,a);
-  SDL_RenderFillRect(renderer,where);
+  fill_with_color(Color::transparent,where,SDL_BLENDMODE_NONE);
 }
 
 }

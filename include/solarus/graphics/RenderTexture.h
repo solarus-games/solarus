@@ -15,6 +15,17 @@ public:
     const SDL_Texture* get_texture() const override;
     const SDL_Surface* get_surface() const override;
 
+    template<typename Func>
+    void with_target(Func closure) {
+      surface_dirty = true;
+      auto renderer = Video::get_renderer();
+      SDL_SetRenderTarget(renderer,target.get());
+      closure(renderer);
+      //SDL_SetRenderTarget(renderer,nullptr);
+    }
+
+#define draw_env(...) with_target([&](SDL_Renderer* renderer)__VA_ARGS__);
+
     int get_width() const override;
     int get_height() const override;
 
@@ -23,7 +34,7 @@ public:
 
     RenderTexture* to_render_texture() override;
 
-    void fill_with_color(const Color& color, const Rectangle& where);
+    void fill_with_color(const Color& color, const Rectangle& where, SDL_BlendMode mode = SDL_BLENDMODE_BLEND);
 
     void clear();
     void clear(const Rectangle& where);

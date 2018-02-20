@@ -188,8 +188,8 @@ SurfaceImpl *Surface::get_surface_from_file(
                          std::string("Failed to convert software surface: ") + SDL_GetError());
   SDL_FreeSurface(surface);
 
-  SDL_SetSurfaceAlphaMod(converted_surface, opacity);  // Re-apply the alpha.
-  SDL_SetSurfaceBlendMode(converted_surface, SDL_BLENDMODE_BLEND);
+  //SDL_SetSurfaceAlphaMod(converted_surface, opacity);  // Re-apply the alpha.
+  //SDL_SetSurfaceBlendMode(converted_surface, SDL_BLENDMODE_BLEND);
 
   return new Texture(converted_surface);
 }

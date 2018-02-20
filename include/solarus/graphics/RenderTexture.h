@@ -32,6 +32,7 @@ public:
 private:
     static RenderTargetAtlas render_atlas;
     mutable bool surface_dirty = true;
+    mutable bool texture_dirty = true;
     SDL_Surface_UniquePtr surface;
     SDL_Texture_UniquePtr target;
     int width,height;

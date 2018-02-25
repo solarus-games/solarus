@@ -162,6 +162,7 @@ file(
 	include/solarus/graphics/TransitionImmediate.h
 	include/solarus/graphics/TransitionScrolling.h
 	include/solarus/graphics/VertexArray.h
+	include/solarus/graphics/VertexArrayPtr.h
 	include/solarus/graphics/Video.h
 
 	include/solarus/hero/BackToSolidGroundState.h

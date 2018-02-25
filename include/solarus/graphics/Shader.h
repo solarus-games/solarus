@@ -21,6 +21,7 @@
 #include "solarus/core/Debug.h"
 #include "solarus/graphics/ShaderData.h"
 #include "solarus/graphics/SurfacePtr.h"
+#include "solarus/graphics/VertexArrayPtr.h"
 #include "solarus/lua/ExportableToLua.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
@@ -34,8 +35,13 @@ namespace Solarus {
  * \brief Represents a shader for a driver and sampler-independant uses.
  */
 class Shader : public ExportableToLua {
-
   public:
+    constexpr static const char* POSITION_NAME = "sol_vertex";
+    constexpr static const char* TEXCOORD_NAME = "sol_tex_coord";
+    constexpr static const char* COLOR_NAME = "sol_color";
+    constexpr static const char* MVP_NAME = "sol_mvp_matrix";
+    constexpr static const char* TEXTURE_NAME = "sol_texture";
+    constexpr static const char* INPUT_SIZE_NAME = "sol_input_size";
 
     explicit Shader(const std::string& shader_id);
     virtual ~Shader();
@@ -45,6 +51,12 @@ class Shader : public ExportableToLua {
 
     const std::string& get_id() const;
     const ShaderData& get_data() const;
+
+    std::string get_vertex_source() const;
+    std::string get_fragment_source() const;
+
+    virtual std::string default_vertex_source() const = 0;
+    virtual std::string default_fragment_source() const = 0;
 
     virtual void set_uniform_1b(
         const std::string& uniform_name, bool value);  // TODO make pure virtual
@@ -61,9 +73,9 @@ class Shader : public ExportableToLua {
     virtual bool set_uniform_texture(const std::string& uniform_name, const SurfacePtr& value);
 
     virtual void render(const SurfacePtr& quest_surface);  // TODO make pure virtual
+    virtual void render(const VertexArrayPtr& array, const SurfacePtr &texture, const Point& dst_position) = 0;
 
     const std::string& get_lua_type_name() const override;
-
   protected:
 
     void set_valid(bool valid);

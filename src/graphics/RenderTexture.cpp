@@ -5,7 +5,7 @@
 
 namespace Solarus {
 
-RenderTargetAtlas RenderTexture::render_atlas;
+//RenderTargetAtlas RenderTexture::render_atlas;
 
 RenderTexture::RenderTexture(int width, int height, bool depth_buffer):
   width(width),height(height)
@@ -17,7 +17,8 @@ RenderTexture::RenderTexture(int width, int height, bool depth_buffer):
   Debug::check_assertion(tex!=nullptr,
                          std::string("Failed to create render texture : ") + SDL_GetError());
   target.reset(tex);
-  //clear();
+  clear();
+  //fill_with_color(Color::black,Rectangle(0,0,width,height));
 }
 
 int RenderTexture::get_width() const {
@@ -60,19 +61,20 @@ RenderTexture* RenderTexture::to_render_texture() {
 }
 
 void RenderTexture::fill_with_color(const Color& color, const Rectangle& where, SDL_BlendMode mode) {
+  const SDL_Rect* rect = where;
   draw_env({
     Uint8 r,g,b,a;
     color.get_components(r,g,b,a);
     SDL_SetRenderDrawColor(renderer,r,g,b,a);
     SDL_SetRenderDrawBlendMode(renderer,mode);
-    SDL_RenderFillRect(renderer,where);
+    SDL_RenderFillRect(renderer,rect);
   })
 }
 
 void RenderTexture::clear() {
   draw_env({
     SDL_SetRenderDrawColor(renderer,0,0,0,0);
-    //SDL_SetTextureBlendMode(target.get(),SDL_BLENDMODE_BLEND);
+    SDL_SetTextureBlendMode(target.get(),SDL_BLENDMODE_BLEND);
     SDL_RenderClear(renderer);
   })
 }

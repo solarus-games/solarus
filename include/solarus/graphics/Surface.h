@@ -93,7 +93,7 @@ class Surface: public Drawable {
     std::string get_pixels() const;
     void set_pixels(const std::string& buffer);
 
-    void render(SDL_Texture& render_target);
+    void render(SDL_Renderer *&renderer);
 
     // Implementation from Drawable.
     virtual void raw_draw(

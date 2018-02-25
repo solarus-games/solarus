@@ -41,7 +41,7 @@ public:
     ~RenderTexture(){
     }
 private:
-    static RenderTargetAtlas render_atlas;
+    //static RenderTargetAtlas render_atlas;
     mutable bool surface_dirty = true;
     mutable bool texture_dirty = true;
     SDL_Surface_UniquePtr surface;

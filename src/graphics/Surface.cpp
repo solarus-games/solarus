@@ -188,9 +188,6 @@ SurfaceImpl *Surface::get_surface_from_file(
                          std::string("Failed to convert software surface: ") + SDL_GetError());
   SDL_FreeSurface(surface);
 
-  //SDL_SetSurfaceAlphaMod(converted_surface, opacity);  // Re-apply the alpha.
-  //SDL_SetSurfaceBlendMode(converted_surface, SDL_BLENDMODE_BLEND);
-
   return new Texture(converted_surface);
 }
 
@@ -336,7 +333,7 @@ void Surface::clear() {
  * \param where The rectangle to clear.
  */
 void Surface::clear(const Rectangle& where) { //TODO deprecate
-  request_render().clear();
+  request_render().clear(where);
 }
 
 /**
@@ -348,7 +345,7 @@ void Surface::clear(const Rectangle& where) { //TODO deprecate
  * \param color A color.
  */
 void Surface::fill_with_color(const Color& color) {
-  fill_with_color(color,Rectangle(0,0,get_width(),get_height()));
+  fill_with_color(color,Rectangle(Point(0,0),get_size()));
 }
 
 /**
@@ -517,8 +514,8 @@ SDL_BlendMode Surface::get_sdl_blend_mode() const {
 /**
  * \brief Renders this surface onto a hardware texture.
  */
-void Surface::render(SDL_Texture& render_target) {
-  //TODO deprecate
+void Surface::render(SDL_Renderer*& renderer) {
+  SDL_RenderCopy(renderer,internal_surface->get_nonconst_texture(),NULL,NULL);
 }
 
 /**

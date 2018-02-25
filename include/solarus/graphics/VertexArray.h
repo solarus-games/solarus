@@ -3,6 +3,8 @@
 #include "solarus/core/Rectangle.h"
 #include "solarus/graphics/Color.h"
 #include "solarus/graphics/SurfacePtr.h"
+#include "solarus/graphics/ShaderPtr.h"
+#include "solarus/graphics/VertexArrayPtr.h"
 
 #include <memory>
 #include <vector>
@@ -37,10 +39,6 @@ enum PrimitiveType {
     //Don't put quad as it is deprecated
 };
 
-class VertexArray;
-
-using VertexArrayPtr = std::shared_ptr<VertexArray>; //TODO put this in a separate file
-
 class VerticeView
 {
 public:
@@ -65,6 +63,9 @@ private:
 
 class VertexArray
 {
+  friend class GlShader;
+  friend class GlArbShader;
+  friend class VerticeView;
 public:
     VertexArray(PrimitiveType type = TRIANGLES);
     VertexArray(PrimitiveType type,size_t vertex_count);
@@ -80,10 +81,16 @@ public:
     size_t vertex_count() const;
     Vertex& operator [](size_t index);
     void draw(const SurfacePtr &dst_surface, const Point& dst_position, const SurfacePtr &texture) const;
+    void init_vertex_buffer();
+    void update_vertex_buffer();
+    void draw(GLuint program);
     const Vertex& operator [](size_t index) const;
 private:
     std::vector <Vertex> vertices;
+    GLuint vertex_buffer;
     PrimitiveType type;
+    ShaderPtr shader;
+    bool buffer_dirty = true;
 };
 
 

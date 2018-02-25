@@ -93,6 +93,30 @@ const ShaderData& Shader::get_data() const {
 }
 
 /**
+ * @brief Returns the vertex source of the data or the default vertex source
+ * @return the vertex source
+ */
+std::string Shader::get_vertex_source() const {
+  const auto& ds = get_data().get_vertex_source();
+  if(ds != "") {
+    return ds;
+  }
+  return default_vertex_source();
+}
+
+/**
+ * @brief Returns the fragment source of the data or the default fragment source
+ * @return The fragment source
+ */
+std::string Shader::get_fragment_source() const {
+  const auto& ds = get_data().get_fragment_source();
+  if(ds != "") {
+    return ds;
+  }
+  return default_fragment_source();
+}
+
+/**
  * \brief Sets the shader information.
  * \param data The shader data.
  */

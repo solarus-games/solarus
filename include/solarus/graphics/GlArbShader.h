@@ -64,6 +64,10 @@ class GlArbShader : public Shader {
     static GlTextureHandle create_gl_texture(const SurfacePtr& surface);
     static void update_gl_texture(const SurfacePtr& surface, const GlTextureHandle& texture);
 
+    void render(const VertexArrayPtr& array, const SurfacePtr &texture, const Point& dst_position) override;
+
+    std::string default_vertex_source() const override;
+    std::string default_fragment_source() const override;
   protected:
 
     void load() override;
@@ -79,6 +83,9 @@ class GlArbShader : public Shader {
     GLhandleARB program;                         /**< The program which bind the vertex and fragment shader. */
     GLhandleARB vertex_shader;                   /**< The vertex shader. */
     GLhandleARB fragment_shader;                 /**< The fragment shader. */
+    GLint position_location;                     /**< The location of the position attrib. */
+    GLint tex_coord_location;                   /**< The location of the tex_coord attrib. */
+    GLint color_location;                        /**< The location of the color attrib. */
     mutable std::map<std::string, GLint>
         uniform_locations;                       /**< Cache of uniform locations. */
     mutable std::map<SurfacePtr, GlTextureHandle>
@@ -86,8 +93,8 @@ class GlArbShader : public Shader {
     mutable std::map<SurfacePtr, GLuint>
         uniform_texture_units;                   /**< Texture units used by uniforms. */
 #else
-
   static bool initialize() { return false; }
+  void render(const VertexArrayPtr&) override {}
   explicit GlArbShader(const std::string& shader_id): Shader(shader_id)  {}
 #endif
 };

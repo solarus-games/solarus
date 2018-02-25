@@ -45,6 +45,9 @@ class GlShader : public Shader {
     static bool initialize();
 
     explicit GlShader(const std::string& shader_id);
+    void render(const VertexArrayPtr& vertex_array) override;
+    std::string default_vertex_source() const override;
+    std::string default_fragment_source() const override;
     ~GlShader();
 
   protected:
@@ -61,8 +64,13 @@ class GlShader : public Shader {
     GLuint program;                         /**< The program which bind the vertex and fragment shader. */
     GLuint vertex_shader;                   /**< The vertex shader. */
     GLuint fragment_shader;                 /**< The fragment shader. */
+    GLint  position_location;               /**< The location of the position attrib. */
+    GLint  tex_coord_location;              /**< The location of the tex_coord attrib */
+    GLint  color_location;                  /**< The location of the color attrib */
 #else
-
+  std::string default_vertex_source() const override{}
+  std::string default_fragment_source() const override{}
+  void render(const VertexArrayPtr& array, const SurfacePtr &texture, const Point& dst_position) override{}
     static bool initialize() { return false; }
     explicit GlShader(const std::string& shader_id): Shader(shader_id) {}
 #endif

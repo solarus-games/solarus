@@ -95,7 +95,7 @@ void create_window() {
   Debug::check_assertion(context.main_window == nullptr, "Window already exists");
 
   // Set OpenGL as the default renderer driver when available, to avoid using Direct3d.
-  SDL_SetHintWithPriority(SDL_HINT_RENDER_DRIVER, "opengles2", SDL_HINT_DEFAULT);
+  SDL_SetHintWithPriority(SDL_HINT_RENDER_DRIVER, "opengles2", SDL_HINT_OVERRIDE);
 
   // Set the default OpenGL built-in shader (nearest).
   SDL_SetHint(SDL_HINT_RENDER_OPENGL_SHADERS, "0");
@@ -335,7 +335,6 @@ const std::string& get_rendering_driver_name() {
  * \brief Show the window.
  */
 void show_window() {
-
   SDL_ShowWindow(context.main_window);
 }
 

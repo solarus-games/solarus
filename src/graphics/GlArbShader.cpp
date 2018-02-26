@@ -88,7 +88,6 @@ PFNGLVERTEXATTRIBPOINTERARBPROC glVertexAttribPointerARB;
 PFNGLENABLEVERTEXATTRIBARRAYARBPROC glEnableVertexAttribArrayARB;
 PFNGLGETATTRIBLOCATIONARBPROC glGetAttribLocationARB;
 
-
 /**
  * \brief Casts a pointer-to-object (void*) to a pointer-to-function.
  *
@@ -142,6 +141,14 @@ bool GlArbShader::initialize() {
     glUniform4fARB = get_proc_address_cast<PFNGLUNIFORM4FARBPROC>(SDL_GL_GetProcAddress("glUniform4fARB"));
     glUseProgramObjectARB = get_proc_address_cast<PFNGLUSEPROGRAMOBJECTARBPROC>(SDL_GL_GetProcAddress("glUseProgramObjectARB"));
     glGetHandleARB = get_proc_address_cast<PFNGLGETHANDLEARBPROC>(SDL_GL_GetProcAddress("glGetHandleARB"));
+
+    glGenBuffersARB = get_proc_address_cast<PFNGLGENBUFFERSARBPROC>(SDL_GL_GetProcAddress("glGenBuffersARB"));
+    glBindBufferARB = get_proc_address_cast<PFNGLBINDBUFFERARBPROC>(SDL_GL_GetProcAddress("glBindBufferARB"));
+    glBufferDataARB = get_proc_address_cast<PFNGLBUFFERDATAARBPROC>(SDL_GL_GetProcAddress("glBufferDataARB"));
+    glVertexAttribPointerARB = get_proc_address_cast<PFNGLVERTEXATTRIBPOINTERARBPROC>(SDL_GL_GetProcAddress("glVertexAttribPointerARB"));
+    glEnableVertexAttribArrayARB = get_proc_address_cast<PFNGLENABLEVERTEXATTRIBARRAYARBPROC>(SDL_GL_GetProcAddress("glEnableVertexAttribArrayARB"));
+    glGetAttribLocationARB = get_proc_address_cast<PFNGLGETATTRIBLOCATIONARBPROC>(SDL_GL_GetProcAddress("glGetAttribLocationARB"));
+
     if (glAttachObjectARB &&
         glActiveTextureARB &&
         glCompileShaderARB &&
@@ -159,7 +166,15 @@ bool GlArbShader::initialize() {
         glUniform3fARB &&
         glUniform4fARB &&
         glUseProgramObjectARB &&
-        glGetHandleARB) {
+        glGetHandleARB &&
+
+        glGenBuffersARB &&
+        glBindBufferARB &&
+        glBufferDataARB &&
+        glVertexAttribPointerARB &&
+        glEnableVertexAttribArrayARB &&
+        glGetAttribLocationARB
+        ) {
 
       return true;
     }

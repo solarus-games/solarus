@@ -248,7 +248,7 @@ SurfaceImpl &Surface::get_internal_surface() {
  */
 std::string Surface::get_pixels() const {
   const int num_pixels = get_width() * get_height();
-  SDL_Surface* surface = internal_surface->get_nonconst_surface();
+  SDL_Surface* surface = internal_surface->get_surface();
 
   if (surface->format->format == SDL_PIXELFORMAT_ABGR8888) {
     // No conversion needed.
@@ -275,7 +275,7 @@ std::string Surface::get_pixels() const {
  */
 void Surface::set_pixels(const std::string& buffer) {
   //TODO notify pixels changed
-  SDL_Surface* surface = internal_surface->get_nonconst_surface();
+  SDL_Surface* surface = internal_surface->get_surface();
   if (surface->format->format == SDL_PIXELFORMAT_ABGR8888) {
     // No conversion needed.
     char* pixels = static_cast<char*>(surface->pixels);
@@ -410,7 +410,7 @@ Surface& Surface::get_transition_surface() {
  * \return The value of this pixel.
  */
 uint32_t Surface::get_pixel(int index) const {
-  SDL_Surface* surface = internal_surface->get_nonconst_surface();
+  SDL_Surface* surface = internal_surface->get_surface();
   SDL_PixelFormat* format = surface->format;
 
   // Test from the most common to the most exotic.
@@ -459,7 +459,7 @@ uint32_t Surface::get_pixel(int index) const {
 bool Surface::is_pixel_transparent(int index) const {
   uint32_t pixel = get_pixel(index);
   uint32_t colorkey;
-  SDL_Surface* surface = internal_surface->get_nonconst_surface();
+  SDL_Surface* surface = internal_surface->get_surface();
   bool with_colorkey = SDL_GetColorKey(surface, &colorkey) == 0;
 
   if (with_colorkey && pixel == colorkey) {
@@ -515,7 +515,7 @@ SDL_BlendMode Surface::get_sdl_blend_mode() const {
  * \brief Renders this surface onto a hardware texture.
  */
 void Surface::render(SDL_Renderer*& renderer) {
-  SDL_RenderCopy(renderer,internal_surface->get_nonconst_texture(),NULL,NULL);
+  SDL_RenderCopy(renderer,internal_surface->get_texture(),NULL,NULL);
 }
 
 /**

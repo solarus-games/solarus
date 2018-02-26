@@ -12,8 +12,8 @@ class RenderTexture : public SurfaceImpl
 {
 public:
     RenderTexture(int width,int height,bool depth_buffer = false);
-    const SDL_Texture* get_texture() const override;
-    const SDL_Surface* get_surface() const override;
+    SDL_Texture* get_texture() const override;
+    SDL_Surface* get_surface() const override;
 
     template<typename Func>
     void with_target(Func closure) {
@@ -44,8 +44,8 @@ private:
     //static RenderTargetAtlas render_atlas;
     mutable bool surface_dirty = true;
     mutable bool texture_dirty = true;
-    SDL_Surface_UniquePtr surface;
-    SDL_Texture_UniquePtr target;
+    mutable SDL_Surface_UniquePtr surface;
+    mutable SDL_Texture_UniquePtr target;
     int width,height;
     //RenderTargetViewPtr target;
 };

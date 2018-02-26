@@ -87,10 +87,10 @@ public:
     const Vertex& operator [](size_t index) const;
 private:
     std::vector <Vertex> vertices;
-    GLuint vertex_buffer;
+    mutable GLuint vertex_buffer;
     PrimitiveType type;
     ShaderPtr shader;
-    bool buffer_dirty = true;
+    mutable bool buffer_dirty = true;
 };
 
 

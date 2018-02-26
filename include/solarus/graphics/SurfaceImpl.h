@@ -19,10 +19,8 @@ class SurfaceImpl
     friend class Surface;
 public:
     SurfaceImpl();
-    virtual const SDL_Texture* get_texture() const = 0;
-    SDL_Texture* get_nonconst_texture() const;
-    virtual const SDL_Surface* get_surface() const = 0;
-    SDL_Surface *get_nonconst_surface() const;
+    virtual SDL_Texture* get_texture() const = 0;
+    virtual SDL_Surface* get_surface() const = 0;
 
     virtual int get_width() const = 0;
     virtual int get_height() const = 0;

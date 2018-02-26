@@ -73,11 +73,10 @@ class Shader : public ExportableToLua {
     virtual bool set_uniform_texture(const std::string& uniform_name, const SurfacePtr& value);
 
     virtual void render(const SurfacePtr& quest_surface);  // TODO make pure virtual
-    virtual void render(const VertexArrayPtr& array, const SurfacePtr &texture, const Point& dst_position) = 0;
+    virtual void render(const VertexArray& array, const SurfacePtr &texture, const Point& dst_position) = 0;
 
     const std::string& get_lua_type_name() const override;
   protected:
-
     void set_valid(bool valid);
     void set_error(const std::string& error);
     void set_data(const ShaderData& data);

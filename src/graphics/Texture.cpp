@@ -16,11 +16,11 @@ Texture::Texture(SDL_Surface *surface)
   texture.reset(tex);
 }
 
-const SDL_Texture *Texture::get_texture() const {
+SDL_Texture *Texture::get_texture() const {
     return texture.get();
 }
 
-const SDL_Surface *Texture::get_surface() const {
+SDL_Surface *Texture::get_surface() const {
     return surface.get();
 }
 

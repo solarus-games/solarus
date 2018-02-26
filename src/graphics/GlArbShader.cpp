@@ -105,6 +105,8 @@ FunctionPointerType get_proc_address_cast(void* object_ptr) {
 
 }  // Anonymous namespace
 
+VertexArray GlArbShader::screen_quad;
+
 /**
  * \brief Initializes the GL ARB shader system.
  * \return \c true if GL ARB shaders are supported.
@@ -116,6 +118,9 @@ bool GlArbShader::initialize() {
   // Setting some parameters.
   glClearDepth(1.0); // Enables clearing of the depth buffer.
   glShadeModel(GL_SMOOTH); // Enables smooth color shading.
+
+  //Init screen quad
+  screen_quad.add_quad(Rectangle(-1,-1,2,2),Rectangle(0,0,1,1),Color::white);
 
   // Initialize GL ARB functions.
   if (SDL_GL_ExtensionSupported("GL_ARB_shader_objects") &&
@@ -352,9 +357,9 @@ void GlArbShader::set_rendering_settings() {
  */
 void GlArbShader::render(const SurfacePtr& quest_surface) {
 
-  Shader::render(quest_surface);
+  //Shader::render(quest_surface);
 
-  SDL_Renderer* renderer = Video::get_renderer();
+  /*SDL_Renderer* renderer = Video::get_renderer();
   SDL_Window* window = Video::get_window();
   SDL_Texture* render_target = Video::get_render_target();
 
@@ -366,9 +371,9 @@ void GlArbShader::render(const SurfacePtr& quest_surface) {
   SDL_SetRenderTarget(renderer, render_target);
   SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
   SDL_RenderSetClipRect(renderer, nullptr);
-  SDL_RenderClear(renderer);
+  SDL_RenderClear(renderer);*/
 
-  // Draw on the render target.
+  /*// Draw on the render target.
   SDL_Texture* texture = const_cast<SDL_Texture*>(quest_surface->get_internal_surface().get_texture());
 
   SDL_SetRenderTarget(renderer, nullptr);
@@ -417,19 +422,22 @@ void GlArbShader::render(const SurfacePtr& quest_surface) {
   glUseProgramObjectARB(previous_program);
 
   glMatrixMode(GL_PROJECTION);
-  glPopMatrix();
+  glPopMatrix();*/
+
+  render(screen_quad,quest_surface,Point(0,0));
+
 }
 
-void GlArbShader::render(const VertexArrayPtr& array, const SurfacePtr& texture, const Point &dst_position) {
-  if(array->vertex_buffer == 0) {
+void GlArbShader::render(const VertexArray& array, const SurfacePtr& texture, const Point &dst_position) {
+  if(array.vertex_buffer == 0) {
     //Generate vertex-buffer
-    glGenBuffersARB(GL_ARRAY_BUFFER,&array->vertex_buffer);
+    glGenBuffersARB(GL_ARRAY_BUFFER,&array.vertex_buffer);
   }
-  glBindBufferARB(GL_ARRAY_BUFFER,array->vertex_buffer);
-  if(array->buffer_dirty) {
-    //Upload vertex buffer
-    glBufferDataARB(GL_ARRAY_BUFFER,array->vertex_count()*sizeof(Vertex),array->data(),GL_DYNAMIC_DRAW);
-    array->buffer_dirty = false;
+  glBindBufferARB(GL_ARRAY_BUFFER,array.vertex_buffer);
+  if(array.buffer_dirty) {
+    //Upload vertex buffer //TODO use glSubData if array size <= previous size
+    glBufferDataARB(GL_ARRAY_BUFFER,array.vertex_count()*sizeof(Vertex),array.data(),GL_DYNAMIC_DRAW);
+    array.buffer_dirty = false;
   }
   GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
   glUseProgramObjectARB(program);
@@ -444,16 +452,15 @@ void GlArbShader::render(const VertexArrayPtr& array, const SurfacePtr& texture,
   glVertexAttribPointerARB(color_location,4,GL_UNSIGNED_BYTE,GL_TRUE,sizeof(Vertex),(void*)offsetof(Vertex,color));
 
   glActiveTextureARB(GL_TEXTURE0_ARB + 0);  // Texture unit 0.
-  SDL_GL_BindTexture(texture->get_internal_surface().get_nonconst_texture(), nullptr, nullptr);
+  SDL_GL_BindTexture(texture->get_internal_surface().get_texture(), nullptr, nullptr);
 
-  for (const auto& kvp : uniform_texture_units) {
-    const GLuint texture_unit = kvp.second;
+  for (const auto& kvp : uniform_textures) {
+    const GLuint texture_unit = kvp.second.unit;
     glActiveTextureARB(GL_TEXTURE0_ARB + texture_unit);
-    const GlTextureHandle& texture = uniform_textures.find(kvp.first)->second;
-    glBindTexture(GL_TEXTURE_2D, texture.get());
+    SDL_GL_BindTexture(kvp.second.surface->get_internal_surface().get_texture(),nullptr,nullptr);
   }
 
-  glDrawArrays(GL_ARRAY_BUFFER,0,array->vertex_count());
+  glDrawArrays((GLenum)array.get_primitive_type(),0,array.vertex_count());
 
   glUseProgramObjectARB(previous_program);
   glBindBufferARB(GL_ARRAY_BUFFER,0);
@@ -471,10 +478,7 @@ GLint GlArbShader::get_uniform_location(const std::string& uniform_name) const {
     return it->second;
   }
 
-  GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
-  glUseProgramObjectARB(program);
   const GLint location = glGetUniformLocationARB(program, uniform_name.c_str());
-  glUseProgramObjectARB(previous_program);
   uniform_locations.insert(std::make_pair(uniform_name, location));
   return location;
 }
@@ -581,33 +585,29 @@ void GlArbShader::set_uniform_4f(
  * \copydoc Shader::set_uniform_texture
  */
 bool GlArbShader::set_uniform_texture(const std::string& uniform_name, const SurfacePtr& value) {
-
   const GLint location = get_uniform_location(uniform_name);
+
   if (location == -1) {
     // Not an error.
     return true;
   }
 
+  auto it = uniform_textures.find(uniform_name);
+  if(it != uniform_textures.end()) {
+    it->second.surface = value;
+    return true; //Nothing else to do
+  }
+  //else find a new texture unit
+
   GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
   glUseProgramObjectARB(program);
 
-  int texture_unit = 0;
-  const auto& it = uniform_texture_units.find(value);
-  if (it != uniform_texture_units.end()) {
-    // Texture already created.
-    texture_unit = it->second;
-    const GlTextureHandle& texture = uniform_textures.at(value);
-    update_gl_texture(value, texture);
-  }
-  else {
-    texture_unit = uniform_texture_units.size() + 1;
-    uniform_texture_units[value] = texture_unit;
-    uniform_textures.emplace(value, create_gl_texture(value));
-  }
+  int texture_unit = ++current_texture_unit;
+  uniform_textures[uniform_name] = TextureUniform{value,(GLuint)texture_unit};
+
   glUniform1iARB(location, texture_unit);
 
   glUseProgramObjectARB(previous_program);
-
   return true;
 }
 

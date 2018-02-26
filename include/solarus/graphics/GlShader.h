@@ -70,7 +70,7 @@ class GlShader : public Shader {
 #else
   std::string default_vertex_source() const override{}
   std::string default_fragment_source() const override{}
-  void render(const VertexArrayPtr& array, const SurfacePtr &texture, const Point& dst_position) override{}
+  void render(const VertexArray& array, const SurfacePtr &texture, const Point& dst_position) override{}
     static bool initialize() { return false; }
     explicit GlShader(const std::string& shader_id): Shader(shader_id) {}
 #endif

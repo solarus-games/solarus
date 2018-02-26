@@ -29,7 +29,7 @@ int RenderTexture::get_height() const {
   return height;
 }
 
-const SDL_Texture* RenderTexture::get_texture() const {
+SDL_Texture* RenderTexture::get_texture() const {
   return target.get();
 }
 
@@ -41,13 +41,13 @@ void RenderTexture::draw_other(const SurfaceImpl& texture, const Point& dst_posi
 void RenderTexture::draw_region_other(const Rectangle& src_rect, const SurfaceImpl& texture, const Point& dst_position) {
   draw_env({
    Rectangle dst_rect(dst_position,src_rect.get_size());
-   SDL_SetTextureAlphaMod(texture.get_nonconst_texture(),texture.parent().get_opacity());
-   SDL_SetTextureBlendMode(texture.get_nonconst_texture(),texture.parent().get_sdl_blend_mode());
-   SDL_RenderCopy(renderer,texture.get_nonconst_texture(),src_rect,dst_rect);
+   SDL_SetTextureAlphaMod(texture.get_texture(),texture.parent().get_opacity());
+   SDL_SetTextureBlendMode(texture.get_texture(),texture.parent().get_sdl_blend_mode());
+   SDL_RenderCopy(renderer,texture.get_texture(),src_rect,dst_rect);
  })
 }
 
-const SDL_Surface *RenderTexture::get_surface() const {
+SDL_Surface *RenderTexture::get_surface() const {
   if (surface_dirty) {
     //TODO SDL black magic here
     //image = get_texture().copyToImage(); //Slow but functionnal

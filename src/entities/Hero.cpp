@@ -1747,6 +1747,20 @@ void Hero::notify_collision_with_stairs(
           Stairs::NORMAL_WAY : Stairs::REVERSE_WAY;
     }
 
+    // Check that the hero is exactly aligned with the stairs.
+    if (stairs.get_direction() % 2 == 0) {
+      // Horizontal stairs.
+      if (get_top_left_y() != stairs.get_top_left_y()) {
+        return;
+      }
+    }
+    else {
+      // Vertical stairs.
+      if (get_top_left_x() != stairs.get_top_left_x()) {
+        return;
+      }
+    }
+
     // Check whether the hero is trying to move in the direction of the stairs.
     int correct_direction = stairs.get_movement_direction(stairs_way);
     if (is_moving_towards(correct_direction / 2)) {

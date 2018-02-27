@@ -776,7 +776,7 @@ bool Entity::State::can_take_stairs() const {
 bool Entity::State::is_stairs_obstacle(const Stairs& stairs) const {
 
   // The entity may overlap stairs in rare cases,
-  // for example if he arrived by swimming over them
+  // for example if the hero arrived by swimming over them
   // and thus did not activate them.
   // This is allowed and can be used to leave water pools for example.
   if (entity.overlaps(stairs)) {

@@ -89,7 +89,6 @@ private:
     std::vector <Vertex> vertices;
     mutable GLuint vertex_buffer;
     PrimitiveType type;
-    ShaderPtr shader;
     mutable bool buffer_dirty = true;
 };
 

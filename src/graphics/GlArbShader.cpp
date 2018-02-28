@@ -105,7 +105,7 @@ FunctionPointerType get_proc_address_cast(void* object_ptr) {
 
 }  // Anonymous namespace
 
-VertexArray GlArbShader::screen_quad;
+VertexArray GlArbShader::screen_quad(TRIANGLES);
 
 /**
  * \brief Initializes the GL ARB shader system.
@@ -127,7 +127,8 @@ bool GlArbShader::initialize() {
       SDL_GL_ExtensionSupported("GL_ARB_shading_language_100") &&
       SDL_GL_ExtensionSupported("GL_ARB_vertex_shader") &&
       SDL_GL_ExtensionSupported("GL_ARB_fragment_shader") &&
-      SDL_GL_ExtensionSupported("GL_ARB_multitexture")) {
+      SDL_GL_ExtensionSupported("GL_ARB_multitexture") &&
+      SDL_GL_ExtensionSupported("GL_ARB_vertex_buffer_object")) {
     glAttachObjectARB = get_proc_address_cast<PFNGLATTACHOBJECTARBPROC>(SDL_GL_GetProcAddress("glAttachObjectARB"));
     glActiveTextureARB = get_proc_address_cast<PFNGLACTIVETEXTUREARBPROC>(SDL_GL_GetProcAddress("glActiveTextureARB"));
     glCompileShaderARB = get_proc_address_cast<PFNGLCOMPILESHADERARBPROC>(SDL_GL_GetProcAddress("glCompileShaderARB"));
@@ -180,7 +181,6 @@ bool GlArbShader::initialize() {
         glEnableVertexAttribArrayARB &&
         glGetAttribLocationARB
         ) {
-
       return true;
     }
   }
@@ -431,39 +431,41 @@ void GlArbShader::render(const SurfacePtr& quest_surface) {
 void GlArbShader::render(const VertexArray& array, const SurfacePtr& texture, const Point &dst_position) {
   if(array.vertex_buffer == 0) {
     //Generate vertex-buffer
-    glGenBuffersARB(GL_ARRAY_BUFFER,&array.vertex_buffer);
+    glGenBuffers(GL_ARRAY_BUFFER,&array.vertex_buffer);
   }
-  glBindBufferARB(GL_ARRAY_BUFFER,array.vertex_buffer);
+  glBindBuffer(GL_ARRAY_BUFFER,array.vertex_buffer);
   if(array.buffer_dirty) {
     //Upload vertex buffer //TODO use glSubData if array size <= previous size
-    glBufferDataARB(GL_ARRAY_BUFFER,array.vertex_count()*sizeof(Vertex),array.data(),GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER,array.vertex_count()*sizeof(Vertex),array.data(),GL_DYNAMIC_DRAW);
     array.buffer_dirty = false;
   }
-  GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
-  glUseProgramObjectARB(program);
+  //GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
+  GLint previous_program;
+  glGetIntegerv(GL_CURRENT_PROGRAM,&previous_program);
+  glUseProgram(program);
 
-  glEnableVertexAttribArrayARB(position_location);
-  glVertexAttribPointerARB(position_location,2,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)offsetof(Vertex,position));
+  glEnableVertexAttribArray(position_location);
+  glVertexAttribPointer(position_location,2,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)offsetof(Vertex,position));
 
-  glEnableVertexAttribArrayARB(tex_coord_location);
-  glVertexAttribPointerARB(tex_coord_location,2,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)offsetof(Vertex,texcoords));
+  glEnableVertexAttribArray(tex_coord_location);
+  glVertexAttribPointer(tex_coord_location,2,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)offsetof(Vertex,texcoords));
 
-  glEnableVertexAttribArrayARB(color_location);
-  glVertexAttribPointerARB(color_location,4,GL_UNSIGNED_BYTE,GL_TRUE,sizeof(Vertex),(void*)offsetof(Vertex,color));
+  glEnableVertexAttribArray(color_location);
+  glVertexAttribPointer(color_location,4,GL_UNSIGNED_BYTE,GL_TRUE,sizeof(Vertex),(void*)offsetof(Vertex,color));
 
-  glActiveTextureARB(GL_TEXTURE0_ARB + 0);  // Texture unit 0.
+  glActiveTexture(GL_TEXTURE0_ARB + 0);  // Texture unit 0.
   SDL_GL_BindTexture(texture->get_internal_surface().get_texture(), nullptr, nullptr);
 
   for (const auto& kvp : uniform_textures) {
     const GLuint texture_unit = kvp.second.unit;
-    glActiveTextureARB(GL_TEXTURE0_ARB + texture_unit);
+    glActiveTexture(GL_TEXTURE0_ARB + texture_unit);
     SDL_GL_BindTexture(kvp.second.surface->get_internal_surface().get_texture(),nullptr,nullptr);
   }
 
   glDrawArrays((GLenum)array.get_primitive_type(),0,array.vertex_count());
 
-  glUseProgramObjectARB(previous_program);
-  glBindBufferARB(GL_ARRAY_BUFFER,0);
+  glUseProgram(previous_program);
+  glBindBuffer(GL_ARRAY_BUFFER,0);
 }
 
 /**

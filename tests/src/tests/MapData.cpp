@@ -16,8 +16,8 @@
  */
 #include "solarus/core/CurrentQuest.h"
 #include "solarus/core/Debug.h"
+#include "solarus/core/QuestDatabase.h"
 #include "solarus/core/QuestFiles.h"
-#include "solarus/core/QuestResources.h"
 #include "solarus/core/MapData.h"
 #include "test_tools/TestEnvironment.h"
 #include <iostream>
@@ -95,7 +95,7 @@ int main(int argc, char** argv) {
   TestEnvironment env(argc, argv);
 
   const std::map<std::string, std::string>& map_elements =
-      CurrentQuest::get_resources().get_elements(ResourceType::MAP);
+      CurrentQuest::get_database().get_resource_elements(ResourceType::MAP);
   Debug::check_assertion(!map_elements.empty(), "No maps");
   for (const auto& kvp : map_elements) {
     const std::string& map_id = kvp.first;

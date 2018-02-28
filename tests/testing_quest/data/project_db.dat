@@ -262,4 +262,5 @@ language{ id = "en", description = "English" }
 font{ id = "8_bit", description = "8 bit" }
 font{ id = "minecraftia", description = "Minecraftia" }
 
+file{ path = "sounds/diarandor/solarus_logo.ogg", author = "Diarandor", license = "CC BY-SA 4.0" }
 

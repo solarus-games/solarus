@@ -16,8 +16,8 @@
  */
 #include "solarus/core/Debug.h"
 #include "solarus/core/CurrentQuest.h"
+#include "solarus/core/QuestDatabase.h"
 #include "solarus/core/QuestFiles.h"
-#include "solarus/core/QuestResources.h"
 #include "solarus/core/ResourceType.h"
 #include "solarus/graphics/SpriteData.h"
 #include "test_tools/TestEnvironment.h"
@@ -65,7 +65,7 @@ int main(int argc, char** argv) {
   TestEnvironment env(argc, argv);
 
   const std::map<std::string, std::string>& sprite_elements =
-      CurrentQuest::get_resources().get_elements(ResourceType::SPRITE);
+      CurrentQuest::get_database().get_resource_elements(ResourceType::SPRITE);
   Debug::check_assertion(!sprite_elements.empty(), "No sprites");
   for (const auto& kvp : sprite_elements) {
     const std::string& sprite_id = kvp.first;

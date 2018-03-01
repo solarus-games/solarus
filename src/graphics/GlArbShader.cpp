@@ -359,24 +359,24 @@ void GlArbShader::render(const SurfacePtr& quest_surface) {
 
   //Shader::render(quest_surface);
 
-  /*SDL_Renderer* renderer = Video::get_renderer();
+  SDL_Renderer* renderer = Video::get_renderer();
   SDL_Window* window = Video::get_window();
   SDL_Texture* render_target = Video::get_render_target();
 
   // Clear the window.
+  SDL_SetRenderTarget(renderer,nullptr);
   glClearColor(0.0, 0.0, 0.0, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   // Clear the render target.
-  SDL_SetRenderTarget(renderer, render_target);
+  /*SDL_SetRenderTarget(renderer, render_target);
   SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
   SDL_RenderSetClipRect(renderer, nullptr);
-  SDL_RenderClear(renderer);*/
+  SDL_RenderClear(renderer);
 
-  /*// Draw on the render target.
-  SDL_Texture* texture = const_cast<SDL_Texture*>(quest_surface->get_internal_surface().get_texture());
+  // Draw on the render target.
 
-  SDL_SetRenderTarget(renderer, nullptr);
+  SDL_SetRenderTarget(renderer, nullptr);*/
   set_rendering_settings();
 
   // Update uniform variables.
@@ -386,6 +386,8 @@ void GlArbShader::render(const SurfacePtr& quest_surface) {
   const Size& output_size = Video::get_output_size();
   set_uniform_1i("sol_time", System::now());
   set_uniform_2f("sol_output_size", output_size.width, output_size.height);
+
+  SDL_Texture* texture = const_cast<SDL_Texture*>(quest_surface->get_internal_surface().get_texture());
 
   glActiveTextureARB(GL_TEXTURE0_ARB + 0);  // Texture unit 0.
   SDL_GL_BindTexture(texture, nullptr, nullptr);
@@ -407,11 +409,10 @@ void GlArbShader::render(const SurfacePtr& quest_surface) {
 
   SDL_GL_UnbindTexture(texture);
 
-  for (const auto& kvp : uniform_texture_units) {
-    const GLuint texture_unit = kvp.second;
+  for (const auto& kvp : uniform_textures) {
+    const GLuint texture_unit = kvp.second.unit;
     glActiveTextureARB(GL_TEXTURE0_ARB + texture_unit);
-    const GlTextureHandle& texture = uniform_textures.find(kvp.first)->second;
-    glBindTexture(GL_TEXTURE_2D, texture.get());
+    SDL_GL_BindTexture(kvp.second.surface->get_internal_surface().get_texture(),nullptr,nullptr);
   }
 
   glActiveTextureARB(GL_TEXTURE0_ARB + 0);  // Necessary to reset the active texture.
@@ -422,10 +423,9 @@ void GlArbShader::render(const SurfacePtr& quest_surface) {
   glUseProgramObjectARB(previous_program);
 
   glMatrixMode(GL_PROJECTION);
-  glPopMatrix();*/
+  glPopMatrix();
 
-  render(screen_quad,quest_surface,Point(0,0));
-
+  //render(screen_quad,quest_surface,Point(0,0));
 }
 
 void GlArbShader::render(const VertexArray& array, const SurfacePtr& texture, const Point &dst_position) {

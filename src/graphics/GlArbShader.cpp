@@ -24,6 +24,8 @@
 #include "solarus/graphics/VertexArray.h"
 #include "solarus/graphics/Video.h"
 #include <sstream>
+#include "solarus/third_party/glm/mat4x4.hpp"
+#include "solarus/third_party/glm/gtc/type_ptr.hpp"
 
 #ifdef SOLARUS_HAVE_OPENGL
 
@@ -33,6 +35,7 @@ constexpr auto DEFAULT_VERTEX =
     R"(
     #version 100
     uniform mat4 sol_mvp_matrix;
+    uniform mat3 sol_uv_matrix;
     attribute vec2 sol_vertex;
     attribute vec2 sol_tex_coord;
     attribute vec4 sol_color;
@@ -42,7 +45,7 @@ constexpr auto DEFAULT_VERTEX =
     void main() {
       gl_Position = sol_mvp_matrix * vec4(sol_vertex,0,1);
       sol_vcolor = col_color;
-      sol_vtex_coord = sol_tex_coord;
+      sol_vtex_coord = (sol_uv_matrix * vec3(sol_tex_coord,1)).xy;
     }
     )";
 
@@ -292,6 +295,10 @@ void GlArbShader::load() {
   GLint status;
   glGetObjectParameterivARB(program, GL_OBJECT_LINK_STATUS_ARB, &status);
 
+  position_location = glGetAttribLocationARB(program,POSITION_NAME);
+  tex_coord_location = glGetAttribLocationARB(program,TEXCOORD_NAME);
+  color_location = glGetAttribLocationARB(program,COLOR_NAME);
+
   if (status == 0) {
     GLint length = 0;
     char* info = nullptr;
@@ -356,28 +363,16 @@ void GlArbShader::set_rendering_settings() {
  * \copydoc Shader::render
  */
 void GlArbShader::render(const SurfacePtr& quest_surface) {
-
   //Shader::render(quest_surface);
 
   SDL_Renderer* renderer = Video::get_renderer();
   SDL_Window* window = Video::get_window();
-  SDL_Texture* render_target = Video::get_render_target();
 
   // Clear the window.
   SDL_SetRenderTarget(renderer,nullptr);
   glClearColor(0.0, 0.0, 0.0, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-  // Clear the render target.
-  /*SDL_SetRenderTarget(renderer, render_target);
-  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-  SDL_RenderSetClipRect(renderer, nullptr);
-  SDL_RenderClear(renderer);
-
-  // Draw on the render target.
-
-  SDL_SetRenderTarget(renderer, nullptr);*/
-  set_rendering_settings();
+  /*set_rendering_settings();
 
   // Update uniform variables.
   GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
@@ -423,15 +418,15 @@ void GlArbShader::render(const SurfacePtr& quest_surface) {
   glUseProgramObjectARB(previous_program);
 
   glMatrixMode(GL_PROJECTION);
-  glPopMatrix();
+  glPopMatrix();*/
 
-  //render(screen_quad,quest_surface,Point(0,0));
+  render(screen_quad,quest_surface,Point(0,0));
 }
 
 void GlArbShader::render(const VertexArray& array, const SurfacePtr& texture, const Point &dst_position) {
   if(array.vertex_buffer == 0) {
     //Generate vertex-buffer
-    glGenBuffers(GL_ARRAY_BUFFER,&array.vertex_buffer);
+    glGenBuffers(1,&array.vertex_buffer);
   }
   glBindBuffer(GL_ARRAY_BUFFER,array.vertex_buffer);
   if(array.buffer_dirty) {
@@ -443,6 +438,16 @@ void GlArbShader::render(const VertexArray& array, const SurfacePtr& texture, co
   GLint previous_program;
   glGetIntegerv(GL_CURRENT_PROGRAM,&previous_program);
   glUseProgram(program);
+
+  const Size& output_size = Video::get_output_size();
+  set_uniform_1i(Shader::TIME_NAME, System::now());
+  set_uniform_2f(Shader::OUTPUT_SIZE_NAME, output_size.width, output_size.height);
+
+  glm::mat4 mvp; //TODO do more than identity
+  glUniformMatrix4fv(get_uniform_location(Shader::MVP_MATRIX_NAME),1,GL_FALSE,glm::value_ptr(mvp));
+
+  glm::mat4 uv_matrix; //TODO do more than identity
+  glUniformMatrix4fv(get_uniform_location(Shader::UV_MATRIX_NAME),1,GL_FALSE,glm::value_ptr(uv_matrix));
 
   glEnableVertexAttribArray(position_location);
   glVertexAttribPointer(position_location,2,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)offsetof(Vertex,position));
@@ -611,81 +616,6 @@ bool GlArbShader::set_uniform_texture(const std::string& uniform_name, const Sur
 
   glUseProgramObjectARB(previous_program);
   return true;
-}
-
-/**
- * \brief Creates an OpenGL texture from the given surface.
- * \param surface The source surface.
- * \return The OpenGL texture or an empty handle in case of failure.
- */
-GlTextureHandle GlArbShader::create_gl_texture(const SurfacePtr& surface) {
-
-  // Create the OpenGL texture.
-  GLuint handle = 0;
-  glGenTextures(1, &handle);
-  GlTextureHandle texture(handle);
-
-  glBindTexture(GL_TEXTURE_2D, texture.get());
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-  glBindTexture(GL_TEXTURE_2D, 0);
-
-  update_gl_texture(surface, texture);
-  return texture;
-}
-
-/**
- * \brief Copies a surface to an OpenGL texture.
- * \param surface The source surface.
- * \param texture The destination OpenGL texture.
- */
-void GlArbShader::update_gl_texture(const SurfacePtr& surface, const GlTextureHandle& texture) {
-
-  // Use the surface width and height.
-  const Size& size = surface->get_size();
-
-  // TODO Don't copy to an intermediate surface if the format is already RGBA or ABGR.
-  SDL_Surface_UniquePtr rgba_surface;
-#if SDL_BYTEORDER == SDL_LIL_ENDIAN     // OpenGL RGBA masks.
-  rgba_surface = SDL_Surface_UniquePtr(SDL_CreateRGBSurface(
-      0, size.width, size.height, 32,
-      0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000
-  ));
-#else
-  rgba_surface = Surface::SDL_Surface_UniquePtr(SDL_CreateRGBSurface(
-      0, size.width, size.height, 32,
-      0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF
-  ));
-#endif
-
-  Debug::check_assertion(rgba_surface != nullptr, "Failed to create surface");
-
-  // Save the alpha blending attributes.
-  BlendMode saved_mode = surface->get_blend_mode();
-  surface->set_blend_mode(BlendMode::NONE);
-
-  // Copy the original surface into the power-of-two surface.
-  SDL_Rect area;
-  area.x = 0;
-  area.y = 0;
-  area.w = size.width;
-  area.h = size.height;
-  SDL_BlitSurface(const_cast<SDL_Surface*>(surface->get_internal_surface().get_surface()), &area, rgba_surface.get(), &area);
-
-  // Restore the alpha blending attributes.
-  surface->set_blend_mode(saved_mode);
-
-  // Copy the image to the OpenGL texture.
-  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);  // Restore default pixel alignment settings.
-  glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-  glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
-  glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
-  glBindTexture(GL_TEXTURE_2D, texture.get());
-  glTexImage2D(GL_TEXTURE_2D,
-               0,
-               GL_RGBA8, size.width, size.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba_surface->pixels);
-
-  glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 }

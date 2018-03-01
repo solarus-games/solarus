@@ -63,9 +63,6 @@ class GlArbShader : public Shader {
         const std::string& uniform_name, float value_1, float value_2, float value_3, float value_4) override;
     bool set_uniform_texture(const std::string& uniform_name, const SurfacePtr& value) override;
 
-    static GlTextureHandle create_gl_texture(const SurfacePtr& surface);
-    static void update_gl_texture(const SurfacePtr& surface, const GlTextureHandle& texture);
-
     void render(const VertexArray &array, const SurfacePtr &texture, const Point& dst_position) override;
 
     std::string default_vertex_source() const override;
@@ -95,8 +92,6 @@ class GlArbShader : public Shader {
         uniform_locations;                       /**< Cache of uniform locations. */
     mutable std::map<std::string, TextureUniform>
         uniform_textures;                        /**< Uniform texture value of surfaces. */
-    mutable std::map<SurfacePtr, GLuint>
-        uniform_texture_units;                   /**< Texture units used by uniforms. */
     GLuint current_texture_unit = 0;
     static VertexArray screen_quad;
 #else

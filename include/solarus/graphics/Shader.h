@@ -39,9 +39,12 @@ class Shader : public ExportableToLua {
     constexpr static const char* POSITION_NAME = "sol_vertex";
     constexpr static const char* TEXCOORD_NAME = "sol_tex_coord";
     constexpr static const char* COLOR_NAME = "sol_color";
-    constexpr static const char* MVP_NAME = "sol_mvp_matrix";
+    constexpr static const char* MVP_MATRIX_NAME = "sol_mvp_matrix";
+    constexpr static const char* UV_MATRIX_NAME = "sol_uv_matrix";
     constexpr static const char* TEXTURE_NAME = "sol_texture";
     constexpr static const char* INPUT_SIZE_NAME = "sol_input_size";
+    constexpr static const char* OUTPUT_SIZE_NAME = "sol_output_size";
+    constexpr static const char* TIME_NAME = "sol_time";
 
     explicit Shader(const std::string& shader_id);
     virtual ~Shader();

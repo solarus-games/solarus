@@ -469,6 +469,7 @@ void GlArbShader::render(const VertexArray& array, const SurfacePtr& texture, co
 
   glDrawArrays((GLenum)array.get_primitive_type(),0,array.vertex_count());
 
+  SDL_GL_SwapWindow(Video::get_window());
   glUseProgram(previous_program);
   glBindBuffer(GL_ARRAY_BUFFER,0);
 }

@@ -23,17 +23,20 @@
 #include "solarus/graphics/Surface.h"
 #include "solarus/graphics/VertexArray.h"
 #include "solarus/graphics/Video.h"
+#include "solarus/graphics/RenderTexture.h"
 #include <sstream>
-#include "solarus/third_party/glm/mat4x4.hpp"
-#include "solarus/third_party/glm/gtc/type_ptr.hpp"
 
-#ifdef SOLARUS_HAVE_OPENGL
+#include "solarus/third_party/glm/gtc/type_ptr.hpp"
+#include "solarus/third_party/glm/gtx/transform.hpp"
+#include "solarus/third_party/glm/gtx/matrix_transform_2d.hpp"
 
 namespace Solarus {
 
 constexpr auto DEFAULT_VERTEX =
     R"(
     #version 100
+    precision mediump float;
+
     uniform mat4 sol_mvp_matrix;
     uniform mat3 sol_uv_matrix;
     attribute vec2 sol_vertex;
@@ -44,7 +47,7 @@ constexpr auto DEFAULT_VERTEX =
     varying vec4 sol_vcolor;
     void main() {
       gl_Position = sol_mvp_matrix * vec4(sol_vertex,0,1);
-      sol_vcolor = col_color;
+      sol_vcolor = sol_color;
       sol_vtex_coord = (sol_uv_matrix * vec3(sol_tex_coord,1)).xy;
     }
     )";
@@ -52,6 +55,7 @@ constexpr auto DEFAULT_VERTEX =
 constexpr auto DEFAULT_FRAGMENT =
     R"(
     #version 100
+    precision mediump float;
     uniform sampler2D sol_texture;
     varying vec2 sol_vtex_coord;
     varying vec4 sol_vcolor;
@@ -211,11 +215,6 @@ GlArbShader::GlArbShader(const std::string& shader_id):
   GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
   glUseProgramObjectARB(program);
 
-  // TODO use our uniform functions
-  /*GLint location = get_uniform_location(TEXTURE_NAME);
-  if (location >= 0) {
-    glUniform1iARB(location, 0);  // Use texture unit 0 for the quest surface.
-  }*/
   set_uniform_1i(TEXTURE_NAME,0);
 
   const Size& quest_size = Video::get_quest_size();
@@ -344,65 +343,54 @@ GLhandleARB GlArbShader::create_shader(unsigned int type, const char* source) {
 
   return shader;
 }
-
 /**
- * \brief Set up OpenGL rendering parameter.
- * This basically resets the projection matrix.
+ * \copydoc Shader::render
  */
-void GlArbShader::set_rendering_settings() {
-
-  glMatrixMode(GL_PROJECTION);
-  glPushMatrix();
-  glLoadIdentity();
-  glOrtho(-1.0, 1.0, -1.0, 1.0, 0.0, 1.0);
-
-  glMatrixMode(GL_MODELVIEW);
+void GlArbShader::render(const SurfacePtr& surface, const Rectangle& region, const Size &dst_size) {
+  //TODO compute mvp and uv_matrix here
+  render(screen_quad,surface);
 }
 
 /**
  * \copydoc Shader::render
  */
-void GlArbShader::render(const SurfacePtr& quest_surface) {
-  //Shader::render(quest_surface);
-
-  SDL_Renderer* renderer = Video::get_renderer();
-  SDL_Window* window = Video::get_window();
-
-  // Clear the window.
-  SDL_SetRenderTarget(renderer,nullptr);
-  glClearColor(0.0, 0.0, 0.0, 1.0);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  /*set_rendering_settings();
-
-  // Update uniform variables.
+void GlArbShader::render(const VertexArray& array, const SurfacePtr& texture, const glm::mat4 &mvp_matrix, const glm::mat3 &uv_matrix) {
+  if(array.vertex_buffer == 0) {
+    //Generate vertex-buffer
+    glGenBuffersARB(1,&array.vertex_buffer);
+  }
+  glBindBufferARB(GL_ARRAY_BUFFER,array.vertex_buffer);
+  if(array.buffer_dirty) {
+    //Upload vertex buffer //TODO use glSubData if array size <= previous size
+    glBufferDataARB(GL_ARRAY_BUFFER,array.vertex_count()*sizeof(Vertex),array.data(),GL_DYNAMIC_DRAW);
+    array.buffer_dirty = false;
+  }
   GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
   glUseProgramObjectARB(program);
 
   const Size& output_size = Video::get_output_size();
-  set_uniform_1i("sol_time", System::now());
-  set_uniform_2f("sol_output_size", output_size.width, output_size.height);
+  set_uniform_1i(Shader::TIME_NAME, System::now());
+  set_uniform_2f(Shader::OUTPUT_SIZE_NAME, output_size.width, output_size.height);
 
-  SDL_Texture* texture = const_cast<SDL_Texture*>(quest_surface->get_internal_surface().get_texture());
+  glm::mat4 mvp = mvp_matrix; //TODO do more than identity
+  glUniformMatrix4fv(get_uniform_location(Shader::MVP_MATRIX_NAME),1,GL_FALSE,glm::value_ptr(mvp));
+
+  glm::mat3 uvm = uv_matrix;
+  uvm = glm::scale(uvm,glm::vec2(1,-1));
+  uvm = glm::translate(uvm,glm::vec2(0,-1));
+  glUniformMatrix3fv(get_uniform_location(Shader::UV_MATRIX_NAME),1,GL_FALSE,glm::value_ptr(uvm));
+
+  glEnableVertexAttribArrayARB(position_location);
+  glVertexAttribPointerARB(position_location,2,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)offsetof(Vertex,position));
+
+  glEnableVertexAttribArrayARB(tex_coord_location);
+  glVertexAttribPointerARB(tex_coord_location,2,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)offsetof(Vertex,texcoords));
+
+  glEnableVertexAttribArrayARB(color_location);
+  glVertexAttribPointerARB(color_location,4,GL_UNSIGNED_BYTE,GL_TRUE,sizeof(Vertex),(void*)offsetof(Vertex,color));
 
   glActiveTextureARB(GL_TEXTURE0_ARB + 0);  // Texture unit 0.
-  SDL_GL_BindTexture(texture, nullptr, nullptr);
-
-  // Draw.
-  const GLfloat square_texcoord[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
-  const GLfloat* texcoord = square_texcoord;
-
-  glBegin(GL_QUADS);
-  glTexCoord2f(texcoord[0], texcoord[1]);
-  glVertex3f(-1.0f, 1.0f, 0.0f);  // Top left.
-  glTexCoord2f(texcoord[2], texcoord[1]);
-  glVertex3f(1.0f, 1.0f, 0.0f);  // Top right.
-  glTexCoord2f(texcoord[2], texcoord[3]);
-  glVertex3f(1.0f, -1.0f, 0.0f);  // Bottom right.
-  glTexCoord2f(texcoord[0], texcoord[3]);
-  glVertex3f(-1.0f, -1.0f, 0.0f);  // Bottom left.
-  glEnd();
-
-  SDL_GL_UnbindTexture(texture);
+  SDL_GL_BindTexture(texture->get_internal_surface().get_texture(), nullptr, nullptr);
 
   for (const auto& kvp : uniform_textures) {
     const GLuint texture_unit = kvp.second.unit;
@@ -410,68 +398,10 @@ void GlArbShader::render(const SurfacePtr& quest_surface) {
     SDL_GL_BindTexture(kvp.second.surface->get_internal_surface().get_texture(),nullptr,nullptr);
   }
 
-  glActiveTextureARB(GL_TEXTURE0_ARB + 0);  // Necessary to reset the active texture.
-
-  // And swap the window.
-  SDL_GL_SwapWindow(window);
-
-  glUseProgramObjectARB(previous_program);
-
-  glMatrixMode(GL_PROJECTION);
-  glPopMatrix();*/
-
-  render(screen_quad,quest_surface,Point(0,0));
-}
-
-void GlArbShader::render(const VertexArray& array, const SurfacePtr& texture, const Point &dst_position) {
-  if(array.vertex_buffer == 0) {
-    //Generate vertex-buffer
-    glGenBuffers(1,&array.vertex_buffer);
-  }
-  glBindBuffer(GL_ARRAY_BUFFER,array.vertex_buffer);
-  if(array.buffer_dirty) {
-    //Upload vertex buffer //TODO use glSubData if array size <= previous size
-    glBufferData(GL_ARRAY_BUFFER,array.vertex_count()*sizeof(Vertex),array.data(),GL_DYNAMIC_DRAW);
-    array.buffer_dirty = false;
-  }
-  //GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
-  GLint previous_program;
-  glGetIntegerv(GL_CURRENT_PROGRAM,&previous_program);
-  glUseProgram(program);
-
-  const Size& output_size = Video::get_output_size();
-  set_uniform_1i(Shader::TIME_NAME, System::now());
-  set_uniform_2f(Shader::OUTPUT_SIZE_NAME, output_size.width, output_size.height);
-
-  glm::mat4 mvp; //TODO do more than identity
-  glUniformMatrix4fv(get_uniform_location(Shader::MVP_MATRIX_NAME),1,GL_FALSE,glm::value_ptr(mvp));
-
-  glm::mat4 uv_matrix; //TODO do more than identity
-  glUniformMatrix4fv(get_uniform_location(Shader::UV_MATRIX_NAME),1,GL_FALSE,glm::value_ptr(uv_matrix));
-
-  glEnableVertexAttribArray(position_location);
-  glVertexAttribPointer(position_location,2,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)offsetof(Vertex,position));
-
-  glEnableVertexAttribArray(tex_coord_location);
-  glVertexAttribPointer(tex_coord_location,2,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)offsetof(Vertex,texcoords));
-
-  glEnableVertexAttribArray(color_location);
-  glVertexAttribPointer(color_location,4,GL_UNSIGNED_BYTE,GL_TRUE,sizeof(Vertex),(void*)offsetof(Vertex,color));
-
-  glActiveTexture(GL_TEXTURE0_ARB + 0);  // Texture unit 0.
-  SDL_GL_BindTexture(texture->get_internal_surface().get_texture(), nullptr, nullptr);
-
-  for (const auto& kvp : uniform_textures) {
-    const GLuint texture_unit = kvp.second.unit;
-    glActiveTexture(GL_TEXTURE0_ARB + texture_unit);
-    SDL_GL_BindTexture(kvp.second.surface->get_internal_surface().get_texture(),nullptr,nullptr);
-  }
-
   glDrawArrays((GLenum)array.get_primitive_type(),0,array.vertex_count());
 
-  SDL_GL_SwapWindow(Video::get_window());
-  glUseProgram(previous_program);
-  glBindBuffer(GL_ARRAY_BUFFER,0);
+  glUseProgramObjectARB(previous_program);
+  glBindBufferARB(GL_ARRAY_BUFFER,0);
 }
 
 /**
@@ -480,7 +410,6 @@ void GlArbShader::render(const VertexArray& array, const SurfacePtr& texture, co
  * \return The uniform location or \c -1.
  */
 GLint GlArbShader::get_uniform_location(const std::string& uniform_name) const {
-
   const auto& it = uniform_locations.find(uniform_name);
   if (it != uniform_locations.end()) {
     return it->second;
@@ -620,5 +549,3 @@ bool GlArbShader::set_uniform_texture(const std::string& uniform_name, const Sur
 }
 
 }
-
-#endif  // SOLARUS_HAVE_OPENGL

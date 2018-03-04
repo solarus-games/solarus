@@ -35,9 +35,10 @@ class ShaderContext {
 
     static bool initialize();
     static void quit();
-  
+
     static const std::string& get_opengl_version();
     static const std::string& get_shading_language_version();
+    static void make_current();
 
     static ShaderPtr create_shader(const std::string& shader_id);
 

@@ -30,7 +30,6 @@ GlTextureHandle::GlTextureHandle() :
  * \brief Destroys the texture.
  */
 GlTextureHandle::~GlTextureHandle() {
-
   clear();
 }
 

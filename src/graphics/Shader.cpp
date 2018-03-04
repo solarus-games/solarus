@@ -223,16 +223,26 @@ bool Shader::set_uniform_texture(const std::string&, const SurfacePtr&) {
   return false;
 }
 
+//TODO fix render documentation
+
 /**
  * \fn Shader::render
  * \brief Draws the quest surface on the screen in a shader-allowed context.
  * It will perform the render using the OpenGL API directly.
  * \param quest_surface the surface to render on the screen
  */
-void Shader::render(const SurfacePtr&) {
+void Shader::render(const SurfacePtr&, const Rectangle& , const Size&) {
   // TODO make pure virtual
 }
 
+
+/**
+ * \fn Shader::render
+ * \brief Draws the VertexArray on the
+ */
+void Shader::render(const VertexArray &, const SurfacePtr &, const glm::mat4& , const glm::mat3&) {
+
+}
 
 /**
  * \fn Shader::load

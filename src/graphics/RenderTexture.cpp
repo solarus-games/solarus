@@ -11,7 +11,7 @@ RenderTexture::RenderTexture(int width, int height, bool depth_buffer):
   width(width),height(height)
 {
   SDL_Texture* tex = SDL_CreateTexture(Video::get_renderer(),
-                                       Video::get_pixel_format()->format,
+                                       Video::get_rgba_format()->format,
                                        SDL_TEXTUREACCESS_TARGET,
                                        width,height);
   Debug::check_assertion(tex!=nullptr,

@@ -23,56 +23,22 @@
 #include "solarus/graphics/ShaderData.h"
 #include "solarus/graphics/Surface.h"
 #include "solarus/graphics/Video.h"
+#include "solarus/graphics/ShaderContext.h"
 
-#ifdef SOLARUS_HAVE_OPENGLES2
+#include "solarus/third_party/glm/gtc/type_ptr.hpp"
+#include "solarus/third_party/glm/gtx/transform.hpp"
+#include "solarus/third_party/glm/gtx/matrix_transform_2d.hpp"
 
-
-
-
-// TODO Use an OpenGL loading library instead of this ugly code.
-typedef struct GL_Context {
-  void (APIENTRY *glAttachShader) (GLuint, GLuint);
-  void (APIENTRY *glClear) (GLbitfield);
-  void (APIENTRY *glClearColor) (GLclampf, GLclampf, GLclampf, GLclampf);
-  void (APIENTRY *glCompileShader) (GLuint);
-  GLuint (APIENTRY *glCreateProgram) (void);
-  GLuint (APIENTRY *glCreateShader) (GLenum);
-  void (APIENTRY *glDeleteProgram) (GLuint);
-  void (APIENTRY *glDeleteShader) (GLuint);
-  void (APIENTRY *glDisable) (GLenum);
-  void (APIENTRY *glDrawArrays) (GLenum, GLint, GLsizei);
-  void (APIENTRY *glEnable) (GLenum);
-  void (APIENTRY *glGenBuffers)(GLsizei,GLuint*);
-  void (APIENTRY *glEnableVertexAttribArray) (GLuint);
-  GLenum (APIENTRY *glGetError) (void);
-  void (APIENTRY *glGetIntegerv) (GLenum, GLint *);
-  void (APIENTRY *glGetProgramInfoLog) (GLuint, GLsizei, GLsizei *, char *);
-  void (APIENTRY *glGetProgramiv) (GLuint, GLenum, GLint *);
-  void (APIENTRY *glGetShaderInfoLog) (GLuint, GLsizei, GLsizei *, char *);
-  void (APIENTRY *glGetShaderiv) (GLuint, GLenum, GLint *);
-  GLint (APIENTRY *glGetUniformLocation) (GLuint, const char *);
-  GLint (APIENTRY *glGetAttribLocation)(GLuint,const GLchar*);
-  void (APIENTRY *glBindBuffer)(GLuint,GLuint);
-  void (APIENTRY *glBufferData)(GLenum,GLsizeiptr,const void*,GLenum);
-  void (APIENTRY *glBindTexture)(GLuint,GLuint);
-  void (APIENTRY *glLinkProgram) (GLuint);
-#if __NACL__ || __ANDROID__
-  void (APIENTRY *glShaderSource) (GLuint, GLsizei, const GLchar **, const GLint *);
-#else
-  void (APIENTRY *glShaderSource) (GLuint, GLsizei, const GLchar* const*, const GLint *);
-#endif
-  void (APIENTRY *glUniform1i) (GLint, GLint);
-  void (APIENTRY *glUniform2f) (GLint, GLfloat, GLfloat);
-  void (APIENTRY *glUseProgram) (GLuint);
-  void (APIENTRY *glVertexAttribPointer) (GLuint, GLint, GLenum, GLboolean, GLsizei, const void *);
-} GLES2_Context;
 
 namespace Solarus {
 
 constexpr auto DEFAULT_VERTEX =
     R"(
     #version 100
+    precision mediump float;
+
     uniform mat4 sol_mvp_matrix;
+    uniform mat3 sol_uv_matrix;
     attribute vec2 sol_vertex;
     attribute vec2 sol_tex_coord;
     attribute vec4 sol_color;
@@ -81,14 +47,15 @@ constexpr auto DEFAULT_VERTEX =
     varying vec4 sol_vcolor;
     void main() {
       gl_Position = sol_mvp_matrix * vec4(sol_vertex,0,1);
-      sol_vcolor = col_color;
-      sol_vtex_coord = sol_tex_coord;
+      sol_vcolor = sol_color;
+      sol_vtex_coord = (sol_uv_matrix * vec3(sol_tex_coord,1)).xy;
     }
     )";
 
 constexpr auto DEFAULT_FRAGMENT =
     R"(
     #version 100
+    precision mediump float;
     uniform sampler2D sol_texture;
     varying vec2 sol_vtex_coord;
     varying vec4 sol_vcolor;
@@ -98,10 +65,17 @@ constexpr auto DEFAULT_FRAGMENT =
     }
     )";
 
+struct GlContext {
+#define SDL_PROC(ret,func,params) ret (APIENTRY* func) params;
+  #include "gles2funcs.h"
+#undef SDL_PROC
+};
+
 namespace {
-GL_Context ctx; //TODO Remove if possible or make it a separate class
-GLint default_shader_program = 0;
+ GlContext ctx;
 }
+
+VertexArray GlShader::screen_quad(TRIANGLES);
 
 /**
  * \brief Initializes the GL 2D shader system.
@@ -112,57 +86,23 @@ bool GlShader::initialize() {
   // Setting some parameters.
   glClearDepthf(1.0); // Enables clearing of the depth buffer.
 
-  // Initialize GLES2 functions.
 #if SDL_VIDEO_DRIVER_UIKIT || SDL_VIDEO_DRIVER_ANDROID || SDL_VIDEO_DRIVER_PANDORA
-#  define SDL_PROC(ret,func,params) ctx.func=func;
+#define SDL_PROC(ret,func,params) data.func=func;
 #else
-#  define SDL_PROC(ret,func,params) \
+#define SDL_PROC(ret,func,params) \
     do { \
-      ctx.func = (ret(*)params)(SDL_GL_GetProcAddress(#func)); \
-      if ( ! ctx.func ) { \
-        return SDL_SetError("Couldn't load GLES2 function %s: %s", #func, SDL_GetError()); \
+        ctx.func = (ret(*)params)(SDL_GL_GetProcAddress(#func)); \
+        if ( ! ctx.func ) { \
+            Debug::warning(std::string("Couldn't load GLES2 function" #func)+  SDL_GetError()); \
+            return false; \
         } \
-      } while ( 0 );
+    } while ( 0 );
 #endif
-
-  SDL_PROC(void, glAttachShader, (GLuint, GLuint))
-  SDL_PROC(void, glClear, (GLbitfield))
-  SDL_PROC(void, glClearColor, (GLclampf, GLclampf, GLclampf, GLclampf))
-  SDL_PROC(void, glCompileShader, (GLuint))
-  SDL_PROC(GLuint, glCreateProgram, (void))
-  SDL_PROC(GLuint, glCreateShader, (GLenum))
-  SDL_PROC(void, glDeleteProgram, (GLuint))
-  SDL_PROC(void, glDeleteShader, (GLuint))
-  SDL_PROC(void, glDisable, (GLenum))
-  SDL_PROC(void, glDrawArrays, (GLenum, GLint, GLsizei))
-  SDL_PROC(void, glEnable, (GLenum))
-  SDL_PROC(void,glGenBuffers,(GLsizei,GLuint*))
-  SDL_PROC(void, glEnableVertexAttribArray, (GLuint))
-  SDL_PROC(GLenum, glGetError, (void))
-  SDL_PROC(void, glGetIntegerv, (GLenum, GLint *))
-  SDL_PROC(void, glGetProgramInfoLog, (GLuint, GLsizei, GLsizei *, char *))
-  SDL_PROC(void, glGetProgramiv, (GLuint, GLenum, GLint *))
-  SDL_PROC(void, glGetShaderInfoLog, (GLuint, GLsizei, GLsizei *, char *))
-  SDL_PROC(void, glGetShaderiv, (GLuint, GLenum, GLint *))
-  SDL_PROC(GLint, glGetUniformLocation, (GLuint, const char *))
-  SDL_PROC(void,glBindBuffer,(GLuint,GLuint));
-  SDL_PROC(void,glBufferData,(GLenum,GLsizeiptr,const void*,GLenum))
-  SDL_PROC(void,glBindTexture,(GLuint,GLuint))
-  SDL_PROC(void, glLinkProgram, (GLuint))
-  SDL_PROC(GLint,glGetAttribLocation,(GLuint,const char*))
-#if __NACL__ || __ANDROID__
-  SDL_PROC(void, glShaderSource, (GLuint, GLsizei, const GLchar **, const GLint *))
-#else
-  SDL_PROC(void, glShaderSource, (GLuint, GLsizei, const GLchar* const*, const GLint *))
-#endif
-  SDL_PROC(void, glUniform1i, (GLint, GLint))
-  SDL_PROC(void, glUniform2f, (GLint, GLfloat, GLfloat))
-  SDL_PROC(void, glUseProgram, (GLuint))
-  SDL_PROC(void, glVertexAttribPointer, (GLuint, GLint, GLenum, GLboolean, GLsizei, const void *))
+#include "gles2funcs.h"
 #undef SDL_PROC
 
-  // Get default shader.
-  glGetIntegerv(GL_CURRENT_PROGRAM, &default_shader_program);
+  //Init screen quad
+  screen_quad.add_quad(Rectangle(-1,-1,2,2),Rectangle(0,0,1,1),Color::white);
 
   return true;
 }
@@ -177,14 +117,16 @@ GlShader::GlShader(const std::string& shader_id):
     vertex_shader(0),
     fragment_shader(0) {
 
+  GLint previous_program;
+  ctx.glGetIntegerv(GL_CURRENT_PROGRAM, &previous_program);
+
   ctx.glGetError();
 
   // Load the shader.
   load();
 
-  // Set up constant uniform variables.
   ctx.glUseProgram(program);
-
+  // Set up constant uniform variables.
   GLint location = ctx.glGetUniformLocation(program, TEXTURE_NAME);
   if (location >= 0) {
     ctx.glUniform1i(location, 0);
@@ -200,14 +142,13 @@ GlShader::GlShader(const std::string& shader_id):
   tex_coord_location = ctx.glGetAttribLocation(program,TEXCOORD_NAME);
   color_location = ctx.glGetAttribLocation(program,COLOR_NAME);
 
-  ctx.glUseProgram(default_shader_program);
+  ctx.glUseProgram(previous_program);
 }
 
 /**
  * \brief Destructor.
  */
 GlShader::~GlShader() {
-
   ctx.glDeleteShader(vertex_shader);
   ctx.glDeleteShader(fragment_shader);
   ctx.glDeleteProgram(program);
@@ -312,7 +253,7 @@ GLuint GlShader::create_shader(GLenum type, const char* source) {
  * \brief Check for a possible error returned by glGetError().
  */
 void GlShader::check_gl_error() {
-  GLenum gl_error(ctx.glGetError());
+  GLenum gl_error(glGetError());
 
   while (gl_error != GL_NO_ERROR) {
     std::string error;
@@ -351,95 +292,42 @@ std::string GlShader::default_fragment_source() const {
 /**
  * \copydoc Shader::render
  */
-void GlShader::render(const SurfacePtr& quest_surface) {
-
-  Shader::render(quest_surface);
-
-  SDL_Renderer* renderer = Video::get_renderer();
-  SDL_Window* window = Video::get_window();
-  SDL_Texture* render_target = Video::get_render_target();
-
-  // Clear the window.
-  ctx.glClearColor(0.0, 0.0, 0.0, 1.0);
-  ctx.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  //ctx.glLoadIdentity();
-
-  // Clear the render target.
-  SDL_SetRenderTarget(renderer, render_target);
-  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-  SDL_RenderSetClipRect(renderer, nullptr);
-  SDL_RenderClear(renderer);
-
-  // Draw on the render target.
-  quest_surface->render(renderer);
-
-  // Render on the window using OpenGL, to apply a shader if we have to.
-  SDL_SetRenderTarget(renderer, nullptr);
-
-  ctx.glEnable(GL_TEXTURE_2D);
-  SDL_GL_BindTexture(render_target, nullptr, nullptr);
-
-  ctx.glUseProgram(program);
-
-  // Update uniform variables.
-  GLint location = ctx.glGetUniformLocation(program, "solarus_time");
-  if (location >= 0) {
-    ctx.glUniform1i(location, System::now());
-  }
-
-  const Size& window_size = Video::get_window_size();
-  location = ctx.glGetUniformLocation(program, "solarus_output_size");
-  if (location >= 0) {
-    ctx.glUniform2f(location, window_size.width, window_size.height);
-  }
-
-  // Draw.
-  enum  {
-    ATTRIB_VERTEX = 0,
-    ATTRIB_TEXTURE_POSITION
-  };
-  static const GLfloat square_vertices[] = {
-    -1.0f, -1.0f,
-    1.0f, -1.0f,
-    -1.0f, 1.0f,
-    1.0f, 1.0f,
-  };
-  static const GLfloat texture_vertices[] = {
-    1.0f, 1.0f,
-    1.0f, 0.0f,
-    0.0f, 1.0f,
-    0.0f, 0.0f,
-  };
-
-  ctx.glVertexAttribPointer(ATTRIB_VERTEX, 2, GL_FLOAT, 0, 0, square_vertices);
-  ctx.glEnableVertexAttribArray(ATTRIB_VERTEX);
-  ctx.glVertexAttribPointer(ATTRIB_TEXTURE_POSITION, 2, GL_FLOAT, 0, 0, texture_vertices);
-  ctx.glEnableVertexAttribArray(ATTRIB_TEXTURE_POSITION);
-
-  ctx.glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-
-  // Restore default states.
-  ctx.glUseProgram(default_shader_program);
-  SDL_GL_UnbindTexture(render_target);
-
-  ctx.glDisable(GL_TEXTURE_2D);
-
-  // And swap the window.
-  SDL_GL_SwapWindow(window);
+void GlShader::render(const SurfacePtr& surface, const Rectangle &region, const Size &dst_size) {
+  //TODO compute mvp and uv_matrix here
+  render(screen_quad,surface);
 }
 
-void GlShader::render(const VertexArrayPtr& vertex_array) {
-  if(vertex_array->vertex_buffer == 0) {
-    //Generate vertex-buffer
-    ctx.glGenBuffers(GL_ARRAY_BUFFER,&vertex_array->vertex_buffer);
-  }
-  ctx.glBindBuffer(GL_ARRAY_BUFFER,vertex_array->vertex_buffer);
-  if(vertex_array->buffer_dirty) {
-    //Upload vertex buffer
-    ctx.glBufferData(GL_ARRAY_BUFFER,vertex_array->vertex_count()*sizeof(Vertex),vertex_array->data(),GL_DYNAMIC_DRAW);
-
-  }
+/**
+ * \copydoc Shader::render
+ */
+void GlShader::render(const VertexArray& array, const SurfacePtr& texture, const glm::mat4 &mvp_matrix, const glm::mat3 &uv_matrix) {
+  GLint previous_program;
+  ctx.glGetIntegerv(GL_CURRENT_PROGRAM, &previous_program);
   ctx.glUseProgram(program);
+  if(array.vertex_buffer == 0) {
+    //Generate vertex-buffer
+    ctx.glGenBuffers(1,&array.vertex_buffer);
+  }
+  GLint previous_buffer;
+  ctx.glGetIntegerv(GL_ARRAY_BUFFER_BINDING,&previous_buffer);
+  ctx.glBindBuffer(GL_ARRAY_BUFFER,array.vertex_buffer);
+  if(array.buffer_dirty) {
+    //Upload vertex buffer //TODO use glSubData if array size <= previous size
+    ctx.glBufferData(GL_ARRAY_BUFFER,array.vertex_count()*sizeof(Vertex),array.data(),GL_DYNAMIC_DRAW);
+    array.buffer_dirty = false;
+  }
+
+  const Size& output_size = Video::get_output_size();
+  set_uniform_1i(Shader::TIME_NAME, System::now());
+  set_uniform_2f(Shader::OUTPUT_SIZE_NAME, output_size.width, output_size.height);
+
+  glm::mat4 mvp = mvp_matrix;
+  ctx.glUniformMatrix4fv(get_uniform_location(Shader::MVP_MATRIX_NAME),1,GL_FALSE,glm::value_ptr(mvp));
+
+  glm::mat3 uvm = uv_matrix;
+  uvm = glm::scale(uvm,glm::vec2(1,-1));
+  uvm = glm::translate(uvm,glm::vec2(0,-1));
+  ctx.glUniformMatrix3fv(get_uniform_location(Shader::UV_MATRIX_NAME),1,GL_FALSE,glm::value_ptr(uvm));
 
   ctx.glEnableVertexAttribArray(position_location);
   ctx.glVertexAttribPointer(position_location,2,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)offsetof(Vertex,position));
@@ -450,12 +338,174 @@ void GlShader::render(const VertexArrayPtr& vertex_array) {
   ctx.glEnableVertexAttribArray(color_location);
   ctx.glVertexAttribPointer(color_location,4,GL_UNSIGNED_BYTE,GL_TRUE,sizeof(Vertex),(void*)offsetof(Vertex,color));
 
-  glDrawArrays(vertex_array.get_primitive_type(),0,vertex_array.get_count());
+  ctx.glActiveTexture(GL_TEXTURE0 + 0);  // Texture unit 0.
+  SDL_GL_BindTexture(texture->get_internal_surface().get_texture(), nullptr, nullptr);
 
-  ctx.glUseProgram(default_shader_program);
-  ctx.glBindBuffer(GL_ARRAY_BUFFER,0);
+  for (const auto& kvp : uniform_textures) {
+    const GLuint texture_unit = kvp.second.unit;
+    ctx.glActiveTexture(GL_TEXTURE0 + texture_unit);
+    SDL_GL_BindTexture(kvp.second.surface->get_internal_surface().get_texture(),nullptr,nullptr);
+  }
+
+  ctx.glDrawArrays((GLenum)array.get_primitive_type(),0,array.vertex_count());
+
+  //ctx.glDisableVertexAttribArray(position_location);
+  //ctx.glDisableVertexAttribArray(tex_coord_location);
+  ctx.glDisableVertexAttribArray(color_location);
+
+  ctx.glBindBuffer(GL_ARRAY_BUFFER,previous_buffer);
+  ctx.glUseProgram(previous_program);
+}
+
+/**
+ * \brief Returns the location of a uniform value in the shader program.
+ * \param uniform_name Name of the uniform to find.
+ * \return The uniform location or \c -1.
+ */
+GLint GlShader::get_uniform_location(const std::string& uniform_name) const {
+  const auto& it = uniform_locations.find(uniform_name);
+  if (it != uniform_locations.end()) {
+    return it->second;
+  }
+
+  const GLint location = ctx.glGetUniformLocation(program, uniform_name.c_str());
+  uniform_locations.insert(std::make_pair(uniform_name, location));
+  return location;
+}
+
+/**
+ * \copydoc Shader::set_uniform1f
+ */
+void GlShader::set_uniform_1b(const std::string& uniform_name, bool value) {
+
+  const GLint location = get_uniform_location(uniform_name);
+  if (location == -1) {
+    return;
+  }
+
+  GLint previous_program;
+  ctx.glGetIntegerv(GL_CURRENT_PROGRAM, &previous_program);
+  ctx.glUseProgram(program);
+  ctx.glUniform1i(location, (value ? 1 : 0));
+  ctx.glUseProgram(previous_program);
+}
+
+/**
+ * \copydoc Shader::set_uniform_1i
+ */
+void GlShader::set_uniform_1i(const std::string& uniform_name, int value) {
+
+  const GLint location = get_uniform_location(uniform_name);
+  if (location == -1) {
+    return;
+  }
+
+  GLint previous_program;
+  ctx.glGetIntegerv(GL_CURRENT_PROGRAM, &previous_program);
+  ctx.glUseProgram(program);
+  ctx.glUniform1i(location, value);
+  ctx.glUseProgram(previous_program);
+}
+
+/**
+ * \copydoc Shader::set_uniform_1f
+ */
+void GlShader::set_uniform_1f(const std::string& uniform_name, float value) {
+
+  const GLint location = get_uniform_location(uniform_name);
+  if (location == -1) {
+    return;
+  }
+
+  GLint previous_program;
+  ctx.glGetIntegerv(GL_CURRENT_PROGRAM, &previous_program);
+  ctx.glUseProgram(program);
+  ctx.glUniform1f(location, value);
+  ctx.glUseProgram(previous_program);
+}
+
+/**
+ * \copydoc Shader::set_uniform_2f
+ */
+void GlShader::set_uniform_2f(const std::string& uniform_name, float value_1, float value_2) {
+
+  const GLint location = get_uniform_location(uniform_name);
+  if (location == -1) {
+    return;
+  }
+
+  GLint previous_program;
+  ctx.glGetIntegerv(GL_CURRENT_PROGRAM, &previous_program);
+  ctx.glUseProgram(program);
+  ctx.glUniform2f(location, value_1, value_2);
+  ctx.glUseProgram(previous_program);
+}
+
+/**
+ * \copydoc Shader::set_uniform_3f
+ */
+void GlShader::set_uniform_3f(
+    const std::string& uniform_name, float value_1, float value_2, float value_3) {
+
+  const GLint location = get_uniform_location(uniform_name);
+  if (location == -1) {
+    return;
+  }
+
+  GLint previous_program;
+  ctx.glGetIntegerv(GL_CURRENT_PROGRAM, &previous_program);
+  ctx.glUseProgram(program);
+  ctx.glUniform3f(location, value_1, value_2, value_3);
+  ctx.glUseProgram(previous_program);
+}
+
+/**
+ * \copydoc Shader::set_uniform_4f
+ */
+void GlShader::set_uniform_4f(
+    const std::string& uniform_name, float value_1, float value_2, float value_3, float value_4) {
+
+  const GLint location = get_uniform_location(uniform_name);
+  if (location == -1) {
+    return;
+  }
+
+  GLint previous_program;
+  ctx.glGetIntegerv(GL_CURRENT_PROGRAM, &previous_program);
+  ctx.glUseProgram(program);
+  ctx.glUniform4f(location, value_1, value_2, value_3, value_4);
+  ctx.glUseProgram(previous_program);
+}
+
+/**
+ * \copydoc Shader::set_uniform_texture
+ */
+bool GlShader::set_uniform_texture(const std::string& uniform_name, const SurfacePtr& value) {
+  const GLint location = get_uniform_location(uniform_name);
+
+  if (location == -1) {
+    // Not an error.
+    return true;
+  }
+
+  auto it = uniform_textures.find(uniform_name);
+  if(it != uniform_textures.end()) {
+    it->second.surface = value;
+    return true; //Nothing else to do
+  }
+  //else find a new texture unit
+
+  GLint previous_program;
+  ctx.glGetIntegerv(GL_CURRENT_PROGRAM, &previous_program);
+  ctx.glUseProgram(program);
+
+  int texture_unit = ++current_texture_unit;
+  uniform_textures[uniform_name] = TextureUniform{value,(GLuint)texture_unit};
+
+  ctx.glUniform1i(location, texture_unit);
+
+  ctx.glUseProgram(previous_program);
+  return true;
 }
 
 }
-
-#endif /* SOLARUS_HAVE_OPENGLES2 */

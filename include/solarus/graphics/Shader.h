@@ -22,12 +22,12 @@
 #include "solarus/graphics/ShaderData.h"
 #include "solarus/graphics/SurfacePtr.h"
 #include "solarus/graphics/VertexArrayPtr.h"
+#include "solarus/third_party/glm/mat4x4.hpp"
+#include "solarus/third_party/glm/mat3x3.hpp"
 #include "solarus/lua/ExportableToLua.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
 #include <string>
-
-#define SOLARUS_HAVE_OPENGL // Temporary define. To determine at configure part
 
 namespace Solarus {
 
@@ -75,8 +75,8 @@ class Shader : public ExportableToLua {
         const std::string& uniform_name, float value_1, float value_2, float value_3, float value_4);
     virtual bool set_uniform_texture(const std::string& uniform_name, const SurfacePtr& value);
 
-    virtual void render(const SurfacePtr& quest_surface);  // TODO make pure virtual
-    virtual void render(const VertexArray& array, const SurfacePtr &texture, const Point& dst_position) = 0;
+    virtual void render(const SurfacePtr& surface, const Rectangle &region,  const Size& dst_size);  // TODO make pure virtual
+    virtual void render(const VertexArray &array, const SurfacePtr &texture, const glm::mat4& mvp_matrix = glm::mat4(), const glm::mat3& uv_matrix = glm::mat3());
 
     const std::string& get_lua_type_name() const override;
   protected:

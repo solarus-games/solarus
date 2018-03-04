@@ -95,7 +95,7 @@ void create_window() {
   Debug::check_assertion(context.main_window == nullptr, "Window already exists");
 
   // Set OpenGL as the default renderer driver when available, to avoid using Direct3d.
-  SDL_SetHintWithPriority(SDL_HINT_RENDER_DRIVER, "opengl", SDL_HINT_OVERRIDE);
+  SDL_SetHintWithPriority(SDL_HINT_RENDER_DRIVER, "opengles2", SDL_HINT_OVERRIDE);
 
   // Set the default OpenGL built-in shader (nearest).
   SDL_SetHint(SDL_HINT_RENDER_OPENGL_SHADERS, "0");
@@ -363,7 +363,10 @@ void render(const SurfacePtr& quest_surface) {
 
   if (context.current_shader != nullptr) {
     // OpenGL rendering with the current shader.
-    context.current_shader->render(quest_surface);
+    SDL_SetRenderTarget(get_renderer(),nullptr);
+    SDL_RenderClear(get_renderer());
+    context.current_shader->render(quest_surface,Rectangle(Point(0,0),quest_surface->get_size()),context.window_size);
+    SDL_GL_SwapWindow(Video::get_window());
   }
   else {
     // SDL rendering.

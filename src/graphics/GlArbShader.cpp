@@ -188,6 +188,7 @@ bool GlArbShader::initialize() {
         glEnableVertexAttribArrayARB &&
         glGetAttribLocationARB
         ) {
+      Logger::info("Using ARB GL Shaders");
       return true;
     }
   }

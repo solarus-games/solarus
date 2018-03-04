@@ -104,6 +104,8 @@ bool GlShader::initialize() {
   //Init screen quad
   screen_quad.add_quad(Rectangle(-1,-1,2,2),Rectangle(0,0,1,1),Color::white);
 
+  Logger::info("Using modern GL Shaders");
+
   return true;
 }
 
@@ -349,9 +351,7 @@ void GlShader::render(const VertexArray& array, const SurfacePtr& texture, const
 
   ctx.glDrawArrays((GLenum)array.get_primitive_type(),0,array.vertex_count());
 
-  //ctx.glDisableVertexAttribArray(position_location);
-  //ctx.glDisableVertexAttribArray(tex_coord_location);
-  ctx.glDisableVertexAttribArray(color_location);
+  ctx.glDisableVertexAttribArray(color_location); //Disable color location to prevent SDLGLES2 'angle' buffer to be activated as a side effect
 
   ctx.glBindBuffer(GL_ARRAY_BUFFER,previous_buffer);
   ctx.glUseProgram(previous_program);

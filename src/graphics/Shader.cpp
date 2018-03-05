@@ -231,7 +231,7 @@ bool Shader::set_uniform_texture(const std::string&, const SurfacePtr&) {
  * It will perform the render using the OpenGL API directly.
  * \param quest_surface the surface to render on the screen
  */
-void Shader::render(const SurfacePtr&, const Rectangle& , const Size&) {
+void Shader::render(const SurfacePtr&, const Rectangle& , const Size&, const Point &) {
   // TODO make pure virtual
 }
 

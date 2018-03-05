@@ -77,7 +77,7 @@ private:
   static void set_rendering_settings();
   GLint get_uniform_location(const std::string& uniform_name) const;
 
-  void render(const SurfacePtr& surface, const Rectangle &region, const Size& dst_size) override;
+  void render(const SurfacePtr& surface, const Rectangle &region, const Size& dst_size, const Point& dst_position) override;
 
   GLuint program;                         /**< The program which bind the vertex and fragment shader. */
   GLuint vertex_shader;                   /**< The vertex shader. */

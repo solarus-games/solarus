@@ -294,9 +294,19 @@ std::string GlShader::default_fragment_source() const {
 /**
  * \copydoc Shader::render
  */
-void GlShader::render(const SurfacePtr& surface, const Rectangle &region, const Size &dst_size) {
+void GlShader::render(const SurfacePtr& surface, const Rectangle &region, const Size &dst_size, const Point &dst_position) {
   //TODO compute mvp and uv_matrix here
-  render(screen_quad,surface);
+  /*glm::mat4 viewport = glm::ortho(0,dst_size.width,0,dst_size.height);
+  glm::mat4 dst = glm::translate(glm::mat4(),glm::vec3(dst_position.x,dst_position.y,0));
+
+  glm::mat3 uv_scale = glm::scale(glm::mat3(),
+                                  glm::vec2(
+                                    region.get_width()/(float)surface->get_width(),
+                                    region.get_height()/(float)surface->get_height()
+                                    )
+                                  );
+  glm::mat3 uv_trans = glm::translate(glm::mat3(),glm::vec2(region.get_left(),region.get_top()));*/
+  render(screen_quad,surface);//,viewport*dst,uv_scale*uv_trans);
 }
 
 /**
@@ -323,8 +333,7 @@ void GlShader::render(const VertexArray& array, const SurfacePtr& texture, const
   set_uniform_1i(Shader::TIME_NAME, System::now());
   set_uniform_2f(Shader::OUTPUT_SIZE_NAME, output_size.width, output_size.height);
 
-  glm::mat4 mvp = mvp_matrix;
-  ctx.glUniformMatrix4fv(get_uniform_location(Shader::MVP_MATRIX_NAME),1,GL_FALSE,glm::value_ptr(mvp));
+  ctx.glUniformMatrix4fv(get_uniform_location(Shader::MVP_MATRIX_NAME),1,GL_FALSE,glm::value_ptr(mvp_matrix));
 
   glm::mat3 uvm = uv_matrix;
   uvm = glm::scale(uvm,glm::vec2(1,-1));

@@ -75,7 +75,7 @@ class Shader : public ExportableToLua {
         const std::string& uniform_name, float value_1, float value_2, float value_3, float value_4);
     virtual bool set_uniform_texture(const std::string& uniform_name, const SurfacePtr& value);
 
-    virtual void render(const SurfacePtr& surface, const Rectangle &region,  const Size& dst_size);  // TODO make pure virtual
+    virtual void render(const SurfacePtr& surface, const Rectangle &region, const Size &dst_size, const Point &dst_position = Point());  // TODO make pure virtual
     virtual void render(const VertexArray &array, const SurfacePtr &texture, const glm::mat4& mvp_matrix = glm::mat4(), const glm::mat3& uv_matrix = glm::mat3());
 
     const std::string& get_lua_type_name() const override;

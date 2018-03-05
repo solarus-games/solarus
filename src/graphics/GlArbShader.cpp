@@ -347,7 +347,7 @@ GLhandleARB GlArbShader::create_shader(unsigned int type, const char* source) {
 /**
  * \copydoc Shader::render
  */
-void GlArbShader::render(const SurfacePtr& surface, const Rectangle& region, const Size &dst_size) {
+void GlArbShader::render(const SurfacePtr& surface, const Rectangle& region, const Size &dst_size, const Point &dst_position) {
   //TODO compute mvp and uv_matrix here
   render(screen_quad,surface);
 }

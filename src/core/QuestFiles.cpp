@@ -29,7 +29,7 @@
 #endif
 
 #if defined(SOLARUS_OSX) || defined(SOLARUS_IOS)
-#   include "solarus/lowlevel/apple/AppleInterface.h"
+#   include "solarus/core/AppleInterface.h"
 #endif
 
 namespace Solarus {

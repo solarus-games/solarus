@@ -10,14 +10,25 @@ namespace Solarus {
 RenderTexture::RenderTexture(int width, int height, bool depth_buffer):
   width(width),height(height)
 {
-  SDL_Texture* tex = SDL_CreateTexture(Video::get_renderer(),
+  auto renderer = Video::get_renderer();
+  auto tex = SDL_CreateTexture(renderer,
                                        Video::get_rgba_format()->format,
                                        SDL_TEXTUREACCESS_TARGET,
                                        width,height);
   Debug::check_assertion(tex!=nullptr,
                          std::string("Failed to create render texture : ") + SDL_GetError());
   target.reset(tex);
+
+  auto surf_ptr = SDL_CreateRGBSurfaceWithFormat(0,
+                                    width,
+                                    height,
+                                    32,
+                                    SDL_PIXELFORMAT_ABGR8888);
+  Debug::check_assertion(surf_ptr!=nullptr,
+                         std::string("Failed to create backup surface ") + SDL_GetError());
+  surface.reset(surf_ptr);
   clear();
+  SDL_SetTextureBlendMode(tex,SDL_BLENDMODE_BLEND);
   //fill_with_color(Color::black,Rectangle(0,0,width,height));
 }
 
@@ -33,24 +44,30 @@ SDL_Texture* RenderTexture::get_texture() const {
   return target.get();
 }
 
-
 void RenderTexture::draw_other(const SurfaceImpl& texture, const Point& dst_position) {
   draw_region_other(Rectangle(0,0,texture.get_width(),texture.get_height()),texture,dst_position);
 }
 
 void RenderTexture::draw_region_other(const Rectangle& src_rect, const SurfaceImpl& texture, const Point& dst_position) {
-  draw_env({
+  with_target([&](SDL_Renderer* renderer){
    Rectangle dst_rect(dst_position,src_rect.get_size());
    SDL_SetTextureAlphaMod(texture.get_texture(),texture.parent().get_opacity());
    SDL_SetTextureBlendMode(texture.get_texture(),texture.parent().get_sdl_blend_mode());
    SDL_RenderCopy(renderer,texture.get_texture(),src_rect,dst_rect);
- })
+ });
 }
 
 SDL_Surface *RenderTexture::get_surface() const {
   if (surface_dirty) {
-    //TODO SDL black magic here
-    //image = get_texture().copyToImage(); //Slow but functionnal
+    with_target([&](SDL_Renderer* renderer){
+      Rectangle rect(0,0,width,height);
+      SDL_RenderReadPixels(renderer,
+                           rect,
+                           SDL_PIXELFORMAT_BGRA8888,
+                           surface->pixels,
+                           surface->pitch
+                           );
+    });
     surface_dirty = false;
   }
   return surface.get();
@@ -62,21 +79,21 @@ RenderTexture* RenderTexture::to_render_texture() {
 
 void RenderTexture::fill_with_color(const Color& color, const Rectangle& where, SDL_BlendMode mode) {
   const SDL_Rect* rect = where;
-  draw_env({
+  with_target([&](SDL_Renderer* renderer){
     Uint8 r,g,b,a;
     color.get_components(r,g,b,a);
     SDL_SetRenderDrawColor(renderer,r,g,b,a);
     SDL_SetRenderDrawBlendMode(renderer,mode);
     SDL_RenderFillRect(renderer,rect);
-  })
+  });
 }
 
 void RenderTexture::clear() {
-  draw_env({
+  with_target([&](SDL_Renderer* renderer){
     SDL_SetRenderDrawColor(renderer,0,0,0,0);
     SDL_SetTextureBlendMode(target.get(),SDL_BLENDMODE_BLEND);
     SDL_RenderClear(renderer);
-  })
+  });
 }
 
 void RenderTexture::clear(const Rectangle& where) {

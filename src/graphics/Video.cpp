@@ -51,6 +51,7 @@ struct VideoContext {
   SDL_Renderer* main_renderer = nullptr;    /**< The screen renderer. */
   SDL_PixelFormat* pixel_format = nullptr;  /**< The pixel color format to use. */
   SDL_PixelFormat* rgba_format = nullptr;
+  SDL_Surface* software_surface = nullptr;
   std::string rendering_driver_name;        /**< The name of the rendering driver. */
   bool disable_window = false;              /**< Indicates that no window is displayed (used for unit tests). */
   bool fullscreen_window = false;           /**< True if the window is in fullscreen. */
@@ -109,15 +110,17 @@ void create_window() {
       context.wanted_quest_size.height,
       SDL_WINDOW_HIDDEN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL
   );
+
   Debug::check_assertion(context.main_window != nullptr,
       std::string("Cannot create the window: ") + SDL_GetError());
 
-  context.main_renderer = SDL_CreateRenderer(
+  /*context.main_renderer = SDL_CreateRenderer(
         context.main_window,
         -1,
         SDL_RENDERER_ACCELERATED
-  );
+  );*/
 
+  //SDL_HideWindow(context.main_window);
   if (context.main_renderer == nullptr) {
     // Try without acceleration.
     context.main_renderer = SDL_CreateRenderer(context.main_window, -1, SDL_RENDERER_SOFTWARE);
@@ -234,6 +237,13 @@ void initialize(const Arguments& args) {
     // Create a pixel format anyway to make surface and color operations work,
     // even though nothing will ever be rendered.
     context.pixel_format = SDL_AllocFormat(SDL_PIXELFORMAT_ABGR8888);
+    context.software_surface = SDL_CreateRGBSurfaceWithFormat(0,
+                                                320,
+                                                240,
+                                                32,
+                                                SDL_PIXELFORMAT_ABGR8888);
+    context.rgba_format = context.pixel_format;
+    context.main_renderer = SDL_CreateSoftwareRenderer(context.software_surface);
   }
   else {
     create_window();
@@ -269,6 +279,10 @@ void quit() {
   if (context.main_window != nullptr) {
     SDL_DestroyWindow(context.main_window);
     context.main_window = nullptr;
+  }
+
+  if (context.software_surface != nullptr) {
+    SDL_FreeSurface(context.software_surface);
   }
 
   context = VideoContext();
@@ -336,6 +350,13 @@ const std::string& get_rendering_driver_name() {
  */
 void show_window() {
   SDL_ShowWindow(context.main_window);
+}
+
+/**
+ * \brief hide_window
+ */
+void hide_window() {
+  SDL_HideWindow(context.main_window);
 }
 
 /**

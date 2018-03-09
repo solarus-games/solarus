@@ -211,24 +211,5 @@ const Vertex& VertexArray::operator [](size_t index) const {
   return vertices.at(index);
 }
 
-void VertexArray::init_vertex_buffer() {
-  glGenBuffers(1,&vertex_buffer);
-}
-
-void VertexArray::update_vertex_buffer() {
-  glBindBuffer(GL_ARRAY_BUFFER,vertex_buffer);
-  glBufferData(GL_ARRAY_BUFFER,vertex_count()*sizeof(Vertex),data(),GL_DYNAMIC_DRAW);
-  glBindBuffer(GL_ARRAY_BUFFER,0);
-}
-
-void VertexArray::draw(GLuint program) {
-  glUseProgram(program);
-  GLint position_attrib = glGetAttribLocation(program,"sol_position");
-  GLint tex_coord_attrib = glGetAttribLocation(program,"sol_tex_coords");
-  GLint color_attriv = glGetAttribLocation(program,"sol_color");
-  glEnableVertexAttribArray(position_attrib);
-  glVertexAttribPointer(position_attrib,2,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)offsetof(Vertex,position));
-}
-
 
 }

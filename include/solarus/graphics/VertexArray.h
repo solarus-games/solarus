@@ -81,9 +81,6 @@ public:
     size_t vertex_count() const;
     Vertex& operator [](size_t index);
     void draw(const SurfacePtr &dst_surface, const Point& dst_position, const SurfacePtr &texture) const;
-    void init_vertex_buffer();
-    void update_vertex_buffer();
-    void draw(GLuint program);
     const Vertex& operator [](size_t index) const;
 private:
     std::vector <Vertex> vertices;

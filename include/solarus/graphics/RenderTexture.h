@@ -1,10 +1,9 @@
 #pragma once
 
 #include "solarus/graphics/SurfaceImpl.h"
-#include "solarus/graphics/RenderTargetAtlas.h"
-
-#include <SFML/Graphics/RenderTexture.hpp>
-#include <SFML/Graphics/Sprite.hpp>
+#include "solarus/graphics/Color.h"
+#include "solarus/graphics/SDLPtrs.h"
+#include "solarus/graphics/Video.h"
 
 namespace Solarus {
 

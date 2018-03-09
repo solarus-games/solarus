@@ -87,6 +87,9 @@ PFNGLUNIFORM4FARBPROC glUniform4fARB;
 PFNGLUSEPROGRAMOBJECTARBPROC glUseProgramObjectARB;
 PFNGLGETHANDLEARBPROC glGetHandleARB;
 
+PFNGLUNIFORMMATRIX4FVARBPROC  glUniformMatrix4fvARB;
+PFNGLUNIFORMMATRIX3FVARBPROC  glUniformMatrix3fvARB;
+
 PFNGLGENBUFFERSARBPROC glGenBuffersARB;
 PFNGLBINDBUFFERARBPROC glBindBufferARB;
 PFNGLBUFFERDATAARBPROC glBufferDataARB;
@@ -154,6 +157,9 @@ bool GlArbShader::initialize() {
     glUniform4fARB = get_proc_address_cast<PFNGLUNIFORM4FARBPROC>(SDL_GL_GetProcAddress("glUniform4fARB"));
     glUseProgramObjectARB = get_proc_address_cast<PFNGLUSEPROGRAMOBJECTARBPROC>(SDL_GL_GetProcAddress("glUseProgramObjectARB"));
     glGetHandleARB = get_proc_address_cast<PFNGLGETHANDLEARBPROC>(SDL_GL_GetProcAddress("glGetHandleARB"));
+
+    glUniformMatrix4fvARB = get_proc_address_cast<PFNGLUNIFORMMATRIX4FVARBPROC>(SDL_GL_GetProcAddress("glUniformMatrix4fvARB"));
+    glUniformMatrix3fvARB = get_proc_address_cast<PFNGLUNIFORMMATRIX3FVARBPROC>(SDL_GL_GetProcAddress("glUniformMatrix3fvARB"));
 
     glGenBuffersARB = get_proc_address_cast<PFNGLGENBUFFERSARBPROC>(SDL_GL_GetProcAddress("glGenBuffersARB"));
     glBindBufferARB = get_proc_address_cast<PFNGLBINDBUFFERARBPROC>(SDL_GL_GetProcAddress("glBindBufferARB"));
@@ -374,12 +380,12 @@ void GlArbShader::render(const VertexArray& array, const SurfacePtr& texture, co
   set_uniform_2f(Shader::OUTPUT_SIZE_NAME, output_size.width, output_size.height);
 
   glm::mat4 mvp = mvp_matrix; //TODO do more than identity
-  glUniformMatrix4fv(get_uniform_location(Shader::MVP_MATRIX_NAME),1,GL_FALSE,glm::value_ptr(mvp));
+  glUniformMatrix4fvARB(get_uniform_location(Shader::MVP_MATRIX_NAME),1,GL_FALSE,glm::value_ptr(mvp));
 
   glm::mat3 uvm = uv_matrix;
   uvm = glm::scale(uvm,glm::vec2(1,-1));
   uvm = glm::translate(uvm,glm::vec2(0,-1));
-  glUniformMatrix3fv(get_uniform_location(Shader::UV_MATRIX_NAME),1,GL_FALSE,glm::value_ptr(uvm));
+  glUniformMatrix3fvARB(get_uniform_location(Shader::UV_MATRIX_NAME),1,GL_FALSE,glm::value_ptr(uvm));
 
   glEnableVertexAttribArrayARB(position_location);
   glVertexAttribPointerARB(position_location,2,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)offsetof(Vertex,position));

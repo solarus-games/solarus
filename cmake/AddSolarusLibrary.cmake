@@ -136,7 +136,6 @@ file(
 	include/solarus/graphics/Hq2xFilter.h
 	include/solarus/graphics/Hq3xFilter.h
 	include/solarus/graphics/Hq4xFilter.h
-	include/solarus/graphics/RenderTargetAtlas.h
 	include/solarus/graphics/RenderTexture.h
 	include/solarus/graphics/Scale2xFilter.h
 	include/solarus/graphics/SDLPtrs.h
@@ -341,7 +340,6 @@ file(
 	src/graphics/Hq2xFilter.cpp
 	src/graphics/Hq3xFilter.cpp
 	src/graphics/Hq4xFilter.cpp
-	src/graphics/RenderTargetAtlas.cpp
 	src/graphics/RenderTexture.cpp
 	src/graphics/Scale2xFilter.cpp
 	src/graphics/ShaderContext.cpp

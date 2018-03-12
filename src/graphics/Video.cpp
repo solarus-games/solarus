@@ -114,13 +114,13 @@ void create_window() {
   Debug::check_assertion(context.main_window != nullptr,
       std::string("Cannot create the window: ") + SDL_GetError());
 
-  /*context.main_renderer = SDL_CreateRenderer(
+  context.main_renderer = SDL_CreateRenderer(
         context.main_window,
         -1,
         SDL_RENDERER_ACCELERATED
-  );*/
+  );
 
-  //SDL_HideWindow(context.main_window);
+
   if (context.main_renderer == nullptr) {
     // Try without acceleration.
     context.main_renderer = SDL_CreateRenderer(context.main_window, -1, SDL_RENDERER_SOFTWARE);
@@ -237,11 +237,15 @@ void initialize(const Arguments& args) {
     // Create a pixel format anyway to make surface and color operations work,
     // even though nothing will ever be rendered.
     context.pixel_format = SDL_AllocFormat(SDL_PIXELFORMAT_ABGR8888);
-    context.software_surface = SDL_CreateRGBSurfaceWithFormat(0,
+    context.software_surface = SDL_CreateRGBSurface(0,
                                                 320,
                                                 240,
                                                 32,
-                                                SDL_PIXELFORMAT_ABGR8888);
+                                                context.pixel_format->Rmask,
+                                                context.pixel_format->Gmask,
+                                                context.pixel_format->Bmask,
+                                                context.pixel_format->Amask
+                                                    );
     context.rgba_format = context.pixel_format;
     context.main_renderer = SDL_CreateSoftwareRenderer(context.software_surface);
   }

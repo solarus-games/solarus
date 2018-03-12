@@ -294,7 +294,7 @@ std::string GlShader::default_fragment_source() const {
 /**
  * \copydoc Shader::render
  */
-void GlShader::render(const SurfacePtr& surface, const Rectangle &region, const Size &dst_size, const Point &dst_position) {
+void GlShader::render(const SurfacePtr& surface, const Rectangle &/*region*/, const Size &/*dst_size*/, const Point &/*dst_position*/) {
   //TODO compute mvp and uv_matrix here
   /*glm::mat4 viewport = glm::ortho(0,dst_size.width,0,dst_size.height);
   glm::mat4 dst = glm::translate(glm::mat4(),glm::vec3(dst_position.x,dst_position.y,0));

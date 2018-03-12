@@ -5,6 +5,11 @@
 
 namespace Solarus {
 
+/**
+ * @brief SurfaceImpl representing immutable surface data
+ *
+ * Textures are mainly created from image files
+ */
 class Texture : public SurfaceImpl
 {
 public:
@@ -17,8 +22,8 @@ public:
 
     RenderTexture* to_render_texture() override;
 private:
-    mutable SDL_Surface_UniquePtr surface;
-    mutable SDL_Texture_UniquePtr texture;
+    mutable SDL_Surface_UniquePtr surface; /**< cpu side pixels data */
+    mutable SDL_Texture_UniquePtr texture; /**< gpu side pixels data */
 };
 
 }

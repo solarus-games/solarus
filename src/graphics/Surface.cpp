@@ -256,7 +256,7 @@ std::string Surface::get_pixels() const {
     return std::string(buffer, num_pixels * 4);
   }
 
-  // Convert to RGBA format.
+  // Convert to RGBA format. Should never happen
   SDL_PixelFormat* format = Video::get_rgba_format();
   SDL_Surface_UniquePtr converted_surface(SDL_ConvertSurface(
                                             surface,
@@ -274,15 +274,15 @@ std::string Surface::get_pixels() const {
  * @param buffer a string considerer as array of bytes with pixels in RGBA
  */
 void Surface::set_pixels(const std::string& buffer) {
-  //TODO notify pixels changed
   SDL_Surface* surface = internal_surface->get_surface();
   if (surface->format->format == SDL_PIXELFORMAT_ABGR8888) {
     // No conversion needed.
     char* pixels = static_cast<char*>(surface->pixels);
     std::copy(buffer.begin(), buffer.end(), pixels);
+    internal_surface->upload_surface();
     return;
   }
-
+  //Backup strat, heavy recreation of surface impl, should never happen
   SDL_PixelFormat* format_rgba = Video::get_rgba_format(); // TODO keep this object :)
   SDL_Surface_UniquePtr rgba_surf(SDL_CreateRGBSurfaceFrom(
                                     const_cast<char*>(buffer.data()),
@@ -305,10 +305,15 @@ void Surface::set_pixels(const std::string& buffer) {
   internal_surface.reset(new Texture(converted_surf));
 }
 
+/**
+ * @brief Ensure surfaceimpl is a RenderTexture, converting if necessary
+ * @return a reference to the RenderTexture
+ */
 RenderTexture &Surface::request_render() {
   SurfaceImpl* old = internal_surface.get();
   RenderTexture* rt = internal_surface->to_render_texture();
   if(old != rt) {
+    rt->_parent = this;
     internal_surface.reset(rt);
   }
   return *rt;

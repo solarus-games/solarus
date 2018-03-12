@@ -7,7 +7,7 @@ struct SDL_Texture_Deleter {
     void operator()(SDL_Texture* texture) const {
       SDL_DestroyTexture(texture);
     }
-}; //TODO Move elsewhere
+};
 using SDL_Texture_UniquePtr = std::unique_ptr<SDL_Texture, SDL_Texture_Deleter>;
 
 struct SDL_Surface_Deleter {

@@ -253,7 +253,7 @@ std::string Surface::get_pixels() const {
   if (surface->format->format == SDL_PIXELFORMAT_ABGR8888) {
     // No conversion needed.
     const char* buffer = static_cast<const char*>(surface->pixels);
-    return std::string(buffer, num_pixels * 4);
+    return std::string(buffer, num_pixels * surface->format->BytesPerPixel);
   }
 
   // Convert to RGBA format. Should never happen
@@ -266,7 +266,7 @@ std::string Surface::get_pixels() const {
   Debug::check_assertion(converted_surface != nullptr,
                          std::string("Failed to convert pixels to RGBA format") + SDL_GetError());
   const char* buffer = static_cast<const char*>(converted_surface->pixels);
-  return std::string(buffer, num_pixels * 4);
+  return std::string(buffer, num_pixels * converted_surface->format->BytesPerPixel);
 }
 
 /**
@@ -283,8 +283,8 @@ void Surface::set_pixels(const std::string& buffer) {
     return;
   }
   //Backup strat, heavy recreation of surface impl, should never happen
-  SDL_PixelFormat* format_rgba = Video::get_rgba_format(); // TODO keep this object :)
-  SDL_Surface_UniquePtr rgba_surf(SDL_CreateRGBSurfaceFrom(
+  SDL_PixelFormat* format_rgba = Video::get_rgba_format();
+  SDL_Surface* rgba_surf = SDL_CreateRGBSurfaceFrom(
                                     const_cast<char*>(buffer.data()),
                                     get_width(),
                                     get_height(),
@@ -294,15 +294,8 @@ void Surface::set_pixels(const std::string& buffer) {
                                     format_rgba->Gmask,
                                     format_rgba->Bmask,
                                     format_rgba->Amask
-                                    ));
-  // Convert from RGBA.
-  SDL_PixelFormat* pixel_format = Video::get_pixel_format();
-  SDL_Surface* converted_surf(SDL_ConvertSurface(
-                                         rgba_surf.get(),
-                                         pixel_format,
-                                         0
-                                         ));
-  internal_surface.reset(new Texture(converted_surf));
+                                    );
+  internal_surface.reset(new Texture(rgba_surf));
 }
 
 /**

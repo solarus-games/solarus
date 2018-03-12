@@ -29,6 +29,7 @@ addons:
     - libopenal-dev
     - libmodplug-dev
     - libvorbis-dev
+    - libglm-dev
     - qtbase5-dev
     - qttools5-dev
     - qttools5-dev-tools

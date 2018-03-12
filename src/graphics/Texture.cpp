@@ -3,8 +3,6 @@
 #include "solarus/core/Debug.h"
 #include "solarus/graphics/Surface.h"
 
-#include <SFML/Graphics/Sprite.hpp>
-
 namespace Solarus {
 
 /**

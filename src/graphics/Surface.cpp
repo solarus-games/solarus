@@ -397,6 +397,47 @@ void Surface::draw_transition(Transition& transition) {
 }
 
 /**
+ * \brief Draws this software surface with a pixel filter on another software
+ * surface.
+ * \param pixel_filter The pixel filter to apply.
+ * \param dst_surface The destination surface. It must have the size of the
+ * this surface multiplied by the scaling factor of the filter.
+ */
+void Surface::apply_pixel_filter(
+    const SoftwarePixelFilter& pixel_filter, Surface& dst_surface) const {
+
+  const int factor = pixel_filter.get_scaling_factor();
+  Debug::check_assertion(dst_surface.get_width() == get_width() * factor,
+      "Wrong destination surface size");
+  Debug::check_assertion(dst_surface.get_height() == get_height() * factor,
+      "Wrong destination surface size");
+
+  SDL_Surface* src_internal_surface = this->internal_surface->get_surface();
+  SDL_Surface* dst_internal_surface = dst_surface.internal_surface->get_surface();
+
+  if (src_internal_surface == nullptr) {
+    // This is possible if nothing was drawn on the surface yet.
+    return;
+  }
+
+  Debug::check_assertion(dst_internal_surface != nullptr,
+      "Missing software destination surface for pixel filter");
+
+  SDL_LockSurface(src_internal_surface);
+  SDL_LockSurface(dst_internal_surface);
+
+  uint32_t* src = static_cast<uint32_t*>(src_internal_surface->pixels);
+  uint32_t* dst = static_cast<uint32_t*>(dst_internal_surface->pixels);
+
+  pixel_filter.filter(src, get_width(), get_height(), dst);
+
+  SDL_UnlockSurface(dst_internal_surface);
+  SDL_UnlockSurface(src_internal_surface);
+  dst_surface.internal_surface->upload_surface();
+}
+
+
+/**
  * \brief Returns the surface where transitions on this drawable object
  * are applied.
  * \return The surface for transitions.

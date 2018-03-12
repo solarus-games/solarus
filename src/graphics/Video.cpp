@@ -378,7 +378,7 @@ void render(const SurfacePtr& quest_surface) {
   if (software_filter != nullptr) {
     Debug::check_assertion(context.scaled_surface != nullptr,
         "Missing destination surface for scaling");
-    //quest_surface->apply_pixel_filter(*software_filter, *context.scaled_surface); //TODO
+    quest_surface->apply_pixel_filter(*software_filter, *context.scaled_surface);
     surface_to_render = context.scaled_surface;
   }
 

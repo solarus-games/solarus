@@ -106,6 +106,8 @@ class Surface: public Drawable {
         const Point& dst_position
     ) override;
     virtual void draw_transition(Transition& transition) override;
+    void apply_pixel_filter(
+        const SoftwarePixelFilter& pixel_filter, Surface& dst_surface) const;
     virtual Surface& get_transition_surface() override;
     SDL_BlendMode get_sdl_blend_mode() const;
 

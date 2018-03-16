@@ -58,9 +58,10 @@ class TargetMovement: public StraightMovement {
     int get_moving_speed() const;
     void set_moving_speed(int moving_speed);
 
-    virtual void notify_object_controlled() override;
-    virtual bool is_finished() const override;
-    virtual void update() override;
+    void notify_object_controlled() override;
+    void notify_position_changed() override;
+    bool is_finished() const override;
+    void update() override;
 
     virtual const std::string& get_lua_type_name() const override;
 
@@ -79,6 +80,7 @@ class TargetMovement: public StraightMovement {
 
     uint32_t next_recomputation_date;  /**< Date when the movement is recalculated. */
     bool finished;                     /**< \c true if the target is reached. */
+    bool recomputing_movement;         /**< Whether we are in \c recompute_movement(). */
 
 };
 

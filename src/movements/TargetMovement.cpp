@@ -49,6 +49,7 @@ TargetMovement::TargetMovement(
     bool ignore_obstacles):
     TargetMovement(target_entity, Point(x,y), moving_speed, ignore_obstacles) {
 }
+
 /**
  * \brief Creates a new target movement toward an entity or a fixed point.
  * \param target_entity The entity to target or nullptr.
@@ -70,17 +71,28 @@ TargetMovement::TargetMovement(
   sign_y(0),
   moving_speed(moving_speed),
   next_recomputation_date(System::now()),
-  finished(false) {
+  finished(false),
+  recomputing_movement(false) {
 }
 
 /**
- * \brief Notifies this movement that the object it controls has changed.
+ * \copydoc Movement::notify_object_controlled
  */
 void TargetMovement::notify_object_controlled() {
 
   StraightMovement::notify_object_controlled();
 
   // Coordinates have changed: compute a new trajectory.
+  recompute_movement();
+}
+
+/**
+ * \copydoc Movement::notify_position_changed
+ */
+void TargetMovement::notify_position_changed() {
+
+  // Recompute the trajectory in case the position was suddenly changed by
+  // somewhere else than us.
   recompute_movement();
 }
 
@@ -156,6 +168,12 @@ void TargetMovement::update() {
  */
 void TargetMovement::recompute_movement() {
 
+  if (recomputing_movement) {
+    // Avoid reentrant updates.
+    return;
+  }
+  recomputing_movement = true;
+
   if (target_entity != nullptr) {
     // the target may be a moving entity
     target = target_entity->get_xy() + entity_offset;
@@ -177,6 +195,8 @@ void TargetMovement::recompute_movement() {
       set_max_distance((int) Geometry::get_distance(get_xy(), target));
     }
   }
+
+  recomputing_movement = false;
 }
 
 /**

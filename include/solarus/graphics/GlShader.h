@@ -23,7 +23,7 @@
 #include <SDL.h>
 #include <string>
 
-#  include "SDL_opengles2.h"
+#include "SDL_opengl.h"
 
 
 namespace Solarus {

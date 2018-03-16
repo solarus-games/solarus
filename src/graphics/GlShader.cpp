@@ -82,10 +82,6 @@ VertexArray GlShader::screen_quad(TRIANGLES);
  * \return \c true if GL 2D shaders are supported.
  */
 bool GlShader::initialize() {
-
-  // Setting some parameters.
-  glClearDepthf(1.0); // Enables clearing of the depth buffer.
-
 #if SDL_VIDEO_DRIVER_UIKIT || SDL_VIDEO_DRIVER_ANDROID || SDL_VIDEO_DRIVER_PANDORA
 #define SDL_PROC(ret,func,params) data.func=func;
 #else

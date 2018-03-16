@@ -34,6 +34,7 @@ RenderTexture::RenderTexture(int width, int height)
   Debug::check_assertion(surf_ptr!=nullptr,
                          std::string("Failed to create backup surface ") + SDL_GetError());
   surface.reset(surf_ptr);
+  clear();
 }
 
 /**

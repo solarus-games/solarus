@@ -93,6 +93,7 @@ void TargetMovement::notify_position_changed() {
 
   StraightMovement::notify_position_changed();
 
+  set_max_distance((int) Geometry::get_distance(get_xy(), target));
   check_target_reached();
 }
 
@@ -184,7 +185,6 @@ void TargetMovement::recompute_movement() {
       // The angle has changed or the movement was stopped.
       set_speed(moving_speed);
       set_angle(angle);
-      set_max_distance((int) Geometry::get_distance(get_xy(), target));
     }
   }
 

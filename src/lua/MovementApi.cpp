@@ -328,6 +328,10 @@ void LuaContext::register_movement_module() {
                                   // ... movements
   lua_newtable(l);
                                   // ... movements meta
+  lua_pushstring(l, "v");
+                                  // ... movements meta "v"
+  lua_setfield(l, -2, "__mode");
+                                  // ... movements meta
   lua_setmetatable(l, -2);
                                   // ... movements
   lua_setfield(l, LUA_REGISTRYINDEX, "sol.movements_on_points");

@@ -480,13 +480,19 @@ void LuaContext::stop_movement_on_point(const std::shared_ptr<Movement>& movemen
 void LuaContext::update_movements() {
 
   lua_getfield(l, LUA_REGISTRYINDEX, "sol.movements_on_points");
+  std::vector<std::shared_ptr<Movement>> movements;
   lua_pushnil(l);  // First key.
   while (lua_next(l, -2)) {
-    Movement& movement = *check_movement(l, -2);
-    movement.update();
+    const std::shared_ptr<Movement>& movement = check_movement(l, -2);
+    movements.push_back(movement);
     lua_pop(l, 1);  // Pop the value, keep the key for next iteration.
   }
   lua_pop(l, 1);  // Pop the movements table.
+
+  // Work on a copy of the list because the list may be changed during the iteration.
+  for (const std::shared_ptr<Movement>& movement : movements) {
+    movement->update();
+  }
 }
 
 /**

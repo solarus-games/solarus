@@ -44,5 +44,10 @@ before_script:
   - wget -q http://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.12.tar.gz
   - tar xf SDL2_ttf-*.tar.gz
   - cd SDL2_ttf-* && ./configure && make && sudo make install && cd ..
+
+  - wget -q https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.3.tar.gz
+  - tar xf SDL2_image*
+  - cd SDL2_image* && ./configure && make && sudo make install && cd ..
+
 script: mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Debug .. && make && ctest -V
 

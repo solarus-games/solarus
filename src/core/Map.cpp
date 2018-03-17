@@ -87,6 +87,7 @@ const std::string& Map::get_tileset_id() const {
  */
 void Map::set_tileset(const std::string& tileset_id) {
 
+  Debug::check_assertion(is_game_running(), "The game of this map does not exist");
   ResourceProvider& resource_provider = get_game().get_resource_provider();
   tileset = &resource_provider.get_tileset(tileset_id);
   get_entities().notify_tileset_changed();
@@ -265,8 +266,7 @@ void Map::unload() {
     background_surface = nullptr;
     foreground_surface = nullptr;
     entities = nullptr;
-
-    // TODO game = nullptr;
+    game = nullptr;
 
     loaded = false;
   }
@@ -327,7 +327,8 @@ void Map::load(Game& game) {
  * \return The Lua context where all scripts are run.
  */
 LuaContext& Map::get_lua_context() {
-  return game->get_lua_context();
+  Debug::check_assertion(is_game_running(), "The game of this map does not exist");
+  return get_savegame()->get_lua_context();
 }
 
 /**
@@ -528,6 +529,7 @@ bool Map::is_suspended() const {
  */
 void Map::check_suspended() {
 
+  Debug::check_assertion(is_game_running(), "The game of this map does not exist");
   bool game_suspended = game->is_suspended();
   if (suspended != game_suspended) {
     set_suspended(game_suspended);

@@ -189,8 +189,7 @@ class SOLARUS_API Map: public ExportableToLua {
 
     // map properties
 
-    Game* game;                   /**< The game this map was started in.
-                                   * TODO set to nullptr after the game is destroyed */
+    Game* game;                   /**< The game this map was started in.*/
     std::shared_ptr<Savegame>
         savegame;                 /**< The savegame associated to the game.
                                    * Persists even after the game is destroyed. */

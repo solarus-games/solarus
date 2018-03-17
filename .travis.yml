@@ -21,9 +21,9 @@ compiler:
 addons:
   apt:
     packages:
-    - libsdl2-dev
-    - libsdl2-image-dev
-    - libsdl2-ttf-dev
+        #    - libsdl2-dev
+    # - libsdl2-image-dev
+    # - libsdl2-ttf-dev
     - libluajit-5.1-dev
     - libphysfs-dev
     - libopenal-dev
@@ -34,5 +34,15 @@ addons:
     - qttools5-dev
     - qttools5-dev-tools
 
+before_script:
+    # install SDL
+  - wget -q http://www.libsdl.org/release/SDL2-2.0.4.tar.gz
+  - tar xf SDL2-*.tar.gz
+  - cd SDL2-* && ./configure && make && sudo make install && cd ..
+
+  # Install SDL_ttf.
+  - wget -q http://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.12.tar.gz
+  - tar xf SDL2_ttf-*.tar.gz
+  - cd SDL2_ttf-* && ./configure && make && sudo make install && cd ..
 script: mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Debug .. && make && ctest -V
 

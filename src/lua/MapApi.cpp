@@ -1413,6 +1413,19 @@ int LuaContext::l_entity_iterator_next(lua_State* l) {
 }
 
 /**
+ * \brief Generates a Lua error if a map is not in an existing game.
+ * \param l A Lua context.
+ * \param map The map to check.
+ */
+void LuaContext::check_map_has_game(lua_State* l, const Map& map) {
+
+  if (!map.is_game_running()) {
+    // Return nil if the game is already destroyed.
+    LuaTools::error(l, "The game of this map is no longer running");
+  }
+}
+
+/**
  * \brief Implementation of map:get_game().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
@@ -1422,7 +1435,7 @@ int LuaContext::map_api_get_game(lua_State* l) {
   return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = *check_map(l, 1);
 
-    push_game(l, map.get_game().get_savegame());
+    push_game(l, *map.get_savegame());
     return 1;
   });
 }
@@ -2136,6 +2149,8 @@ int LuaContext::map_api_get_hero(lua_State* l) {
 
   return LuaTools::exception_boundary_handle(l, [&] {
     Map& map = *check_map(l, 1);
+
+    check_map_has_game(l, map);
 
     // Return the hero even if he is no longer on this map.
     push_hero(l, *map.get_game().get_hero());

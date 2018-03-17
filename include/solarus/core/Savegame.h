@@ -115,8 +115,9 @@ class SOLARUS_API Savegame: public ExportableToLua {
     // unsaved data
     MainLoop& get_main_loop();
     LuaContext& get_lua_context();
-    Equipment& get_equipment();
     const Equipment& get_equipment() const;
+    Equipment& get_equipment();
+    const Game* get_game() const;
     Game* get_game();
     void set_game(Game* game);
     void notify_game_started();

@@ -42,6 +42,7 @@ namespace Solarus {
  */
 Map::Map(const std::string& id):
   game(nullptr),
+  savegame(),
   id(id),
   width8(0),
   height8(0),
@@ -255,8 +256,7 @@ bool Map::is_loaded() const {
  * \brief Unloads the map.
  *
  * Destroys all entities in the map to free some memory. This function
- * can be called when the player exists the map. If the player is likely to
- * come back on the map, you can keep the map loaded.
+ * can be called when the player exists the map.
  */
 void Map::unload() {
 
@@ -265,6 +265,8 @@ void Map::unload() {
     background_surface = nullptr;
     foreground_surface = nullptr;
     entities = nullptr;
+
+    // TODO game = nullptr;
 
     loaded = false;
   }
@@ -294,6 +296,8 @@ void Map::load(Game& game) {
 
   // Initialize the map from the data just read.
   this->game = &game;
+  this->savegame = std::static_pointer_cast<Savegame>(
+        game.get_savegame().shared_from_this());  // TODO make Game::get_savegame() return a shared_ptr.
   ResourceProvider& resource_provider = game.get_resource_provider();
   location.set_xy(data.get_location());
   location.set_size(data.get_size());
@@ -329,12 +333,34 @@ LuaContext& Map::get_lua_context() {
 /**
  * \brief Returns the game that loaded this map.
  *
- * This function should not be called before the map is loaded into a game.
+ * This function should not be called before the map is loaded into a game
+ * or after the game is stopped.
  *
  * \return The game.
  */
 Game& Map::get_game() {
+  Debug::check_assertion(is_game_running(), "The game of this map does not exist");
   return *game;
+}
+
+/**
+ * \brief Returns the savegame associated to this map.
+ *
+ * Returns nullptr if the map is not loaded yet into a game.
+ * Still returns a valid savegame after the game is destroyed.
+ *
+ * \return The savegame.
+ */
+const std::shared_ptr<Savegame>& Map::get_savegame() {
+  return savegame;
+}
+
+/**
+ * \brief Returns whether the game this map belongs to is running.
+ * \return \c true if the game is running.
+ */
+bool Map::is_game_running() const {
+  return savegame != nullptr && savegame->get_game() != nullptr;
 }
 
 /**

@@ -624,6 +624,11 @@ int LuaContext::movement_api_start(lua_State* l) {
     }
     else if (is_entity(l, 2)) {
       Entity& entity = *check_entity(l, 2);
+      if (!entity.is_on_map() ||
+          !entity.get_map().is_started()
+      ) {
+        LuaTools::arg_error(l, 2, "This entity is not on the current map");
+      }
       entity.clear_movement();
       entity.set_movement(movement);
     }

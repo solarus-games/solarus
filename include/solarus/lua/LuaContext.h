@@ -246,6 +246,9 @@ class LuaContext {
     void stop_movement_on_point(const std::shared_ptr<Movement>& movement);
     void update_movements();
 
+    // Maps.
+    static void check_map_has_game(lua_State* l, const Map& map);
+
     // Entities.
     static const std::string& get_entity_internal_type_name(EntityType entity_type);
     bool create_map_entity_from_data(Map& map, const EntityData& entity_data);

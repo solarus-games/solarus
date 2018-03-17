@@ -362,21 +362,27 @@ LuaContext& Savegame::get_lua_context() {
  * \brief Returns the player's equipment corresponding to this savegame.
  * \return The equipment.
  */
-Equipment& Savegame::get_equipment() {
+const Equipment& Savegame::get_equipment() const {
   return equipment;
 }
 
 /**
- * \brief Returns the player's equipment corresponding to this savegame.
- * \return The equipment.
+ * \overload Non-const version.
  */
-const Equipment& Savegame::get_equipment() const {
+Equipment& Savegame::get_equipment() {
   return equipment;
 }
 
 /**
  * \brief If this savegame is currently running in a game, return that game.
  * \return A game or nullptr.
+ */
+const Game* Savegame::get_game() const {
+  return game;
+}
+
+/**
+ * \overload Non-const version.
  */
 Game* Savegame::get_game() {
   return game;

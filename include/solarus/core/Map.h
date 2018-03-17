@@ -89,6 +89,8 @@ class SOLARUS_API Map: public ExportableToLua {
     void load(Game& game);
     void unload();
     Game& get_game();
+    const std::shared_ptr<Savegame>& get_savegame();
+    bool is_game_running() const;
     LuaContext& get_lua_context();
     virtual const std::string& get_lua_type_name() const override;
 
@@ -187,7 +189,11 @@ class SOLARUS_API Map: public ExportableToLua {
 
     // map properties
 
-    Game* game;                   /**< The game this map was started in. */
+    Game* game;                   /**< The game this map was started in.
+                                   * TODO set to nullptr after the game is destroyed */
+    std::shared_ptr<Savegame>
+        savegame;                 /**< The savegame associated to the game.
+                                   * Persists even after the game is destroyed. */
     std::string id;               /**< Id of this map. */
 
     int width8;                   /**< Map width in 8x8 squares (width8 = get_width() / 8). */

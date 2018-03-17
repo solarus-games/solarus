@@ -129,7 +129,7 @@ void Hero::BackToSolidGroundState::update() {
     return;
   }
 
-  // the current movement is an instance of TargetMovement
+  // The current movement is an instance of TargetMovement.
   Hero& hero = get_entity();
   if (hero.get_movement()->is_finished()) {
 

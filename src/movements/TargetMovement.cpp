@@ -93,11 +93,7 @@ void TargetMovement::notify_position_changed() {
 
   StraightMovement::notify_position_changed();
 
-  // See if the target is reached.
-  if (get_xy() == target) {
-    stop();
-    finished = true;
-  }
+  check_target_reached();
 }
 
 /**
@@ -153,6 +149,8 @@ void TargetMovement::update() {
     next_recomputation_date += recomputation_delay;
   }
 
+  check_target_reached();
+
   StraightMovement::update();
 }
 
@@ -191,6 +189,19 @@ void TargetMovement::recompute_movement() {
   }
 
   recomputing_movement = false;
+}
+
+/**
+ * \brief Checks whether the target is reached.
+ *
+ * Finishes the movement if this is the case.
+ */
+void TargetMovement::check_target_reached() {
+
+  if (get_xy() == target) {
+    stop();
+    finished = true;
+  }
 }
 
 /**

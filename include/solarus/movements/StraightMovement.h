@@ -98,8 +98,8 @@ class StraightMovement: public Movement {
     int x_move;                  /**< Number of pixels of the next x move : 0, 1 or -1. */
     int y_move;                  /**< Number of pixels of the next y move : 0, 1 or -1. */
 
-    Point initial_xy;            /**< Initial position when the movement started
-                                  * (reset whenever the speed of the angle changes) */
+    Point initial_xy;            /**< Initial position used for the max distance check
+                                  * (reset whenever the movement changes changes) */
     int max_distance;            /**< After this distance in pixels from the initial position,
                                   * or when an obstacle is reached, the movement will stop
                                   * (0 means no limit) */

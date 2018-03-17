@@ -266,6 +266,7 @@ int StraightMovement::get_max_distance() const {
  */
 void StraightMovement::set_max_distance(int max_distance) {
   this->max_distance = max_distance;
+  initial_xy = get_xy();
 }
 
 /**
@@ -664,8 +665,9 @@ void StraightMovement::update() {
 
       now = System::now();
 
-      if (!finished && max_distance != 0
-          && Geometry::get_distance(initial_xy, get_xy()) >= max_distance) {
+      if (!finished &&
+          max_distance != 0 &&
+          Geometry::get_distance(initial_xy, get_xy()) >= max_distance) {
         set_finished();
       }
       else {

@@ -91,9 +91,13 @@ void TargetMovement::notify_object_controlled() {
  */
 void TargetMovement::notify_position_changed() {
 
-  // Recompute the trajectory in case the position was suddenly changed by
-  // somewhere else than us.
-  recompute_movement();
+  StraightMovement::notify_position_changed();
+
+  // See if the target is reached.
+  if (get_xy() == target) {
+    stop();
+    finished = true;
+  }
 }
 
 /**
@@ -147,16 +151,6 @@ void TargetMovement::update() {
   if (System::now() >= next_recomputation_date) {
     recompute_movement();
     next_recomputation_date += recomputation_delay;
-  }
-
-  // see if the target is reached
-  Point dxy = target - get_xy();
-  if (dxy.x * sign_x <= 0 && dxy.y * sign_y <= 0) {
-    if (!test_collision_with_obstacles(dxy)) {
-      set_xy(target);  // Because the target movement may have not been very precise.
-      stop();
-      finished = true;
-    }
   }
 
   StraightMovement::update();

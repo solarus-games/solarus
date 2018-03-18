@@ -45,7 +45,7 @@ before_script:
   - tar xf SDL2_ttf-*.tar.gz
   - cd SDL2_ttf-* && ./configure && make && sudo make install && cd ..
 
-  - wget -q https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.2.tar.gz
+  - wget -q https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.1.tar.gz
   - tar xf SDL2_image*
   - cd SDL2_image* && ./configure && make && sudo make install && cd ..
 

@@ -93,6 +93,30 @@ const ShaderData& Shader::get_data() const {
 }
 
 /**
+ * @brief Returns the vertex source of the data or the default vertex source
+ * @return the vertex source
+ */
+std::string Shader::get_vertex_source() const {
+  const auto& ds = get_data().get_vertex_source();
+  if(ds != "") {
+    return ds;
+  }
+  return default_vertex_source();
+}
+
+/**
+ * @brief Returns the fragment source of the data or the default fragment source
+ * @return The fragment source
+ */
+std::string Shader::get_fragment_source() const {
+  const auto& ds = get_data().get_fragment_source();
+  if(ds != "") {
+    return ds;
+  }
+  return default_fragment_source();
+}
+
+/**
  * \brief Sets the shader information.
  * \param data The shader data.
  */
@@ -199,16 +223,26 @@ bool Shader::set_uniform_texture(const std::string&, const SurfacePtr&) {
   return false;
 }
 
+//TODO fix render documentation
+
 /**
  * \fn Shader::render
  * \brief Draws the quest surface on the screen in a shader-allowed context.
  * It will perform the render using the OpenGL API directly.
  * \param quest_surface the surface to render on the screen
  */
-void Shader::render(const SurfacePtr&) {
+void Shader::render(const SurfacePtr&, const Rectangle& , const Size&, const Point &) {
   // TODO make pure virtual
 }
 
+
+/**
+ * \fn Shader::render
+ * \brief Draws the VertexArray on the
+ */
+void Shader::render(const VertexArray &, const SurfacePtr &, const glm::mat4& , const glm::mat3&) {
+
+}
 
 /**
  * \fn Shader::load

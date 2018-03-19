@@ -1,0 +1,7 @@
+FIND_PATH( GLM_INCLUDE_DIRS glm
+    ${CMAKE_SOURCE_DIR}/include/solarus/third_party/glm)
+
+SET(GLM_FOUND "NO")
+IF(GLM_INCLUDE_DIRS)
+    SET(GLM_FOUND "YES")
+ENDIF()

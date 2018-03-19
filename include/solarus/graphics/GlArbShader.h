@@ -21,13 +21,15 @@
 
 #include "solarus/graphics/GlTextureHandle.h"
 #include "solarus/graphics/Shader.h"
+#include "solarus/graphics/VertexArray.h"
+
+
 #include <SDL.h>
 #include <map>
 #include <string>
 
-#ifdef SOLARUS_HAVE_OPENGL
-#  include <SDL_opengl.h>
-#endif
+#include <SDL_opengl.h>
+
 
 namespace Solarus {
 
@@ -41,7 +43,6 @@ class GlArbShader : public Shader {
 
   public:
 
-#ifdef SOLARUS_HAVE_OPENGL
     static bool initialize();
 
     explicit GlArbShader(const std::string& shader_id);
@@ -61,35 +62,37 @@ class GlArbShader : public Shader {
         const std::string& uniform_name, float value_1, float value_2, float value_3, float value_4) override;
     bool set_uniform_texture(const std::string& uniform_name, const SurfacePtr& value) override;
 
-    static GlTextureHandle create_gl_texture(const SurfacePtr& surface);
-    static void update_gl_texture(const SurfacePtr& surface, const GlTextureHandle& texture);
+    void render(const VertexArray &array, const SurfacePtr &texture, const glm::mat4& mvp_matrix = glm::mat4(), const glm::mat3& uv_matrix = glm::mat3()) override;
 
+    std::string default_vertex_source() const override;
+    std::string default_fragment_source() const override;
   protected:
-
     void load() override;
-
   private:
+
+    struct TextureUniform{
+      SurfacePtr surface;
+      GLuint unit;
+    };
 
     GLhandleARB create_shader(unsigned int type, const char* source);
     static void set_rendering_settings();
     GLint get_uniform_location(const std::string& uniform_name) const;
 
-    void render(const SurfacePtr& quest_surface) override;
+    void render(const SurfacePtr& surface, const Rectangle &region, const Size &dst_size, const Point &dst_position) override;
 
     GLhandleARB program;                         /**< The program which bind the vertex and fragment shader. */
     GLhandleARB vertex_shader;                   /**< The vertex shader. */
     GLhandleARB fragment_shader;                 /**< The fragment shader. */
+    GLint position_location;                     /**< The location of the position attrib. */
+    GLint tex_coord_location;                    /**< The location of the tex_coord attrib. */
+    GLint color_location;                        /**< The location of the color attrib. */
     mutable std::map<std::string, GLint>
         uniform_locations;                       /**< Cache of uniform locations. */
-    mutable std::map<SurfacePtr, GlTextureHandle>
+    mutable std::map<std::string, TextureUniform>
         uniform_textures;                        /**< Uniform texture value of surfaces. */
-    mutable std::map<SurfacePtr, GLuint>
-        uniform_texture_units;                   /**< Texture units used by uniforms. */
-#else
-
-  static bool initialize() { return false; }
-  explicit GlArbShader(const std::string& shader_id): Shader(shader_id)  {}
-#endif
+    GLuint current_texture_unit = 0;
+    static VertexArray screen_quad;
 };
 
 }

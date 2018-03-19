@@ -92,6 +92,7 @@ class Rectangle {
 
     Rectangle get_intersection(const Rectangle& other) const;
 
+    operator const SDL_Rect*() const;
     Rectangle operator|(const Rectangle& other) const;
     Rectangle operator&(const Rectangle& other) const;
     Rectangle& operator|=(const Rectangle& other);

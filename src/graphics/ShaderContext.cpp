@@ -39,7 +39,6 @@ bool is_universal_shader_supported = false;
  * \return \c true if any shader system is supported.
  */
 bool ShaderContext::initialize() {
-
   opengl_version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
   shading_language_version = reinterpret_cast<const char *>(glGetString(GL_SHADING_LANGUAGE_VERSION));
   opengl_vendor = reinterpret_cast<const char*>(glGetString(GL_VENDOR));
@@ -119,6 +118,10 @@ ShaderPtr ShaderContext::create_shader(const std::string& shader_id) {
   }
 
   return shader;
+}
+
+void ShaderContext::make_current() {
+  SDL_GL_MakeCurrent(Video::get_window(),gl_context);
 }
 
 }

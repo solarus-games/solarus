@@ -21,12 +21,50 @@
 #include "solarus/graphics/GlArbShader.h"
 #include "solarus/graphics/ShaderData.h"
 #include "solarus/graphics/Surface.h"
+#include "solarus/graphics/VertexArray.h"
 #include "solarus/graphics/Video.h"
+#include "solarus/graphics/RenderTexture.h"
 #include <sstream>
 
-#ifdef SOLARUS_HAVE_OPENGL
+#include "solarus/third_party/glm/gtc/type_ptr.hpp"
+#include "solarus/third_party/glm/gtx/transform.hpp"
+#include "solarus/third_party/glm/gtx/matrix_transform_2d.hpp"
 
 namespace Solarus {
+
+constexpr auto DEFAULT_VERTEX =
+    R"(
+    #version 100
+    precision mediump float;
+
+    uniform mat4 sol_mvp_matrix;
+    uniform mat3 sol_uv_matrix;
+    attribute vec2 sol_vertex;
+    attribute vec2 sol_tex_coord;
+    attribute vec4 sol_color;
+
+    varying vec2 sol_vtex_coord;
+    varying vec4 sol_vcolor;
+    void main() {
+      gl_Position = sol_mvp_matrix * vec4(sol_vertex,0,1);
+      sol_vcolor = sol_color;
+      sol_vtex_coord = (sol_uv_matrix * vec3(sol_tex_coord,1)).xy;
+    }
+    )";
+
+constexpr auto DEFAULT_FRAGMENT =
+    R"(
+    #version 100
+    precision mediump float;
+    uniform sampler2D sol_texture;
+    varying vec2 sol_vtex_coord;
+    varying vec4 sol_vcolor;
+    void main() {
+      vec4 tex_color = texture2D(sol_texture,sol_vtex_coord);
+      gl_FragColor = tex_color*sol_vcolor;
+    }
+    )";
+
 
 namespace {
 
@@ -49,6 +87,17 @@ PFNGLUNIFORM4FARBPROC glUniform4fARB;
 PFNGLUSEPROGRAMOBJECTARBPROC glUseProgramObjectARB;
 PFNGLGETHANDLEARBPROC glGetHandleARB;
 
+PFNGLUNIFORMMATRIX4FVARBPROC  glUniformMatrix4fvARB;
+PFNGLUNIFORMMATRIX3FVARBPROC  glUniformMatrix3fvARB;
+
+PFNGLGENBUFFERSARBPROC glGenBuffersARB;
+PFNGLBINDBUFFERARBPROC glBindBufferARB;
+PFNGLBUFFERDATAARBPROC glBufferDataARB;
+
+PFNGLVERTEXATTRIBPOINTERARBPROC glVertexAttribPointerARB;
+PFNGLENABLEVERTEXATTRIBARRAYARBPROC glEnableVertexAttribArrayARB;
+PFNGLGETATTRIBLOCATIONARBPROC glGetAttribLocationARB;
+
 /**
  * \brief Casts a pointer-to-object (void*) to a pointer-to-function.
  *
@@ -66,6 +115,8 @@ FunctionPointerType get_proc_address_cast(void* object_ptr) {
 
 }  // Anonymous namespace
 
+VertexArray GlArbShader::screen_quad(TRIANGLES);
+
 /**
  * \brief Initializes the GL ARB shader system.
  * \return \c true if GL ARB shaders are supported.
@@ -78,12 +129,16 @@ bool GlArbShader::initialize() {
   glClearDepth(1.0); // Enables clearing of the depth buffer.
   glShadeModel(GL_SMOOTH); // Enables smooth color shading.
 
+  //Init screen quad
+  screen_quad.add_quad(Rectangle(-1,-1,2,2),Rectangle(0,0,1,1),Color::white);
+
   // Initialize GL ARB functions.
   if (SDL_GL_ExtensionSupported("GL_ARB_shader_objects") &&
       SDL_GL_ExtensionSupported("GL_ARB_shading_language_100") &&
       SDL_GL_ExtensionSupported("GL_ARB_vertex_shader") &&
       SDL_GL_ExtensionSupported("GL_ARB_fragment_shader") &&
-      SDL_GL_ExtensionSupported("GL_ARB_multitexture")) {
+      SDL_GL_ExtensionSupported("GL_ARB_multitexture") &&
+      SDL_GL_ExtensionSupported("GL_ARB_vertex_buffer_object")) {
     glAttachObjectARB = get_proc_address_cast<PFNGLATTACHOBJECTARBPROC>(SDL_GL_GetProcAddress("glAttachObjectARB"));
     glActiveTextureARB = get_proc_address_cast<PFNGLACTIVETEXTUREARBPROC>(SDL_GL_GetProcAddress("glActiveTextureARB"));
     glCompileShaderARB = get_proc_address_cast<PFNGLCOMPILESHADERARBPROC>(SDL_GL_GetProcAddress("glCompileShaderARB"));
@@ -102,6 +157,17 @@ bool GlArbShader::initialize() {
     glUniform4fARB = get_proc_address_cast<PFNGLUNIFORM4FARBPROC>(SDL_GL_GetProcAddress("glUniform4fARB"));
     glUseProgramObjectARB = get_proc_address_cast<PFNGLUSEPROGRAMOBJECTARBPROC>(SDL_GL_GetProcAddress("glUseProgramObjectARB"));
     glGetHandleARB = get_proc_address_cast<PFNGLGETHANDLEARBPROC>(SDL_GL_GetProcAddress("glGetHandleARB"));
+
+    glUniformMatrix4fvARB = get_proc_address_cast<PFNGLUNIFORMMATRIX4FVARBPROC>(SDL_GL_GetProcAddress("glUniformMatrix4fvARB"));
+    glUniformMatrix3fvARB = get_proc_address_cast<PFNGLUNIFORMMATRIX3FVARBPROC>(SDL_GL_GetProcAddress("glUniformMatrix3fvARB"));
+
+    glGenBuffersARB = get_proc_address_cast<PFNGLGENBUFFERSARBPROC>(SDL_GL_GetProcAddress("glGenBuffersARB"));
+    glBindBufferARB = get_proc_address_cast<PFNGLBINDBUFFERARBPROC>(SDL_GL_GetProcAddress("glBindBufferARB"));
+    glBufferDataARB = get_proc_address_cast<PFNGLBUFFERDATAARBPROC>(SDL_GL_GetProcAddress("glBufferDataARB"));
+    glVertexAttribPointerARB = get_proc_address_cast<PFNGLVERTEXATTRIBPOINTERARBPROC>(SDL_GL_GetProcAddress("glVertexAttribPointerARB"));
+    glEnableVertexAttribArrayARB = get_proc_address_cast<PFNGLENABLEVERTEXATTRIBARRAYARBPROC>(SDL_GL_GetProcAddress("glEnableVertexAttribArrayARB"));
+    glGetAttribLocationARB = get_proc_address_cast<PFNGLGETATTRIBLOCATIONARBPROC>(SDL_GL_GetProcAddress("glGetAttribLocationARB"));
+
     if (glAttachObjectARB &&
         glActiveTextureARB &&
         glCompileShaderARB &&
@@ -119,8 +185,16 @@ bool GlArbShader::initialize() {
         glUniform3fARB &&
         glUniform4fARB &&
         glUseProgramObjectARB &&
-        glGetHandleARB) {
+        glGetHandleARB &&
 
+        glGenBuffersARB &&
+        glBindBufferARB &&
+        glBufferDataARB &&
+        glVertexAttribPointerARB &&
+        glEnableVertexAttribArrayARB &&
+        glGetAttribLocationARB
+        ) {
+      Logger::info("Using ARB GL Shaders");
       return true;
     }
   }
@@ -148,14 +222,14 @@ GlArbShader::GlArbShader(const std::string& shader_id):
   GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
   glUseProgramObjectARB(program);
 
-  // TODO use our uniform functions
-  GLint location = get_uniform_location("sol_texture");
-  if (location >= 0) {
-    glUniform1iARB(location, 0);  // Use texture unit 0 for the quest surface.
-  }
+  set_uniform_1i(TEXTURE_NAME,0);
 
   const Size& quest_size = Video::get_quest_size();
-  set_uniform_2f("sol_input_size", quest_size.width, quest_size.height);
+  set_uniform_2f(INPUT_SIZE_NAME, quest_size.width, quest_size.height);
+
+  position_location = glGetAttribLocationARB(program,POSITION_NAME);
+  tex_coord_location = glGetAttribLocationARB(program,TEXCOORD_NAME);
+  color_location = glGetAttribLocationARB(program,COLOR_NAME);
 
   glUseProgramObjectARB(previous_program);
 
@@ -176,6 +250,14 @@ GlArbShader::~GlArbShader() {
   glDeleteObjectARB(vertex_shader);
   glDeleteObjectARB(fragment_shader);
   glDeleteObjectARB(program);
+}
+
+std::string GlArbShader::default_vertex_source() const {
+  return DEFAULT_VERTEX;
+}
+
+std::string GlArbShader::default_fragment_source() const {
+  return DEFAULT_FRAGMENT;
 }
 
 /**
@@ -218,6 +300,10 @@ void GlArbShader::load() {
   // Check the link status.
   GLint status;
   glGetObjectParameterivARB(program, GL_OBJECT_LINK_STATUS_ARB, &status);
+
+  position_location = glGetAttribLocationARB(program,POSITION_NAME);
+  tex_coord_location = glGetAttribLocationARB(program,TEXCOORD_NAME);
+  color_location = glGetAttribLocationARB(program,COLOR_NAME);
 
   if (status == 0) {
     GLint length = 0;
@@ -264,92 +350,65 @@ GLhandleARB GlArbShader::create_shader(unsigned int type, const char* source) {
 
   return shader;
 }
-
 /**
- * \brief Set up OpenGL rendering parameter.
- * This basically resets the projection matrix.
+ * \copydoc Shader::render
  */
-void GlArbShader::set_rendering_settings() {
-
-  glMatrixMode(GL_PROJECTION);
-  glPushMatrix();
-  glLoadIdentity();
-  glOrtho(-1.0, 1.0, -1.0, 1.0, 0.0, 1.0);
-
-  glMatrixMode(GL_MODELVIEW);
+void GlArbShader::render(const SurfacePtr& surface, const Rectangle& /*region*/, const Size &/*dst_size*/, const Point &/*dst_position*/) {
+  //TODO compute mvp and uv_matrix here
+  render(screen_quad,surface);
 }
 
 /**
  * \copydoc Shader::render
  */
-void GlArbShader::render(const SurfacePtr& quest_surface) {
-
-  Shader::render(quest_surface);
-
-  SDL_Renderer* renderer = Video::get_renderer();
-  SDL_Window* window = Video::get_window();
-  SDL_Texture* render_target = Video::get_render_target();
-
-  // Clear the window.
-  glClearColor(0.0, 0.0, 0.0, 1.0);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-  // Clear the render target.
-  SDL_SetRenderTarget(renderer, render_target);
-  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-  SDL_RenderSetClipRect(renderer, nullptr);
-  SDL_RenderClear(renderer);
-
-  // Draw on the render target.
-  quest_surface->render(*render_target);
-
-  SDL_SetRenderTarget(renderer, nullptr);
-  set_rendering_settings();
-
-  // Update uniform variables.
+void GlArbShader::render(const VertexArray& array, const SurfacePtr& texture, const glm::mat4 &mvp_matrix, const glm::mat3 &uv_matrix) {
+  if(array.vertex_buffer == 0) {
+    //Generate vertex-buffer
+    glGenBuffersARB(1,&array.vertex_buffer);
+  }
+  glBindBufferARB(GL_ARRAY_BUFFER,array.vertex_buffer);
+  if(array.buffer_dirty) {
+    //Upload vertex buffer //TODO use glSubData if array size <= previous size
+    glBufferDataARB(GL_ARRAY_BUFFER,array.vertex_count()*sizeof(Vertex),array.data(),GL_DYNAMIC_DRAW);
+    array.buffer_dirty = false;
+  }
   GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
   glUseProgramObjectARB(program);
 
   const Size& output_size = Video::get_output_size();
-  set_uniform_1i("sol_time", System::now());
-  set_uniform_2f("sol_output_size", output_size.width, output_size.height);
+  set_uniform_1i(Shader::TIME_NAME, System::now());
+  set_uniform_2f(Shader::OUTPUT_SIZE_NAME, output_size.width, output_size.height);
+
+  glm::mat4 mvp = mvp_matrix; //TODO do more than identity
+  glUniformMatrix4fvARB(get_uniform_location(Shader::MVP_MATRIX_NAME),1,GL_FALSE,glm::value_ptr(mvp));
+
+  glm::mat3 uvm = uv_matrix;
+  uvm = glm::scale(uvm,glm::vec2(1,-1));
+  uvm = glm::translate(uvm,glm::vec2(0,-1));
+  glUniformMatrix3fvARB(get_uniform_location(Shader::UV_MATRIX_NAME),1,GL_FALSE,glm::value_ptr(uvm));
+
+  glEnableVertexAttribArrayARB(position_location);
+  glVertexAttribPointerARB(position_location,2,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)offsetof(Vertex,position));
+
+  glEnableVertexAttribArrayARB(tex_coord_location);
+  glVertexAttribPointerARB(tex_coord_location,2,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)offsetof(Vertex,texcoords));
+
+  glEnableVertexAttribArrayARB(color_location);
+  glVertexAttribPointerARB(color_location,4,GL_UNSIGNED_BYTE,GL_TRUE,sizeof(Vertex),(void*)offsetof(Vertex,color));
 
   glActiveTextureARB(GL_TEXTURE0_ARB + 0);  // Texture unit 0.
-  SDL_GL_BindTexture(render_target, nullptr, nullptr);
+  SDL_GL_BindTexture(texture->get_internal_surface().get_texture(), nullptr, nullptr);
 
-  // Draw.
-  const GLfloat square_texcoord[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
-  const GLfloat* texcoord = square_texcoord;
-
-  glBegin(GL_QUADS);
-  glTexCoord2f(texcoord[0], texcoord[1]);
-  glVertex3f(-1.0f, 1.0f, 0.0f);  // Top left.
-  glTexCoord2f(texcoord[2], texcoord[1]);
-  glVertex3f(1.0f, 1.0f, 0.0f);  // Top right.
-  glTexCoord2f(texcoord[2], texcoord[3]);
-  glVertex3f(1.0f, -1.0f, 0.0f);  // Bottom right.
-  glTexCoord2f(texcoord[0], texcoord[3]);
-  glVertex3f(-1.0f, -1.0f, 0.0f);  // Bottom left.
-  glEnd();
-
-  SDL_GL_UnbindTexture(render_target);
-
-  for (const auto& kvp : uniform_texture_units) {
-    const GLuint texture_unit = kvp.second;
+  for (const auto& kvp : uniform_textures) {
+    const GLuint texture_unit = kvp.second.unit;
     glActiveTextureARB(GL_TEXTURE0_ARB + texture_unit);
-    const GlTextureHandle& texture = uniform_textures.find(kvp.first)->second;
-    glBindTexture(GL_TEXTURE_2D, texture.get());
+    SDL_GL_BindTexture(kvp.second.surface->get_internal_surface().get_texture(),nullptr,nullptr);
   }
 
-  glActiveTextureARB(GL_TEXTURE0_ARB + 0);  // Necessary to reset the active texture.
-
-  // And swap the window.
-  SDL_GL_SwapWindow(window);
+  glDrawArrays((GLenum)array.get_primitive_type(),0,array.vertex_count());
 
   glUseProgramObjectARB(previous_program);
-
-  glMatrixMode(GL_PROJECTION);
-  glPopMatrix();
+  glBindBufferARB(GL_ARRAY_BUFFER,0);
 }
 
 /**
@@ -358,16 +417,12 @@ void GlArbShader::render(const SurfacePtr& quest_surface) {
  * \return The uniform location or \c -1.
  */
 GLint GlArbShader::get_uniform_location(const std::string& uniform_name) const {
-
   const auto& it = uniform_locations.find(uniform_name);
   if (it != uniform_locations.end()) {
     return it->second;
   }
 
-  GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
-  glUseProgramObjectARB(program);
   const GLint location = glGetUniformLocationARB(program, uniform_name.c_str());
-  glUseProgramObjectARB(previous_program);
   uniform_locations.insert(std::make_pair(uniform_name, location));
   return location;
 }
@@ -474,111 +529,30 @@ void GlArbShader::set_uniform_4f(
  * \copydoc Shader::set_uniform_texture
  */
 bool GlArbShader::set_uniform_texture(const std::string& uniform_name, const SurfacePtr& value) {
-
   const GLint location = get_uniform_location(uniform_name);
+
   if (location == -1) {
     // Not an error.
     return true;
   }
 
+  auto it = uniform_textures.find(uniform_name);
+  if(it != uniform_textures.end()) {
+    it->second.surface = value;
+    return true; //Nothing else to do
+  }
+  //else find a new texture unit
+
   GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
   glUseProgramObjectARB(program);
 
-  int texture_unit = 0;
-  const auto& it = uniform_texture_units.find(value);
-  if (it != uniform_texture_units.end()) {
-    // Texture already created.
-    texture_unit = it->second;
-    const GlTextureHandle& texture = uniform_textures.at(value);
-    update_gl_texture(value, texture);
-  }
-  else {
-    texture_unit = uniform_texture_units.size() + 1;
-    uniform_texture_units[value] = texture_unit;
-    uniform_textures.emplace(value, create_gl_texture(value));
-  }
+  int texture_unit = ++current_texture_unit;
+  uniform_textures[uniform_name] = TextureUniform{value,(GLuint)texture_unit};
+
   glUniform1iARB(location, texture_unit);
 
   glUseProgramObjectARB(previous_program);
-
   return true;
 }
 
-/**
- * \brief Creates an OpenGL texture from the given surface.
- * \param surface The source surface.
- * \return The OpenGL texture or an empty handle in case of failure.
- */
-GlTextureHandle GlArbShader::create_gl_texture(const SurfacePtr& surface) {
-
-  // Create the OpenGL texture.
-  GLuint handle = 0;
-  glGenTextures(1, &handle);
-  GlTextureHandle texture(handle);
-
-  glBindTexture(GL_TEXTURE_2D, texture.get());
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-  glBindTexture(GL_TEXTURE_2D, 0);
-
-  update_gl_texture(surface, texture);
-  return texture;
 }
-
-/**
- * \brief Copies a surface to an OpenGL texture.
- * \param surface The source surface.
- * \param texture The destination OpenGL texture.
- */
-void GlArbShader::update_gl_texture(const SurfacePtr& surface, const GlTextureHandle& texture) {
-
-  // Use the surface width and height.
-  const Size& size = surface->get_size();
-
-  // TODO Don't copy to an intermediate surface if the format is already RGBA or ABGR.
-  Surface::SDL_Surface_UniquePtr rgba_surface;
-#if SDL_BYTEORDER == SDL_LIL_ENDIAN     // OpenGL RGBA masks.
-  rgba_surface = Surface::SDL_Surface_UniquePtr(SDL_CreateRGBSurface(
-      0, size.width, size.height, 32,
-      0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000
-  ));
-#else
-  rgba_surface = Surface::SDL_Surface_UniquePtr(SDL_CreateRGBSurface(
-      0, size.width, size.height, 32,
-      0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF
-  ));
-#endif
-
-  Debug::check_assertion(rgba_surface != nullptr, "Failed to create surface");
-
-  // Save the alpha blending attributes.
-  BlendMode saved_mode = surface->get_blend_mode();
-  surface->set_blend_mode(BlendMode::NONE);
-
-  // Copy the original surface into the power-of-two surface.
-  SDL_Rect area;
-  area.x = 0;
-  area.y = 0;
-  area.w = size.width;
-  area.h = size.height;
-  SDL_BlitSurface(surface->get_internal_surface(), &area, rgba_surface.get(), &area);
-
-  // Restore the alpha blending attributes.
-  surface->set_blend_mode(saved_mode);
-
-  // Copy the image to the OpenGL texture.
-  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);  // Restore default pixel alignment settings.
-  glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-  glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
-  glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
-  glBindTexture(GL_TEXTURE_2D, texture.get());
-  glTexImage2D(GL_TEXTURE_2D,
-               0,
-               GL_RGBA8, size.width, size.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba_surface->pixels);
-
-  glBindTexture(GL_TEXTURE_2D, 0);
-}
-
-}
-
-#endif  // SOLARUS_HAVE_OPENGL

@@ -27,7 +27,6 @@ class Shader;
  * \brief Alias for shared_ptr of Shader.
  */
 using ShaderPtr = std::shared_ptr<Shader>;
-
 }
 
 #endif

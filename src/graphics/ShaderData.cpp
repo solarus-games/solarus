@@ -116,11 +116,11 @@ int ShaderData::l_shader(lua_State* l) {
     LuaTools::check_type(l, 1, LUA_TTABLE);
 
     const std::string vertex_source =
-        LuaTools::opt_string_field(l, 1, "vertex_source",
-            "void main(){\n\
+        LuaTools::opt_string_field(l, 1, "vertex_source", "");
+            /*"void main(){\n\
              gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;\n\
              gl_TexCoord[0] = gl_MultiTexCoord0;\n\
-           }");
+           }");*/
     const std::string fragment_source =
         LuaTools::check_string_field(l, 1, "fragment_source");
 

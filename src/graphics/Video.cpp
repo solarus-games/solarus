@@ -33,7 +33,10 @@
 #include <memory>
 #include <sstream>
 #include <utility>
+
+#include <SDL.h>
 #include <SDL_render.h>
+#include <SDL_hints.h>
 
 namespace Solarus {
 
@@ -47,6 +50,8 @@ struct VideoContext {
   SDL_Window* main_window = nullptr;        /**< The window. */
   SDL_Renderer* main_renderer = nullptr;    /**< The screen renderer. */
   SDL_PixelFormat* pixel_format = nullptr;  /**< The pixel color format to use. */
+  SDL_PixelFormat* rgba_format = nullptr;
+  SDL_Surface* software_surface = nullptr;
   std::string rendering_driver_name;        /**< The name of the rendering driver. */
   bool disable_window = false;              /**< Indicates that no window is displayed (used for unit tests). */
   bool fullscreen_window = false;           /**< True if the window is in fullscreen. */
@@ -91,7 +96,7 @@ void create_window() {
   Debug::check_assertion(context.main_window == nullptr, "Window already exists");
 
   // Set OpenGL as the default renderer driver when available, to avoid using Direct3d.
-  SDL_SetHintWithPriority(SDL_HINT_RENDER_DRIVER, "opengl", SDL_HINT_DEFAULT);
+  SDL_SetHintWithPriority(SDL_HINT_RENDER_DRIVER, "opengl", SDL_HINT_OVERRIDE);
 
   // Set the default OpenGL built-in shader (nearest).
   SDL_SetHint(SDL_HINT_RENDER_OPENGL_SHADERS, "0");
@@ -105,6 +110,7 @@ void create_window() {
       context.wanted_quest_size.height,
       SDL_WINDOW_HIDDEN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL
   );
+
   Debug::check_assertion(context.main_window != nullptr,
       std::string("Cannot create the window: ") + SDL_GetError());
 
@@ -113,6 +119,7 @@ void create_window() {
         -1,
         SDL_RENDERER_ACCELERATED
   );
+
 
   if (context.main_renderer == nullptr) {
     // Try without acceleration.
@@ -136,6 +143,7 @@ void create_window() {
       break;
     }
   }
+  context.rgba_format = SDL_AllocFormat(SDL_PIXELFORMAT_ABGR8888);
 
   Debug::check_assertion(context.pixel_format != nullptr, "No compatible pixel format");
 
@@ -229,6 +237,17 @@ void initialize(const Arguments& args) {
     // Create a pixel format anyway to make surface and color operations work,
     // even though nothing will ever be rendered.
     context.pixel_format = SDL_AllocFormat(SDL_PIXELFORMAT_ABGR8888);
+    context.software_surface = SDL_CreateRGBSurface(0,
+                                                320,
+                                                240,
+                                                32,
+                                                context.pixel_format->Rmask,
+                                                context.pixel_format->Gmask,
+                                                context.pixel_format->Bmask,
+                                                context.pixel_format->Amask
+                                                    );
+    context.rgba_format = context.pixel_format;
+    context.main_renderer = SDL_CreateSoftwareRenderer(context.software_surface);
   }
   else {
     create_window();
@@ -264,6 +283,10 @@ void quit() {
   if (context.main_window != nullptr) {
     SDL_DestroyWindow(context.main_window);
     context.main_window = nullptr;
+  }
+
+  if (context.software_surface != nullptr) {
+    SDL_FreeSurface(context.software_surface);
   }
 
   context = VideoContext();
@@ -310,6 +333,14 @@ SDL_PixelFormat* get_pixel_format() {
 }
 
 /**
+ * @brief Return the ABGR8888 format
+ * @return
+ */
+SDL_PixelFormat* get_rgba_format() {
+  return context.rgba_format;
+}
+
+/**
  * \brief Get the default rendering driver for the current platform.
  * \return a string containing the rendering driver name.
  */
@@ -322,8 +353,14 @@ const std::string& get_rendering_driver_name() {
  * \brief Show the window.
  */
 void show_window() {
-
   SDL_ShowWindow(context.main_window);
+}
+
+/**
+ * \brief hide_window
+ */
+void hide_window() {
+  SDL_HideWindow(context.main_window);
 }
 
 /**
@@ -351,15 +388,18 @@ void render(const SurfacePtr& quest_surface) {
 
   if (context.current_shader != nullptr) {
     // OpenGL rendering with the current shader.
-    context.current_shader->render(quest_surface);
+    SDL_SetRenderTarget(get_renderer(),nullptr);
+    SDL_RenderClear(get_renderer());
+    context.current_shader->render(quest_surface,Rectangle(Point(0,0),quest_surface->get_size()),context.window_size);
+    SDL_GL_SwapWindow(Video::get_window());
   }
   else {
     // SDL rendering.
+    SDL_SetRenderTarget(context.main_renderer,nullptr);
     SDL_SetRenderDrawColor(context.main_renderer, 0, 0, 0, 255);
     SDL_RenderSetClipRect(context.main_renderer, nullptr);
     SDL_RenderClear(context.main_renderer);
-    surface_to_render->render(*context.render_target);
-    SDL_RenderCopy(context.main_renderer, context.render_target, nullptr, nullptr);
+    SDL_RenderCopy(context.main_renderer, surface_to_render->get_internal_surface().get_texture(), nullptr, nullptr);
     SDL_RenderPresent(context.main_renderer);
   }
 }

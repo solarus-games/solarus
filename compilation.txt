@@ -83,6 +83,7 @@ The following libraries are required to compile and execute Solarus:
 - Lua 5.1 or LuaJIT 2.0 (LuaJIT is recommended)
 - Physfs
 - Qt5 (only if you build the Solarus GUI too)
+- GLM
 
 Note that another library is directly embedded in the source code:
 snes_spc, an SPC music decoding library.
@@ -123,7 +124,7 @@ Just install the corresponding packages. For example, with Ubuntu or Debian:
 build-essential cmake
 libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libluajit-5.1-dev
 libphysfs-dev libopenal-dev libvorbis-dev libmodplug-dev
-qtbase5-dev qttools5-dev qttools5-dev-tools
+qtbase5-dev qttools5-dev qttools5-dev-tools libglm-dev
 
 2.2  Windows users:
 -------------------

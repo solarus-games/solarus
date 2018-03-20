@@ -22,6 +22,7 @@
 #include "solarus/core/Size.h"
 #include "solarus/graphics/BlendMode.h"
 #include "solarus/graphics/SurfacePtr.h"
+#include "solarus/graphics/ShaderPtr.h"
 #include "solarus/lua/ExportableToLua.h"
 #include "solarus/lua/ScopedLuaRef.h"
 #include <memory>
@@ -75,6 +76,8 @@ class Drawable: public ExportableToLua {
     void draw_region(const Rectangle& region,
         const SurfacePtr& dst_surface, const Point& dst_position);
 
+    void set_shader(const ShaderPtr& shader);
+    const ShaderPtr& get_shader() const;
     /**
      * \brief Draws this object without applying dynamic effects.
      *
@@ -105,6 +108,39 @@ class Drawable: public ExportableToLua {
         Surface& dst_surface,
         const Point& dst_position
     ) = 0;
+
+    /**
+     * \brief Draws this object with the given shader
+     *
+     * Redefine this function to draw your object onto the destination
+     * surface.
+     * \param shader A valid shader to draw the object to
+     * \param dst_surface The destination surface.
+     * \param dst_position Coordinates on the destination surface.
+     */
+    virtual void shader_draw(
+        const ShaderPtr& shader,
+        Surface& dst_surface,
+        const Point& dst_position
+        ) = 0;
+
+    /**
+     * \brief Draws a subrectangle of this object with the given shader
+     *
+     * Redefine this function to draw your object onto the destination
+     * surface.
+     * \param shader A valid shader to draw the object to
+     * \param region The subrectangl  e to draw in this object.
+     * \param dst_surface The destination surface.
+     * \param dst_position Coordinates on the destination surface.
+     */
+    virtual void shader_draw_region(
+        const ShaderPtr& shader,
+        const Rectangle& region,
+        Surface& dst_surface,
+        const Point& dst_position
+        ) = 0;
+
 
     /**
      * \brief Draws a transition effect on this drawable object.
@@ -149,6 +185,7 @@ class Drawable: public ExportableToLua {
                                    * when the transition finishes */
     bool suspended;               /**< Whether this object is suspended. */
     BlendMode blend_mode;         /**< How to draw this object on a surface. */
+    ShaderPtr shader;             /**< Optional shader used to draw the surface */
 };
 
 }

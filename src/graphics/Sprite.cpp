@@ -21,11 +21,13 @@
 #include "solarus/core/Size.h"
 #include "solarus/core/System.h"
 #include "solarus/graphics/Color.h"
+#include "solarus/graphics/RenderTexture.h"
 #include "solarus/graphics/Sprite.h"
 #include "solarus/graphics/SpriteAnimation.h"
 #include "solarus/graphics/SpriteAnimationDirection.h"
 #include "solarus/graphics/SpriteAnimationSet.h"
 #include "solarus/graphics/Surface.h"
+#include "solarus/graphics/Shader.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
 #include "solarus/movements/Movement.h"
@@ -756,6 +758,21 @@ void Sprite::update() {
 }
 
 /**
+ * @brief Sprite::draw_intermediate
+ * @param region
+ * @param dst_surface
+ * @param dst_position
+ */
+void Sprite::draw_intermediate() const {
+    get_intermediate_surface().clear();
+    current_animation->draw(
+        get_intermediate_surface(),
+        get_origin(),
+        current_direction,
+        current_frame);
+}
+
+/**
  * \brief Draws the sprite on a surface, with its current animation,
  * direction and frame.
  * \param dst_surface The destination surface.
@@ -772,10 +789,7 @@ void Sprite::raw_draw(
 
   if (!is_animation_finished()
       && (blink_delay == 0 || blink_is_sprite_visible)) {
-
-    get_intermediate_surface().clear();
-    current_animation->draw(get_intermediate_surface(), get_origin(),
-        current_direction, current_frame);
+    draw_intermediate();
     get_intermediate_surface().set_blend_mode(get_blend_mode());
     get_intermediate_surface().draw_region(
         Rectangle(get_size()),
@@ -783,6 +797,33 @@ void Sprite::raw_draw(
         dst_position - get_origin()
     );
   }
+}
+
+/**
+ * @brief compute region of the spritesheet to draw given crop region
+ * @param region
+ * @return clipped region
+ */
+Rectangle Sprite::clamp_region(const Rectangle& region) const {
+  Rectangle src_position(region);
+  const Point& origin = get_origin();
+  src_position.add_xy(origin);
+  const Size& frame_size = get_size();
+  if (src_position.get_x() < 0) {
+    src_position.set_width(src_position.get_width() + src_position.get_x());
+    src_position.set_x(0);
+  }
+  if (src_position.get_x() + src_position.get_width() > frame_size.width) {
+    src_position.set_width(frame_size.width - src_position.get_x());
+  }
+  if (src_position.get_y() < 0) {
+    src_position.set_height(src_position.get_height() + src_position.get_y());
+    src_position.set_y(0);
+  }
+  if (src_position.get_y() + src_position.get_height() > frame_size.height) {
+    src_position.set_height(frame_size.height - src_position.get_y());
+  }
+  return src_position;
 }
 
 /**
@@ -805,52 +846,92 @@ void Sprite::raw_draw_region(
   if (!is_animation_finished()
       && (blink_delay == 0 || blink_is_sprite_visible)) {
 
-    // Clear the working surface.
-    get_intermediate_surface().clear();
-
-    // Draw the current animation on the working surface.
-    const Point& origin = get_origin();
-    current_animation->draw(
-        get_intermediate_surface(),
-        origin,
-        current_direction,
-        current_frame);
+    draw_intermediate();
 
     // If the region is bigger than the current frame, clip it.
     // Otherwise, more than the current frame could be visible.
-    Rectangle src_position(region);
-    src_position.add_xy(origin);
-    const Size& frame_size = get_size();
-    if (src_position.get_x() < 0) {
-      src_position.set_width(src_position.get_width() + src_position.get_x());
-      src_position.set_x(0);
-    }
-    if (src_position.get_x() + src_position.get_width() > frame_size.width) {
-      src_position.set_width(frame_size.width - src_position.get_x());
-    }
-    if (src_position.get_y() < 0) {
-      src_position.set_height(src_position.get_height() + src_position.get_y());
-      src_position.set_y(0);
-    }
-    if (src_position.get_y() + src_position.get_height() > frame_size.height) {
-      src_position.set_height(frame_size.height - src_position.get_y());
-    }
-
-    if (src_position.get_width() <= 0 || src_position.get_height() <= 0) {
-      // Nothing remains visible.
-      return;
-    }
+    Rectangle src_position = clamp_region(region);
 
     // Calculate the destination coordinates.
     Point dst_position2 = dst_position;
     dst_position2 += src_position.get_xy(); // Let a space for the part outside the region.
-    dst_position2 -= origin;                // Input coordinates were relative to the origin.
+    dst_position2 -= get_origin();                // Input coordinates were relative to the origin.
     get_intermediate_surface().set_blend_mode(get_blend_mode());
     get_intermediate_surface().draw_region(
         src_position,
         std::static_pointer_cast<Surface>(dst_surface.shared_from_this()),
         dst_position2
     );
+  }
+}
+
+/**
+ * \brief Draws the sprite on a surface, with its current animation,
+ * direction and frame, using the given shader
+ * \param shader The shader
+ * \param dst_surface The destination surface.
+ * \param dst_position Coordinates on the destination surface
+ * (the origin will be placed at this position).
+ */
+void Sprite::shader_draw(
+    const ShaderPtr& shader,
+    Surface& dst_surface,
+    const Point& dst_position
+    ) {
+  if (current_animation == nullptr) {
+    return;
+  }
+
+  if (!is_animation_finished()
+      && (blink_delay == 0 || blink_is_sprite_visible)) {
+    draw_intermediate();
+    dst_surface.request_render().with_target([&](SDL_Renderer*){
+      get_intermediate_surface().set_blend_mode(get_blend_mode());
+      get_intermediate_surface().shader_draw_region(shader,
+                                                    Rectangle(get_size()),
+                                                    dst_surface,
+                                                    dst_position-get_origin());
+    });
+  }
+}
+
+/**
+ * \brief Draws a subrectangle of the current frame of this sprite, using the given shader
+ * \param shader The shader
+ * \param region The subrectangle to draw, relative to the origin point.
+ * It may be bigger than the frame: in this case it will be clipped.
+ * \param dst_surface The destination surface.
+ * \param dst_position Coordinates on the destination surface.
+ * The origin point of the sprite will appear at these coordinates.
+ */
+void Sprite::shader_draw_region(
+    const ShaderPtr& shader,
+    const Rectangle& region,
+    Surface& dst_surface,
+    const Point& dst_position
+    ) {
+  if (current_animation == nullptr) {
+    return;
+  }
+
+  if (!is_animation_finished()
+      && (blink_delay == 0 || blink_is_sprite_visible)) {
+
+    draw_intermediate();
+
+    // If the region is bigger than the current frame, clip it.
+    // Otherwise, more than the current frame could be visible.
+    Rectangle src_position = clamp_region(region);
+
+    // Calculate the destination coordinates.
+    Point dst_position2 = dst_position;
+    dst_position2 += src_position.get_xy(); // Let a space for the part outside the region.
+    dst_position2 -= get_origin();                // Input coordinates were relative to the origin.
+    //get_intermediate_surface().set_blend_mode(get_blend_mode());
+    dst_surface.request_render().with_target([&](SDL_Renderer*){
+      get_intermediate_surface().set_blend_mode(get_blend_mode());
+      get_intermediate_surface().shader_draw_region(shader,src_position,dst_surface,dst_position2);
+    });
   }
 }
 

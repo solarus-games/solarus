@@ -390,7 +390,7 @@ void render(const SurfacePtr& quest_surface) {
     // OpenGL rendering with the current shader.
     SDL_SetRenderTarget(get_renderer(),nullptr);
     SDL_RenderClear(get_renderer());
-    context.current_shader->render(quest_surface,Rectangle(Point(0,0),quest_surface->get_size()),context.window_size);
+    context.current_shader->render(*quest_surface,Rectangle(quest_surface->get_size()),quest_surface->get_size(),Point(),true);
     SDL_GL_SwapWindow(Video::get_window());
   }
   else {

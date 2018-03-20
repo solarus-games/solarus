@@ -236,8 +236,11 @@ void Drawable::draw(const SurfacePtr& dst_surface,
   if (transition != nullptr) {
     draw_transition(*transition);
   }
-
-  raw_draw(*dst_surface, dst_position + xy);
+  if(shader) {
+    shader_draw(shader,*dst_surface,dst_position);
+  } else {
+    raw_draw(*dst_surface, dst_position + xy);
+  }
 }
 
 /**
@@ -248,7 +251,6 @@ void Drawable::draw(const SurfacePtr& dst_surface,
 void Drawable::draw_region(
     const Rectangle& region,
     const SurfacePtr& dst_surface) {
-
   draw_region(region, dst_surface, Point(0, 0));
 }
 
@@ -267,8 +269,27 @@ void Drawable::draw_region(
   if (transition != nullptr) {
     draw_transition(*transition);
   }
+  if(shader) {
+    shader_draw_region(shader,region,*dst_surface,dst_position);
+  } else {
+    raw_draw_region(region, *dst_surface, dst_position + xy);
+  }
+}
 
-  raw_draw_region(region, *dst_surface, dst_position + xy);
+/**
+ * @brief set the shader used to draw this drawable
+ * @param shader, the shader, must be a valid shader or nullptr
+ */
+void Drawable::set_shader(const ShaderPtr& shader) {
+  this->shader = shader;
+}
+
+/**
+ * @brief get current shader bound to this drawable
+ * @return current shader, can be nullptr if none
+ */
+const ShaderPtr& Drawable::get_shader() const {
+  return shader;
 }
 
 /**

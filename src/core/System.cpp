@@ -103,7 +103,6 @@ void System::update() {
  * \return the name of the running OS.
  */
 std::string System::get_os() {
-
   return SDL_GetPlatform();
 }
 

@@ -22,6 +22,7 @@
 #include "solarus/graphics/ShaderData.h"
 #include "solarus/graphics/SurfacePtr.h"
 #include "solarus/graphics/VertexArrayPtr.h"
+#include "solarus/graphics/BlendMode.h"
 #include "solarus/third_party/glm/mat4x4.hpp"
 #include "solarus/third_party/glm/mat3x3.hpp"
 #include "solarus/lua/ExportableToLua.h"
@@ -81,8 +82,16 @@ class Shader : public ExportableToLua {
         const std::string& uniform_name, float value_1, float value_2, float value_3, float value_4);
     virtual bool set_uniform_texture(const std::string& uniform_name, const SurfacePtr& value);
 
-    virtual void render(const SurfacePtr& surface, const Rectangle &region, const Size &dst_size, const Point &dst_position = Point());  // TODO make pure virtual
-    virtual void render(const VertexArray &array, const SurfacePtr &texture, const glm::mat4& mvp_matrix = glm::mat4(), const glm::mat3& uv_matrix = glm::mat3());
+    void render(const Surface &surface, const Rectangle &region, const Size &dst_size, const Point &dst_position = Point(), bool flip_y = false);
+
+    /**
+     * @brief render the given vertex array with this shader, passing the texture and matrices as uniforms
+     * @param array a vertex array
+     * @param texture a valid surface
+     * @param mvp_matrix model view projection matrix
+     * @param uv_matrix uv_matrix
+     */
+    virtual void render(const VertexArray &array, const Surface &texture, const glm::mat4& mvp_matrix = glm::mat4(), const glm::mat3& uv_matrix = glm::mat3()) = 0;
 
     const std::string& get_lua_type_name() const override;
   protected:
@@ -90,7 +99,7 @@ class Shader : public ExportableToLua {
     void set_error(const std::string& error);
     void set_data(const ShaderData& data);
     virtual void load();  // TODO make pure virtual
-
+    static VertexArray screen_quad; /**< The quad used to draw surfaces with shaders*/
   private:
 
     const std::string shader_id;  /**< The id of the shader (filename without extension). */

@@ -26,11 +26,13 @@
 #include "solarus/graphics/RenderTexture.h"
 #include "solarus/graphics/Texture.h"
 #include "solarus/lua/LuaContext.h"
+#include "solarus/graphics/Shader.h"
 
 #include <algorithm>
 #include <iostream>
 #include <sstream>
 
+#include <SDL_render.h>
 #include <SDL_image.h>
 
 namespace Solarus {
@@ -240,6 +242,14 @@ SurfaceImpl &Surface::get_internal_surface() {
 }
 
 /**
+ * \brief Returns the SDL surface wrapped.
+ * \return The internal SDL surface.
+ */
+const SurfaceImpl &Surface::get_internal_surface() const {
+  return *internal_surface.get();
+}
+
+/**
  * \brief Returns a buffer of the raw pixels of this surface.
  *
  * Pixels returned have the RGBA 32-bit format.
@@ -343,7 +353,7 @@ void Surface::clear(const Rectangle& where) { //TODO deprecate
  * \param color A color.
  */
 void Surface::fill_with_color(const Color& color) {
-  fill_with_color(color,Rectangle(Point(0,0),get_size()));
+  fill_with_color(color,Rectangle(get_size()));
 }
 
 /**
@@ -379,6 +389,46 @@ void Surface::raw_draw_region(
     Surface& dst_surface,
     const Point& dst_position) {
   dst_surface.request_render().draw_region_other(region,*internal_surface,dst_position);
+}
+
+/**
+ * \brief Draws this surface on another surface, using the given shader
+ * \param shader The shader
+ * \param dst_surface The destination surface.
+ * \param dst_position Coordinates on the destination surface.
+ */
+void Surface::shader_draw(
+    const ShaderPtr& shader,
+    Surface& dst_surface,
+    const Point& dst_position
+    ) {
+  shader_draw_region(shader,Rectangle(get_size()),dst_surface,dst_position);
+}
+
+/**
+ * \brief Draws a subrectangle of this surface on another surface, using the given shader
+ * \param shader The shader
+ * \param region The subrectangle to draw in this object.
+ * \param dst_surface The destination surface.
+ * \param dst_position Coordinates on the destination surface.
+ */
+void Surface::shader_draw_region(
+    const ShaderPtr& shader,
+    const Rectangle& region,
+    Surface& dst_surface,
+    const Point& dst_position
+    ) {
+  dst_surface.request_render().with_target([&](SDL_Renderer* r){
+    SDL_BlendMode target = get_sdl_blend_mode();
+    SDL_BlendMode current;
+    SDL_GetRenderDrawBlendMode(r,&current);
+    if(target != current) { //Blend mode need change
+      SDL_SetRenderDrawBlendMode(r,get_sdl_blend_mode());
+      SDL_RenderDrawPoint(r,-100,-100); //Draw a point offscreen to force blendmode change
+    }
+    shader->set_uniform_1f("sol_opacity",get_opacity()/256.f);
+    shader->render(*this,region,dst_surface.get_size(),dst_position);
+  });
 }
 
 /**

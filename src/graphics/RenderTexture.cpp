@@ -1,6 +1,6 @@
 #include "solarus/graphics/RenderTexture.h"
 #include "solarus/graphics/Surface.h"
-
+#include "solarus/graphics/Shader.h"
 #include "solarus/core/Debug.h"
 
 namespace Solarus {
@@ -15,19 +15,19 @@ RenderTexture::RenderTexture(int width, int height)
 {
   auto renderer = Video::get_renderer();
   auto tex = SDL_CreateTexture(renderer,
-                                       Video::get_rgba_format()->format,
-                                       SDL_TEXTUREACCESS_TARGET,
-                                       width,height);
+                               Video::get_rgba_format()->format,
+                               SDL_TEXTUREACCESS_TARGET,
+                               width,height);
   Debug::check_assertion(tex!=nullptr,
                          std::string("Failed to create render texture : ") + SDL_GetError());
   target.reset(tex);
 
   auto format = Video::get_rgba_format();
   auto surf_ptr = SDL_CreateRGBSurface(0,
-                                    width,
-                                    height,
-                                    32,
-                                    format->Rmask,
+                                       width,
+                                       height,
+                                       32,
+                                       format->Rmask,
                                        format->Gmask,
                                        format->Bmask,
                                        format->Amask);
@@ -75,11 +75,11 @@ void RenderTexture::draw_other(const SurfaceImpl& texture, const Point& dst_posi
  */
 void RenderTexture::draw_region_other(const Rectangle& src_rect, const SurfaceImpl& texture, const Point& dst_position) {
   with_target([&](SDL_Renderer* renderer){
-   Rectangle dst_rect(dst_position,src_rect.get_size());
-   SDL_SetTextureAlphaMod(texture.get_texture(),texture.parent().get_opacity());
-   SDL_SetTextureBlendMode(texture.get_texture(),texture.parent().get_sdl_blend_mode());
-   SDL_RenderCopy(renderer,texture.get_texture(),src_rect,dst_rect);
- });
+    Rectangle dst_rect(dst_position,src_rect.get_size());
+    SDL_SetTextureAlphaMod(texture.get_texture(),texture.parent().get_opacity());
+    SDL_SetTextureBlendMode(texture.get_texture(),texture.parent().get_sdl_blend_mode());
+    SDL_RenderCopy(renderer,texture.get_texture(),src_rect,dst_rect);
+  });
 }
 
 /**

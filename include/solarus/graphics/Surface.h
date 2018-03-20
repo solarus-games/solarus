@@ -24,6 +24,7 @@
 #include "solarus/graphics/SurfaceImpl.h"
 #include "solarus/graphics/SDLPtrs.h"
 
+
 #include <cstdint>
 #include <memory>
 #include <string>
@@ -85,7 +86,8 @@ class Surface: public Drawable {
     uint8_t get_opacity() const;
     void set_opacity(uint8_t opacity);
 
-    SurfaceImpl& get_internal_surface();
+    SurfaceImpl &get_internal_surface();
+    const SurfaceImpl &get_internal_surface() const;
     RenderTexture &request_render();
 
     bool is_pixel_transparent(int index) const;
@@ -105,6 +107,17 @@ class Surface: public Drawable {
         Surface& dst_surface,
         const Point& dst_position
     ) override;
+    virtual void shader_draw(
+        const ShaderPtr& shader,
+        Surface& dst_surface,
+        const Point& dst_position
+        ) override;
+    virtual void shader_draw_region(
+        const ShaderPtr& shader,
+        const Rectangle& region,
+        Surface& dst_surface,
+        const Point& dst_position
+        ) override;
     virtual void draw_transition(Transition& transition) override;
     void apply_pixel_filter(
         const SoftwarePixelFilter& pixel_filter, Surface& dst_surface) const;

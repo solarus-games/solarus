@@ -46,9 +46,9 @@ constexpr auto DEFAULT_VERTEX =
     varying vec2 sol_vtex_coord;
     varying vec4 sol_vcolor;
     void main() {
-      gl_Position = sol_mvp_matrix * vec4(sol_vertex,0,1);
-      sol_vcolor = sol_color;
-      sol_vtex_coord = (sol_uv_matrix * vec3(sol_tex_coord,1)).xy;
+    gl_Position = sol_mvp_matrix * vec4(sol_vertex,0,1);
+    sol_vcolor = sol_color;
+    sol_vtex_coord = (sol_uv_matrix * vec3(sol_tex_coord,1)).xy;
     }
     )";
 
@@ -60,22 +60,20 @@ constexpr auto DEFAULT_FRAGMENT =
     varying vec2 sol_vtex_coord;
     varying vec4 sol_vcolor;
     void main() {
-      vec4 tex_color = texture2D(sol_texture,sol_vtex_coord);
-      gl_FragColor = tex_color*sol_vcolor;
+    vec4 tex_color = texture2D(sol_texture,sol_vtex_coord);
+    gl_FragColor = tex_color*sol_vcolor;
     }
     )";
 
 struct GlContext {
 #define SDL_PROC(ret,func,params) ret (APIENTRY* func) params;
-  #include "gles2funcs.h"
+#include "gles2funcs.h"
 #undef SDL_PROC
 };
 
 namespace {
- GlContext ctx;
+GlContext ctx;
 }
-
-VertexArray GlShader::screen_quad(TRIANGLES);
 
 /**
  * \brief Initializes the GL 2D shader system.
@@ -86,19 +84,20 @@ bool GlShader::initialize() {
 #define SDL_PROC(ret,func,params) data.func=func;
 #else
 #define SDL_PROC(ret,func,params) \
-    do { \
-        ctx.func = reinterpret_cast<ret(*)params>(SDL_GL_GetProcAddress(#func)); \
-        if ( ! ctx.func ) { \
-            Debug::warning(std::string("Couldn't load GLES2 function" #func)+  SDL_GetError()); \
-            return false; \
-        } \
-    } while ( 0 );
+  do { \
+  ctx.func = reinterpret_cast<ret(*)params>(SDL_GL_GetProcAddress(#func)); \
+  if ( ! ctx.func ) { \
+  Debug::warning(std::string("Couldn't load GLES2 function" #func)+  SDL_GetError()); \
+  return false; \
+} \
+} while ( 0 );
 #endif
 #include "gles2funcs.h"
 #undef SDL_PROC
 
+
   //Init screen quad
-  screen_quad.add_quad(Rectangle(-1,-1,2,2),Rectangle(0,0,1,1),Color::white);
+  screen_quad.add_quad(Rectangle(0,0,1,1),Rectangle(0,1,1,-1),Color::white);
 
   Logger::info("Using modern GL Shaders");
 
@@ -110,10 +109,10 @@ bool GlShader::initialize() {
  * \param shader_name The name of the shader to load.
  */
 GlShader::GlShader(const std::string& shader_id):
-    Shader(shader_id),
-    program(0),
-    vertex_shader(0),
-    fragment_shader(0) {
+  Shader(shader_id),
+  program(0),
+  vertex_shader(0),
+  fragment_shader(0) {
 
   GLint previous_program;
   ctx.glGetIntegerv(GL_CURRENT_PROGRAM, &previous_program);
@@ -161,7 +160,7 @@ void GlShader::load() {
 
   // Load the shader data file.
   const std::string shader_file_name =
-  "shaders/" + get_id() + ".dat";
+      "shaders/" + get_id() + ".dat";
 
   ShaderData data;
   bool success = data.import_from_quest_file(shader_file_name);
@@ -169,9 +168,11 @@ void GlShader::load() {
     return;
   }
 
+  set_data(data);
+
   // Create the vertex and fragment shaders.
-  vertex_shader = create_shader(GL_VERTEX_SHADER, data.get_vertex_source().c_str());
-  fragment_shader = create_shader(GL_FRAGMENT_SHADER, data.get_fragment_source().c_str());
+  vertex_shader = create_shader(GL_VERTEX_SHADER, get_vertex_source().c_str());
+  fragment_shader = create_shader(GL_FRAGMENT_SHADER, get_fragment_source().c_str());
 
   // Create a program object with both shaders.
   program = ctx.glCreateProgram();
@@ -236,7 +237,7 @@ GLuint GlShader::create_shader(GLenum type, const char* source) {
     if(info_len > 1) {
       char* info = (char*)malloc(sizeof(char) * info_len);
       ctx.glGetShaderInfoLog(shader, info_len, NULL, info);
-      Logger::error(std::string("Error compiling shader ") + get_id() + std::string(" :\n") + info);
+      Logger::error(std::string("Failed to compile shader ") + get_id() + std::string(" :\n") + info);
       free(info);
     }
 
@@ -257,21 +258,21 @@ void GlShader::check_gl_error() {
     std::string error;
 
     switch(gl_error) {
-      case GL_INVALID_OPERATION:
-        error="INVALID_OPERATION";
-        break;
-      case GL_INVALID_ENUM:
-        error="INVALID_ENUM";
-        break;
-      case GL_INVALID_VALUE:
-        error="INVALID_VALUE";
-        break;
-      case GL_OUT_OF_MEMORY:
-        error="OUT_OF_MEMORY";
-        break;
-      case GL_INVALID_FRAMEBUFFER_OPERATION:
-        error="INVALID_FRAMEBUFFER_OPERATION";
-        break;
+    case GL_INVALID_OPERATION:
+      error="INVALID_OPERATION";
+      break;
+    case GL_INVALID_ENUM:
+      error="INVALID_ENUM";
+      break;
+    case GL_INVALID_VALUE:
+      error="INVALID_VALUE";
+      break;
+    case GL_OUT_OF_MEMORY:
+      error="OUT_OF_MEMORY";
+      break;
+    case GL_INVALID_FRAMEBUFFER_OPERATION:
+      error="INVALID_FRAMEBUFFER_OPERATION";
+      break;
     }
 
     Logger::error(std::string("GL_") + error.c_str() + std::string(" - "));
@@ -290,28 +291,13 @@ std::string GlShader::default_fragment_source() const {
 /**
  * \copydoc Shader::render
  */
-void GlShader::render(const SurfacePtr& surface, const Rectangle &/*region*/, const Size &/*dst_size*/, const Point &/*dst_position*/) {
-  //TODO compute mvp and uv_matrix here
-  /*glm::mat4 viewport = glm::ortho(0,dst_size.width,0,dst_size.height);
-  glm::mat4 dst = glm::translate(glm::mat4(),glm::vec3(dst_position.x,dst_position.y,0));
-
-  glm::mat3 uv_scale = glm::scale(glm::mat3(),
-                                  glm::vec2(
-                                    region.get_width()/(float)surface->get_width(),
-                                    region.get_height()/(float)surface->get_height()
-                                    )
-                                  );
-  glm::mat3 uv_trans = glm::translate(glm::mat3(),glm::vec2(region.get_left(),region.get_top()));*/
-  render(screen_quad,surface);//,viewport*dst,uv_scale*uv_trans);
-}
-
-/**
- * \copydoc Shader::render
- */
-void GlShader::render(const VertexArray& array, const SurfacePtr& texture, const glm::mat4 &mvp_matrix, const glm::mat3 &uv_matrix) {
+void GlShader::render(const VertexArray& array, const Surface& texture, const glm::mat4 &mvp_matrix, const glm::mat3 &uv_matrix) {
   GLint previous_program;
   ctx.glGetIntegerv(GL_CURRENT_PROGRAM, &previous_program);
   ctx.glUseProgram(program);
+
+  ctx.glDisable(GL_CULL_FACE);
+
   if(array.vertex_buffer == 0) {
     //Generate vertex-buffer
     ctx.glGenBuffers(1,&array.vertex_buffer);
@@ -332,8 +318,6 @@ void GlShader::render(const VertexArray& array, const SurfacePtr& texture, const
   ctx.glUniformMatrix4fv(get_uniform_location(Shader::MVP_MATRIX_NAME),1,GL_FALSE,glm::value_ptr(mvp_matrix));
 
   glm::mat3 uvm = uv_matrix;
-  uvm = glm::scale(uvm,glm::vec2(1,-1));
-  uvm = glm::translate(uvm,glm::vec2(0,-1));
   ctx.glUniformMatrix3fv(get_uniform_location(Shader::UV_MATRIX_NAME),1,GL_FALSE,glm::value_ptr(uvm));
 
   ctx.glEnableVertexAttribArray(position_location);
@@ -346,7 +330,7 @@ void GlShader::render(const VertexArray& array, const SurfacePtr& texture, const
   ctx.glVertexAttribPointer(color_location,4,GL_UNSIGNED_BYTE,GL_TRUE,sizeof(Vertex),(void*)offsetof(Vertex,color));
 
   ctx.glActiveTexture(GL_TEXTURE0 + 0);  // Texture unit 0.
-  SDL_GL_BindTexture(texture->get_internal_surface().get_texture(), nullptr, nullptr);
+  SDL_GL_BindTexture(texture.get_internal_surface().get_texture(), nullptr, nullptr);
 
   for (const auto& kvp : uniform_textures) {
     const GLuint texture_unit = kvp.second.unit;

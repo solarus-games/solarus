@@ -18,12 +18,9 @@
 #define SOLARUS_GL_2D_SHADER_H
 
 #include "solarus/core/Common.h"
-
 #include "solarus/graphics/Shader.h"
 #include <SDL.h>
 #include <string>
-
-#include "SDL_opengl.h"
 
 
 namespace Solarus {

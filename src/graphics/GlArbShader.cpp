@@ -14,6 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#ifdef SOLARUS_HAVE_OPENGL
+
 #include "solarus/core/Logger.h"
 #include "solarus/core/QuestFiles.h"
 #include "solarus/core/Size.h"
@@ -24,11 +26,11 @@
 #include "solarus/graphics/VertexArray.h"
 #include "solarus/graphics/Video.h"
 #include "solarus/graphics/RenderTexture.h"
-#include <sstream>
-
 #include "solarus/third_party/glm/gtc/type_ptr.hpp"
 #include "solarus/third_party/glm/gtx/transform.hpp"
 #include "solarus/third_party/glm/gtx/matrix_transform_2d.hpp"
+#include <sstream>
+
 
 namespace Solarus {
 
@@ -556,3 +558,4 @@ bool GlArbShader::set_uniform_texture(const std::string& uniform_name, const Sur
 }
 
 }
+#endif // SOLARUS_HAVE_OPENGL

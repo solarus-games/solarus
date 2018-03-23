@@ -22,6 +22,10 @@
 #include <iostream>
 #include <string>
 
+#if defined(SOLARUS_IOS)
+#  include "SDL_main.h"
+#endif
+
 namespace Solarus {
 
 namespace {

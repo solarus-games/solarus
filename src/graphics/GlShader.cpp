@@ -83,7 +83,7 @@ VertexArray GlShader::screen_quad(TRIANGLES);
  */
 bool GlShader::initialize() {
 #if SDL_VIDEO_DRIVER_UIKIT || SDL_VIDEO_DRIVER_ANDROID || SDL_VIDEO_DRIVER_PANDORA
-#define SDL_PROC(ret,func,params) data.func=func;
+#define SDL_PROC(ret,func,params) ctx.func=func;
 #else
 #define SDL_PROC(ret,func,params) \
     do { \

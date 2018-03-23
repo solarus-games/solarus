@@ -329,7 +329,7 @@ and SOLARUS_HEADERS_INSTALL_DESTINATION.
 
 To install the needed packages via the brew package manager:
 
-brew install sdl2 libvorbis libmodplug cmake ninja luajit sdl2_image sdl2_ttf
+brew install cmake ninja sdl2 sdl2_image sdl2_ttf luajit libvorbis libmodplug physfs
 
 You will also need a copy of OS X SDK, which is included with XCode. XCode is 
 freely available on the App Store.
@@ -345,7 +345,7 @@ $ cmake -G Xcode ..
 
 If you wish to build the solarus GUI, the cmake line will probably become
 something like
-$ cmake -DCMAKE_PREFIX_PATH="<path_to_Qt>/Qt/5.5/clang_64/lib/cmake" -Wno-dev  ..
+$ cmake -DCMAKE_PREFIX_PATH="<path_to_Qt>/Qt/<version>/clang_64/lib/cmake" -Wno-dev  ..
 
 If you want to deploy a quest on non-developer environment with a
 standalone bundle, the better way is to use the Solarus package provided on

@@ -12,13 +12,6 @@
 # Exportable to XCode.
 ####
 
-# Get the current OSX version as X.X.X and X.X form.
-execute_process(COMMAND sw_vers -productVersion
-  OUTPUT_VARIABLE SOLARUS_CURRENT_OSX_VERSION
-  OUTPUT_STRIP_TRAILING_WHITESPACE)
-string(REGEX REPLACE "([0-9]+)\\.([0-9]+)\\.([0-9]+)\\[ \t\r\n]*" "\\1.\\2.\\3" SOLARUS_CURRENT_OSX_VERSION_LONG ${SOLARUS_CURRENT_OSX_VERSION})
-string(REGEX REPLACE "([0-9]+)\\.([0-9]+).*" "\\1.\\2" SOLARUS_CURRENT_OSX_VERSION_SHORT ${SOLARUS_CURRENT_OSX_VERSION_LONG})
-
 # Build architectures.
 if(NOT SOLARUS_ARCH)
   set(SOLARUS_ARCH "x86_64")

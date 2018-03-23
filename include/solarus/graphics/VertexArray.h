@@ -8,9 +8,13 @@
 
 #include <memory>
 #include <vector>
-
 #include <glm/vec2.hpp>
-#include <SDL_opengl.h>
+
+#ifdef SOLARUS_HAVE_OPENGL
+#  include <SDL_opengl.h>
+#else
+#  include <SDL_opengles2.h>
+#endif
 
 namespace Solarus {
 

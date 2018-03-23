@@ -18,17 +18,11 @@
 #define SOLARUS_GL_ARB_SHADER_H
 
 #include "solarus/core/Common.h"
-
-#include "solarus/graphics/GlTextureHandle.h"
 #include "solarus/graphics/Shader.h"
 #include "solarus/graphics/VertexArray.h"
-
-
 #include <SDL.h>
 #include <map>
 #include <string>
-
-#include <SDL_opengl.h>
 
 
 namespace Solarus {
@@ -43,6 +37,7 @@ class GlArbShader : public Shader {
 
   public:
 
+#ifdef SOLARUS_HAVE_OPENGL
     static bool initialize();
 
     explicit GlArbShader(const std::string& shader_id);
@@ -93,6 +88,14 @@ class GlArbShader : public Shader {
         uniform_textures;                        /**< Uniform texture value of surfaces. */
     GLuint current_texture_unit = 0;
     static VertexArray screen_quad;
+#else
+
+  static bool initialize() { return false; }
+  explicit GlArbShader(const std::string& shader_id): Shader(shader_id)  {}
+
+  std::string default_vertex_source() const { return ""; }
+  std::string default_fragment_source() const { return ""; }
+#endif // SOLARUS_HAVE_OPENGL
 };
 
 }

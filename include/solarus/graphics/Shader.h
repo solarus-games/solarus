@@ -29,6 +29,12 @@
 #include "solarus/lua/LuaTools.h"
 #include <string>
 
+#ifdef SOLARUS_HAVE_OPENGL
+#  include <SDL_opengl.h>
+#else
+#  include <SDL_opengles2.h>
+#endif
+
 namespace Solarus {
 
 /**

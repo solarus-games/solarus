@@ -23,6 +23,5 @@ include_directories(SYSTEM
 	"${LUA_INCLUDE_DIR}"
 	"${PHYSFS_INCLUDE_DIR}"
 	"${GLM_INCLUDE_DIRS}"
-endif()
 )
 

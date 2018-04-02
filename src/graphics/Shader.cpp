@@ -18,10 +18,18 @@
 #include "solarus/core/System.h"
 #include "solarus/graphics/Shader.h"
 #include "solarus/graphics/Video.h"
+#include "solarus/graphics/Surface.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
+#include "solarus/graphics/VertexArray.h"
+
+#include "solarus/third_party/glm/gtc/type_ptr.hpp"
+#include "solarus/third_party/glm/gtx/transform.hpp"
+#include "solarus/third_party/glm/gtx/matrix_transform_2d.hpp"
 
 namespace Solarus {
+
+VertexArray Shader::screen_quad(TRIANGLES);
 
 /**
  * \brief Constructor.
@@ -97,7 +105,7 @@ const ShaderData& Shader::get_data() const {
  * @return the vertex source
  */
 std::string Shader::get_vertex_source() const {
-  const auto& ds = get_data().get_vertex_source();
+  const std::string& ds = get_data().get_vertex_source();
   if(ds != "") {
     return ds;
   }
@@ -109,7 +117,7 @@ std::string Shader::get_vertex_source() const {
  * @return The fragment source
  */
 std::string Shader::get_fragment_source() const {
-  const auto& ds = get_data().get_fragment_source();
+  const std::string& ds = get_data().get_fragment_source();
   if(ds != "") {
     return ds;
   }
@@ -223,25 +231,37 @@ bool Shader::set_uniform_texture(const std::string&, const SurfacePtr&) {
   return false;
 }
 
-//TODO fix render documentation
-
 /**
- * \fn Shader::render
- * \brief Draws the quest surface on the screen in a shader-allowed context.
- * It will perform the render using the OpenGL API directly.
- * \param quest_surface the surface to render on the screen
+ * @brief Render given surface on currently bound rendertarget
+ * @param surface surface to draw
+ * @param region region of the src surface to draw
+ * @param dst_size size of the destination surface
+ * @param dst_position position where to draw surface on destination
+ * @param flip_y flip the drawing upside-down
  */
-void Shader::render(const SurfacePtr&, const Rectangle& , const Size&, const Point &) {
-  // TODO make pure virtual
-}
+void Shader::render(const Surface& surface, const Rectangle& region, const Size& dst_size, const Point & dst_position, bool flip_y) {
+  //TODO compute mvp and uv_matrix here
+  glm::mat4 viewport = glm::ortho<float>(0,dst_size.width,0,dst_size.height); //Specify float as type to avoid integral division
+  glm::mat4 dst = glm::translate(glm::mat4(),glm::vec3(dst_position.x,dst_position.y,0));
+  glm::mat4 scale = glm::scale(glm::mat4(),glm::vec3(region.get_width(),region.get_height(),1));
 
+  float uxf = 1.f/surface.get_width();
+  float uyf = 1.f/surface.get_height();
 
-/**
- * \fn Shader::render
- * \brief Draws the VertexArray on the
- */
-void Shader::render(const VertexArray &, const SurfacePtr &, const glm::mat4& , const glm::mat3&) {
-
+  glm::mat3 uv_scale = glm::scale(
+        glm::mat3(1),
+        glm::vec2(
+          region.get_width()*uxf,
+          region.get_height()*uyf
+          )
+        );
+  glm::mat3 uv_trans = glm::translate(glm::mat3(),glm::vec2(region.get_left()*uxf,region.get_top()*uyf));
+  glm::mat3 uvm = uv_trans*uv_scale;
+  if(!flip_y){
+    uvm = glm::scale(uvm,glm::vec2(1,-1));
+    uvm = glm::translate(uvm,glm::vec2(0,-1));
+  }
+  render(screen_quad,surface,viewport*dst*scale,uvm);
 }
 
 /**

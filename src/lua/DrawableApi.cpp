@@ -205,6 +205,46 @@ int LuaContext::drawable_api_set_blend_mode(lua_State* l) {
 }
 
 /**
+ * \brief Implementation of drawable:set_shader().
+ * \param l the Lua context that is calling this function
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::drawable_api_set_shader(lua_State* l) {
+  return LuaTools::exception_boundary_handle(l,[&]{
+    Drawable& drawable = *check_drawable(l,1);
+    ShaderPtr shader = nullptr;
+    if (!lua_isnil(l, 2)) {
+      if (is_shader(l, 2)) {
+        shader = check_shader(l, 2);
+      }
+      else {
+        LuaTools::type_error(l, 2, "shader or nil");
+      }
+    }
+    drawable.set_shader(shader);
+    return 0;
+  });
+}
+
+/**
+ * \brief Implementation of drawable:get_shader().
+ * \param l the Lua context that is calling this function
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::drawable_api_get_shader(lua_State* l) {
+  return LuaTools::exception_boundary_handle(l,[&]{
+    const Drawable& drawable = *check_drawable(l,1);
+    const ShaderPtr& shader = drawable.get_shader();
+    if(shader) {
+      push_shader(l,*shader);
+    } else {
+      lua_pushnil(l);
+    }
+    return 1;
+  });
+}
+
+/**
  * \brief Implementation of drawable:fade_in().
  * \param l the Lua context that is calling this function
  * \return number of values to return to Lua

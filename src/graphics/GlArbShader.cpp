@@ -117,8 +117,6 @@ FunctionPointerType get_proc_address_cast(void* object_ptr) {
 
 }  // Anonymous namespace
 
-VertexArray GlArbShader::screen_quad(TRIANGLES);
-
 /**
  * \brief Initializes the GL ARB shader system.
  * \return \c true if GL ARB shaders are supported.
@@ -132,7 +130,7 @@ bool GlArbShader::initialize() {
   glShadeModel(GL_SMOOTH); // Enables smooth color shading.
 
   //Init screen quad
-  screen_quad.add_quad(Rectangle(-1,-1,2,2),Rectangle(0,0,1,1),Color::white);
+  screen_quad.add_quad(Rectangle(0,0,1,1),Rectangle(0,1,1,-1),Color::white);
 
   // Initialize GL ARB functions.
   if (SDL_GL_ExtensionSupported("GL_ARB_shader_objects") &&
@@ -283,11 +281,11 @@ void GlArbShader::load() {
   uniform_locations.clear();
 
   // Create the vertex and fragment shaders.
-  vertex_shader = create_shader(GL_VERTEX_SHADER_ARB, data.get_vertex_source().c_str());
+  vertex_shader = create_shader(GL_VERTEX_SHADER_ARB, get_vertex_source().c_str());
   if (!is_valid()) {
     return;
   }
-  fragment_shader = create_shader(GL_FRAGMENT_SHADER_ARB, data.get_fragment_source().c_str());
+  fragment_shader = create_shader(GL_FRAGMENT_SHADER_ARB, get_fragment_source().c_str());
   if (!is_valid()) {
     return;
   }
@@ -352,18 +350,11 @@ GLhandleARB GlArbShader::create_shader(unsigned int type, const char* source) {
 
   return shader;
 }
-/**
- * \copydoc Shader::render
- */
-void GlArbShader::render(const SurfacePtr& surface, const Rectangle& /*region*/, const Size &/*dst_size*/, const Point &/*dst_position*/) {
-  //TODO compute mvp and uv_matrix here
-  render(screen_quad,surface);
-}
 
 /**
  * \copydoc Shader::render
  */
-void GlArbShader::render(const VertexArray& array, const SurfacePtr& texture, const glm::mat4 &mvp_matrix, const glm::mat3 &uv_matrix) {
+void GlArbShader::render(const VertexArray& array, const Surface& texture, const glm::mat4 &mvp_matrix, const glm::mat3 &uv_matrix) {
   if(array.vertex_buffer == 0) {
     //Generate vertex-buffer
     glGenBuffersARB(1,&array.vertex_buffer);
@@ -385,8 +376,6 @@ void GlArbShader::render(const VertexArray& array, const SurfacePtr& texture, co
   glUniformMatrix4fvARB(get_uniform_location(Shader::MVP_MATRIX_NAME),1,GL_FALSE,glm::value_ptr(mvp));
 
   glm::mat3 uvm = uv_matrix;
-  uvm = glm::scale(uvm,glm::vec2(1,-1));
-  uvm = glm::translate(uvm,glm::vec2(0,-1));
   glUniformMatrix3fvARB(get_uniform_location(Shader::UV_MATRIX_NAME),1,GL_FALSE,glm::value_ptr(uvm));
 
   glEnableVertexAttribArrayARB(position_location);
@@ -399,7 +388,7 @@ void GlArbShader::render(const VertexArray& array, const SurfacePtr& texture, co
   glVertexAttribPointerARB(color_location,4,GL_UNSIGNED_BYTE,GL_TRUE,sizeof(Vertex),(void*)offsetof(Vertex,color));
 
   glActiveTextureARB(GL_TEXTURE0_ARB + 0);  // Texture unit 0.
-  SDL_GL_BindTexture(texture->get_internal_surface().get_texture(), nullptr, nullptr);
+  SDL_GL_BindTexture(texture.get_internal_surface().get_texture(), nullptr, nullptr);
 
   for (const auto& kvp : uniform_textures) {
     const GLuint texture_unit = kvp.second.unit;

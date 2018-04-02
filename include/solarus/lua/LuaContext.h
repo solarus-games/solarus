@@ -551,6 +551,8 @@ class LuaContext {
       drawable_api_draw_region,
       drawable_api_get_blend_mode,
       drawable_api_set_blend_mode,
+      drawable_api_set_shader,
+      drawable_api_get_shader,
       drawable_api_fade_in,
       drawable_api_fade_out,
       drawable_api_get_xy,

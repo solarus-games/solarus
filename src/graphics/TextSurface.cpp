@@ -21,6 +21,7 @@
 #include "solarus/core/Size.h"
 #include "solarus/core/System.h"
 #include "solarus/graphics/Surface.h"
+#include "solarus/graphics/Shader.h"
 #include "solarus/graphics/TextSurface.h"
 #include "solarus/graphics/Transition.h"
 #include "solarus/graphics/Video.h"
@@ -560,6 +561,28 @@ void TextSurface::raw_draw_region(const Rectangle& region,
     surface->raw_draw_region(
         region, dst_surface,
         dst_position + text_position);
+  }
+}
+
+void TextSurface::shader_draw(
+    const ShaderPtr& shader,
+    Surface& dst_surface,
+    const Point& dst_position
+    ) {
+  if (surface != nullptr) {
+    shader_draw_region(shader,Rectangle(surface->get_size()),dst_surface,dst_position);
+  }
+}
+
+void TextSurface::shader_draw_region(
+    const ShaderPtr& shader,
+    const Rectangle& region,
+    Surface& dst_surface,
+    const Point& dst_position
+    ) {
+  if (surface != nullptr) {
+    surface->set_blend_mode(get_blend_mode());
+    surface->shader_draw_region(shader,region,dst_surface,dst_position);
   }
 }
 

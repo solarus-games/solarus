@@ -61,6 +61,8 @@ void LuaContext::register_sprite_module() {
       { "draw_region", drawable_api_draw_region },
       { "get_blend_mode", drawable_api_get_blend_mode },
       { "set_blend_mode", drawable_api_set_blend_mode },
+      { "set_shader", drawable_api_set_shader},
+      { "get_shader", drawable_api_get_shader},
       { "fade_in", drawable_api_fade_in },
       { "fade_out", drawable_api_fade_out },
       { "get_xy", drawable_api_get_xy },
@@ -74,6 +76,7 @@ void LuaContext::register_sprite_module() {
         { "get_frame_src_xy", sprite_api_get_frame_src_xy }
     });
   }
+
   const std::vector<luaL_Reg> metamethods = {
       { "__gc", drawable_meta_gc },
       { "__newindex", userdata_meta_newindex_as_table },

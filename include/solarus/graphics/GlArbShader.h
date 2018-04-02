@@ -57,7 +57,7 @@ class GlArbShader : public Shader {
         const std::string& uniform_name, float value_1, float value_2, float value_3, float value_4) override;
     bool set_uniform_texture(const std::string& uniform_name, const SurfacePtr& value) override;
 
-    void render(const VertexArray &array, const SurfacePtr &texture, const glm::mat4& mvp_matrix = glm::mat4(), const glm::mat3& uv_matrix = glm::mat3()) override;
+    void render(const VertexArray &array, const Surface &texture, const glm::mat4& mvp_matrix = glm::mat4(), const glm::mat3& uv_matrix = glm::mat3()) override;
 
     std::string default_vertex_source() const override;
     std::string default_fragment_source() const override;
@@ -74,8 +74,6 @@ class GlArbShader : public Shader {
     static void set_rendering_settings();
     GLint get_uniform_location(const std::string& uniform_name) const;
 
-    void render(const SurfacePtr& surface, const Rectangle &region, const Size &dst_size, const Point &dst_position) override;
-
     GLhandleARB program;                         /**< The program which bind the vertex and fragment shader. */
     GLhandleARB vertex_shader;                   /**< The vertex shader. */
     GLhandleARB fragment_shader;                 /**< The fragment shader. */
@@ -87,7 +85,6 @@ class GlArbShader : public Shader {
     mutable std::map<std::string, TextureUniform>
         uniform_textures;                        /**< Uniform texture value of surfaces. */
     GLuint current_texture_unit = 0;
-    static VertexArray screen_quad;
 #else
 
   static bool initialize() { return false; }

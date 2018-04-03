@@ -336,11 +336,22 @@ void GlShader::render(const VertexArray& array, const Surface& texture, const gl
     const GLuint texture_unit = kvp.second.unit;
     ctx.glActiveTexture(GL_TEXTURE0 + texture_unit);
     SDL_GL_BindTexture(kvp.second.surface->get_internal_surface().get_texture(),nullptr,nullptr);
+
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
   }
 
   ctx.glDrawArrays((GLenum)array.get_primitive_type(),0,array.vertex_count());
 
   ctx.glDisableVertexAttribArray(color_location); //Disable color location to prevent SDLGLES2 'angle' buffer to be activated as a side effect
+
+  for (const auto& kvp : uniform_textures) {
+    const GLuint texture_unit = kvp.second.unit;
+    ctx.glActiveTexture(GL_TEXTURE0 + texture_unit);
+    SDL_GL_UnbindTexture(kvp.second.surface->get_internal_surface().get_texture());
+  }
+
+  ctx.glActiveTexture(GL_TEXTURE0);
 
   ctx.glBindBuffer(GL_ARRAY_BUFFER,previous_buffer);
   ctx.glUseProgram(previous_program);

@@ -398,6 +398,14 @@ void GlArbShader::render(const VertexArray& array, const Surface& texture, const
 
   glDrawArrays((GLenum)array.get_primitive_type(),0,array.vertex_count());
 
+  for (const auto& kvp : uniform_textures) {
+    const GLuint texture_unit = kvp.second.unit;
+    glActiveTextureARB(GL_TEXTURE0_ARB + texture_unit);
+    SDL_GL_UnbindTexture(kvp.second.surface->get_internal_surface().get_texture());
+  }
+
+  glActiveTextureARB(GL_TEXTURE0_ARB + 0);
+
   glUseProgramObjectARB(previous_program);
   glBindBufferARB(GL_ARRAY_BUFFER,0);
 }

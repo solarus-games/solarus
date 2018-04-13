@@ -76,14 +76,15 @@ The following libraries are required to compile and execute Solarus:
 - SDL2main
 - SDL2_image
 - SDL2_ttf
-- Openal
+- OpenGL or OpenGL ES
+- GLM
+- OpenAL
 - Vorbisfile
 - Ogg
 - Modplug (0.8.8.4 or greater)
 - Lua 5.1 or LuaJIT 2.0 (LuaJIT is recommended)
 - Physfs
 - Qt5 (only if you build the Solarus GUI too)
-- GLM
 
 Note that another library is directly embedded in the source code:
 snes_spc, an SPC music decoding library.

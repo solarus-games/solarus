@@ -517,6 +517,7 @@ bool GlShader::set_uniform_texture(const std::string& uniform_name, const Surfac
 void GlShader::enable_attribute(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* pointer) {
 
   GLint previous_state;
+  // TODO Check if the get step can be done once at the initialization time.
   ctx.glGetVertexAttribiv(index, GL_VERTEX_ATTRIB_ARRAY_ENABLED, &previous_state);
   ctx.glEnableVertexAttribArray(index);
   ctx.glVertexAttribPointer(index, size, type, normalized, stride, pointer);

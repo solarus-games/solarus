@@ -90,6 +90,8 @@ class GlArbShader : public Shader {
   static bool initialize() { return false; }
   explicit GlArbShader(const std::string& shader_id): Shader(shader_id)  {}
 
+  void render(const VertexArray &array, const Surface &texture, const glm::mat4& mvp_matrix = glm::mat4(), const glm::mat3& uv_matrix = glm::mat3()) {}
+
   std::string default_vertex_source() const { return ""; }
   std::string default_fragment_source() const { return ""; }
 #endif // SOLARUS_HAVE_OPENGL

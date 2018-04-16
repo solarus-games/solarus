@@ -320,14 +320,9 @@ void GlShader::render(const VertexArray& array, const Surface& texture, const gl
   glm::mat3 uvm = uv_matrix;
   ctx.glUniformMatrix3fv(get_uniform_location(Shader::UV_MATRIX_NAME),1,GL_FALSE,glm::value_ptr(uvm));
 
-  ctx.glEnableVertexAttribArray(position_location);
-  ctx.glVertexAttribPointer(position_location,2,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)offsetof(Vertex,position));
-
-  ctx.glEnableVertexAttribArray(tex_coord_location);
-  ctx.glVertexAttribPointer(tex_coord_location,2,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)offsetof(Vertex,texcoords));
-
-  ctx.glEnableVertexAttribArray(color_location);
-  ctx.glVertexAttribPointer(color_location,4,GL_UNSIGNED_BYTE,GL_TRUE,sizeof(Vertex),(void*)offsetof(Vertex,color));
+  enable_attribute(position_location, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position));
+  enable_attribute(tex_coord_location, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texcoords));
+  enable_attribute(color_location, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (void*)offsetof(Vertex, color));
 
   ctx.glActiveTexture(GL_TEXTURE0 + 0);  // Texture unit 0.
   SDL_GL_BindTexture(texture.get_internal_surface().get_texture(), nullptr, nullptr);
@@ -343,7 +338,7 @@ void GlShader::render(const VertexArray& array, const Surface& texture, const gl
 
   ctx.glDrawArrays((GLenum)array.get_primitive_type(),0,array.vertex_count());
 
-  ctx.glDisableVertexAttribArray(color_location); //Disable color location to prevent SDLGLES2 'angle' buffer to be activated as a side effect
+  restore_attribute_states();
 
   for (const auto& kvp : uniform_textures) {
     const GLuint texture_unit = kvp.second.unit;
@@ -506,6 +501,38 @@ bool GlShader::set_uniform_texture(const std::string& uniform_name, const Surfac
 
   ctx.glUseProgram(previous_program);
   return true;
+}
+
+/**
+ * \brief Enable the attribute and keep trace of the old state.
+ * \param index The index of the vertex attribute.
+ * \param size The number of components per vertex attribute.
+ * \param type The data type of each component in the array.
+ * \param normalized Specifies whether fixed-point data values should be normalized.
+ * \param stride The byte offset between consecutive generic vertex attributes.
+ * \param pointer Specifies a offset of the first component of the first generic
+ * vertex attribute in the array in the data store of the buffer currently bound
+ * to the GL_ARRAY_BUFFER target.
+ */
+void GlShader::enable_attribute(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* pointer) {
+
+  GLint previous_state;
+  ctx.glGetVertexAttribiv(index, GL_VERTEX_ATTRIB_ARRAY_ENABLED, &previous_state);
+  ctx.glEnableVertexAttribArray(index);
+  ctx.glVertexAttribPointer(index, size, type, normalized, stride, pointer);
+  attribute_states.insert(std::make_pair(index, previous_state));
+}
+
+/**
+ * \brief Restore previous attrib states.
+ */
+void GlShader::restore_attribute_states() {
+
+  for (const auto& attrib : attribute_states) {
+    if(!attrib.second)
+      ctx.glDisableVertexAttribArray(attrib.first);
+  }
+  attribute_states.clear();
 }
 
 }

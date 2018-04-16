@@ -52,15 +52,6 @@ bool ShaderContext::initialize() {
   SDL_GL_SetAttribute(SDL_GL_SHARE_WITH_CURRENT_CONTEXT, 1);
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-  if (!(gl_context = SDL_GL_CreateContext(Video::get_window()))) {
-    Debug::warning("Unable to create OpenGL context : " + std::string(SDL_GetError()));
-    return false;
-  }
-
-  // Setting some parameters
-  glEnable(GL_DEPTH_TEST); // The type of depth test to do.
-  glDepthFunc(GL_LESS); // Enables depth testing.
-
   // Use late swap tearing, or try to use the classic swap interval (aka VSync) if not supported.
   if (SDL_GL_SetSwapInterval(-1) == -1) {
     SDL_GL_SetSwapInterval(1);

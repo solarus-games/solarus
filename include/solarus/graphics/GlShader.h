@@ -19,6 +19,7 @@
 
 #include "solarus/core/Common.h"
 #include "solarus/graphics/Shader.h"
+#include <unordered_map>
 #include <SDL.h>
 #include <string>
 
@@ -64,6 +65,8 @@ protected:
 private:
 
   void check_gl_error();
+  void enable_attribute(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* pointer);
+  void restore_attribute_states();
 
   struct TextureUniform{
     SurfacePtr surface;
@@ -84,6 +87,7 @@ private:
       uniform_locations;                       /**< Cache of uniform locations. */
   mutable std::map<std::string, TextureUniform>
       uniform_textures;                        /**< Uniform texture value of surfaces. */
+  std::unordered_map<GLuint, GLint> attribute_states;    /**< Previous attrib states. */
   GLuint current_texture_unit = 0;
 
 };

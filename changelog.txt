@@ -7,6 +7,7 @@ Engine changes
 --------------
 
 * Solarus 1.5 quests are still supported by Solarus 1.6.
+* Maps can now use multiple tilesets (#1174).
 * Treasure dialogs are now optional (#1076).
 * Don't center the hero on non-blocking streams (#1063).
 * Fix enemies unable to move on non-blocking streams.
@@ -56,6 +57,7 @@ Data files format changes
 -------------------------
 
 * Maps: add support of custom properties for entities (#1094).
+* Maps: add property tileset to tiles and dynamic tiles (#1174). 
 * Tilesets: add support of border sets (autotiles) (#1069).
 * Make the tileset entities image optional (#884).
 

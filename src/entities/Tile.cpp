@@ -33,7 +33,8 @@ Tile::Tile(
 ):
   Entity("", 0, tile_info.layer, tile_info.box.get_xy(), tile_info.box.get_size()),
   tile_pattern_id(tile_info.pattern_id),
-  tile_pattern(*tile_info.pattern) {
+  tile_pattern(*tile_info.pattern),
+  tileset(*tile_info.tileset) {
 
 }
 
@@ -86,7 +87,7 @@ void Tile::draw(const SurfacePtr& dst_surface, const Point& viewport) {
   tile_pattern.fill_surface(
       dst_surface,
       dst_position,
-      get_map().get_tileset(),
+      tileset,
       viewport
   );
 }

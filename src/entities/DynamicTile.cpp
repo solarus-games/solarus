@@ -46,7 +46,8 @@ DynamicTile::DynamicTile(
 ) :
   Entity(name, 0, layer, xy, size),
   tile_pattern_id(tile_pattern_id),
-  tile_pattern(tileset.get_tile_pattern(tile_pattern_id)) {
+  tile_pattern(tileset.get_tile_pattern(tile_pattern_id)),
+  tileset(tileset) {
 
   set_enabled(enabled);
 }
@@ -101,7 +102,7 @@ void DynamicTile::draw_on_map() {
   tile_pattern.fill_surface(
       get_map().get_camera_surface(),
       dst_position,
-      get_map().get_tileset(),
+      tileset,
       camera_position.get_xy()
   );
 }

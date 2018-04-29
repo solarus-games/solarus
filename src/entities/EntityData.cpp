@@ -37,7 +37,8 @@ const std::map<EntityType, const EntityTypeDescription> entity_type_descriptions
         EntityType::TILE, {
             { "width", OptionalFlag::MANDATORY, FieldValue(16) },
             { "height", OptionalFlag::MANDATORY, FieldValue(16) },
-            { "pattern", OptionalFlag::MANDATORY, FieldValue("") }
+            { "pattern", OptionalFlag::MANDATORY, FieldValue("") },
+            { "tileset", OptionalFlag::OPTIONAL, FieldValue("") }
         }
     },
 
@@ -46,7 +47,8 @@ const std::map<EntityType, const EntityTypeDescription> entity_type_descriptions
             { "pattern", OptionalFlag::MANDATORY, FieldValue("") },
             { "width", OptionalFlag::MANDATORY, FieldValue(16) },
             { "height", OptionalFlag::MANDATORY, FieldValue(16) },
-            { "enabled_at_start", OptionalFlag::MANDATORY, FieldValue(true) }
+            { "enabled_at_start", OptionalFlag::MANDATORY, FieldValue(true) },
+            { "tileset", OptionalFlag::OPTIONAL, FieldValue("") }
         }
     },
 

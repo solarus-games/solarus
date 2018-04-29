@@ -24,6 +24,7 @@
 namespace Solarus {
 
 class TilePattern;
+class Tileset;
 
 /**
  * \brief Wraps construction parameters of a tile.
@@ -34,6 +35,7 @@ struct TileInfo {
   Rectangle box;
   std::string pattern_id;
   const TilePattern* pattern = nullptr;
+  const Tileset* tileset = nullptr;
 };
 
 }

@@ -25,6 +25,7 @@
 namespace Solarus {
 
 struct TileInfo;
+class Tileset;
 class TilePattern;
 
 /**
@@ -62,6 +63,7 @@ class Tile: public Entity {
 
     const std::string tile_pattern_id;       /**< Id of the tile pattern. */
     const TilePattern& tile_pattern;         /**< Pattern of the tile. */
+    const Tileset& tileset;                  /**< Tileet of the pattern. */
 
 };
 

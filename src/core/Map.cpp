@@ -581,7 +581,6 @@ void Map::build_background_surface() {
  * \param dst_surface The surface where to draw.
  */
 void Map::draw_background(const SurfacePtr& dst_surface) {
-
   background_surface->draw(dst_surface);
 }
 

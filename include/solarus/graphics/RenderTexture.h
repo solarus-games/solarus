@@ -47,6 +47,7 @@ public:
     ~RenderTexture(){
     }
 private:
+    SDL_BlendMode make_sdl_blend_mode(const SurfaceImpl &src) const;
     mutable bool surface_dirty = true; /**< is the surface not up to date*/
     mutable SDL_Surface_UniquePtr surface; /**< cpu side pixels data */
     mutable SDL_Texture_UniquePtr target; /**< gpu side pixels data */

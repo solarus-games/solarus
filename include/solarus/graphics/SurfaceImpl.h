@@ -71,8 +71,12 @@ public:
      * @return valid render texture
      */
     virtual  RenderTexture* to_render_texture() = 0;
+
+    bool is_premultiplied() const;
+    void set_premultiplied(bool a_premultiplied);
 private:
     Surface* _parent; /**< pointer to owning surface */
+    bool premultiplied = false;
 };
 
 }

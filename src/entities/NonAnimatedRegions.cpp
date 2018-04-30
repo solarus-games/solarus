@@ -238,7 +238,7 @@ void NonAnimatedRegions::build_cell(int cell_index) {
       row * cell_size.height
   };
 
-  SurfacePtr cell_surface = Surface::create(cell_size,layer > map.get_min_layer());
+  SurfacePtr cell_surface = Surface::create(cell_size,true);
   optimized_tiles_surfaces[cell_index] = cell_surface;
   // Let this surface as a software destination because it is built only
   // once (here) and never changes later.

@@ -77,7 +77,7 @@ void RenderTexture::draw_region_other(const Rectangle& src_rect, const SurfaceIm
   with_target([&](SDL_Renderer* renderer){
     Rectangle dst_rect(dst_position,src_rect.get_size());
     SDL_SetTextureAlphaMod(texture.get_texture(),texture.parent().get_opacity());
-    SDL_SetTextureBlendMode(texture.get_texture(),texture.parent().get_sdl_blend_mode());
+    SDL_SetTextureBlendMode(texture.get_texture(),make_sdl_blend_mode(texture));
     SDL_RenderCopy(renderer,texture.get_texture(),src_rect,dst_rect);
   });
 }
@@ -134,6 +134,49 @@ void RenderTexture::clear() {
     SDL_SetTextureBlendMode(target.get(),SDL_BLENDMODE_BLEND);
     SDL_RenderClear(renderer);
   });
+}
+
+SDL_BlendMode RenderTexture::make_sdl_blend_mode(const SurfaceImpl& src) const {
+  if(is_premultiplied()) {
+    switch(src.parent().get_blend_mode()) {
+      case BlendMode::NONE:
+        return SDL_BLENDMODE_NONE;
+      case BlendMode::MULTIPLY:
+        return SDL_BLENDMODE_MOD;
+      case BlendMode::ADD:
+        return SDL_BLENDMODE_ADD;
+      case BlendMode::BLEND:
+      default:
+        return SDL_ComposeCustomBlendMode(
+              SDL_BLENDFACTOR_SRC_ALPHA,
+              SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
+              SDL_BLENDOPERATION_ADD,
+              SDL_BLENDFACTOR_ONE,
+              SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
+              SDL_BLENDOPERATION_ADD);
+    }
+  } else {
+    //Straight destination
+    if(src.is_premultiplied() && src.parent().get_blend_mode() == BlendMode::BLEND)
+      return SDL_ComposeCustomBlendMode(
+            SDL_BLENDFACTOR_ONE,
+            SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
+            SDL_BLENDOPERATION_ADD,
+            SDL_BLENDFACTOR_ONE,
+            SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
+            SDL_BLENDOPERATION_ADD);
+    switch(src.parent().get_blend_mode()) { //TODO check other modes
+      case BlendMode::NONE:
+        return SDL_BLENDMODE_NONE;
+      case BlendMode::MULTIPLY:
+        return SDL_BLENDMODE_MOD;
+      case BlendMode::ADD:
+        return SDL_BLENDMODE_ADD;
+      case BlendMode::BLEND:
+      default:
+        return SDL_BLENDMODE_BLEND;
+    }
+  }
 }
 
 /**

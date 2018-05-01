@@ -36,7 +36,7 @@ addons:
 
 before_script:
     # install SDL
-  - wget -q http://www.libsdl.org/release/SDL2-2.0.4.tar.gz
+  - wget -q http://www.libsdl.org/release/SDL2-2.0.6.tar.gz
   - tar xf SDL2-*.tar.gz
   - cd SDL2-* && ./configure && make && sudo make install && cd ..
 

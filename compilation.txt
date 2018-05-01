@@ -72,7 +72,7 @@ and probably with other recent compilers (please let us know).
 
 The following libraries are required to compile and execute Solarus:
 
-- SDL2 (2.0.4 or greater)
+- SDL2 (2.0.6 or greater)
 - SDL2main
 - SDL2_image
 - SDL2_ttf
@@ -92,7 +92,7 @@ snes_spc, an SPC music decoding library.
 - About SDL2:
 
 SDL 2.0.2 is buggy (you will get broken graphics or even a black screen).
-You need at least SDL 2.0.4.
+You need at least SDL 2.0.6.
 
 - About Qt5:
 

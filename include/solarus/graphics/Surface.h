@@ -60,9 +60,9 @@ class Surface: public Drawable {
       DIR_LANGUAGE     /**< The language-specific image directory of the data package, for the current language. */
     };
 
-    Surface(int width, int height);
-    explicit Surface(SurfaceImpl* impl);
-    Surface(SDL_Surface* surf);
+    Surface(int width, int height, bool premultiplied = false);
+    explicit Surface(SurfaceImpl* impl, bool premultiplied = false);
+    Surface(SDL_Surface* surf, bool premultiplied = false);
     ~Surface();
 
     // Surfaces should only created with std::make_shared.
@@ -70,10 +70,10 @@ class Surface: public Drawable {
     // constructors.
     // This is because they are always reference-counted with shared_ptr
     // internally for drawing.
-    static SurfacePtr create(int width, int height);
-    static SurfacePtr create(const Size& size);
+    static SurfacePtr create(int width, int height, bool premultiplied = false);
+    static SurfacePtr create(const Size& size, bool premultiplied = false);
     static SurfacePtr create(const std::string& file_name,
-        ImageDirectory base_directory = DIR_SPRITES);
+        ImageDirectory base_directory = DIR_SPRITES, bool premultiplied = false);
 
     int get_width() const;
     int get_height() const;

@@ -42,7 +42,7 @@ namespace Solarus {
  * \param width The width in pixels.
  * \param height The height in pixels.
  */
-Surface::Surface(int width, int height):
+Surface::Surface(int width, int height, bool premultiplied):
   Drawable(),
   opacity(255),
   internal_surface(nullptr)
@@ -52,13 +52,15 @@ Surface::Surface(int width, int height):
                          "Attempt to create a surface with an empty size");
 
   internal_surface.reset(new RenderTexture(width,height));
+  internal_surface->set_premultiplied(premultiplied);
   internal_surface->_parent = this;
 }
 
-Surface::Surface(SDL_Surface *surf)
+Surface::Surface(SDL_Surface *surf, bool premultiplied)
   : opacity(255),
     internal_surface(new Texture(surf))
 {
+  internal_surface->set_premultiplied(premultiplied);
   internal_surface->_parent = this;
 }
 
@@ -71,11 +73,12 @@ Surface::Surface(SDL_Surface *surf)
  * \param internal_surface The internal surface data.
  * The created surface takes ownership of this object.
  */
-Surface::Surface(SurfaceImpl* impl):
+Surface::Surface(SurfaceImpl* impl, bool premultiplied):
   Drawable(),
   opacity(255),
   internal_surface(impl) //TODO refactor this...
 {
+  internal_surface->set_premultiplied(premultiplied);
   internal_surface->_parent = this;
 }
 
@@ -96,8 +99,8 @@ Surface::~Surface() {
  * \param height The height in pixels.
  * \return The created surface.
  */
-SurfacePtr Surface::create(int width, int height) {
-  SurfacePtr surface = std::make_shared<Surface>(width, height);
+SurfacePtr Surface::create(int width, int height, bool premultiplied) {
+  SurfacePtr surface = std::make_shared<Surface>(width, height, premultiplied);
   return surface;
 }
 
@@ -106,8 +109,8 @@ SurfacePtr Surface::create(int width, int height) {
  * \param size The size in pixels.
  * \return The created surface.
  */
-SurfacePtr Surface::create(const Size& size) {
-  SurfacePtr surface = std::make_shared<Surface>(size.width, size.height);
+SurfacePtr Surface::create(const Size& size,bool premultiplied) {
+  SurfacePtr surface = std::make_shared<Surface>(size.width, size.height, premultiplied);
   return surface;
 }
 
@@ -122,7 +125,7 @@ SurfacePtr Surface::create(const Size& size) {
  * \return The surface created, or nullptr if the file could not be loaded.
  */
 SurfacePtr Surface::create(const std::string& file_name,
-                           ImageDirectory base_directory) {
+                           ImageDirectory base_directory, bool premultiplied) {
 
   SurfaceImpl* surface = get_surface_from_file(file_name, base_directory);
 
@@ -130,7 +133,7 @@ SurfacePtr Surface::create(const std::string& file_name,
     return nullptr;
   }
 
-  return std::make_shared<Surface>(surface);
+  return std::make_shared<Surface>(surface, premultiplied);
 }
 
 /**

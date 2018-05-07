@@ -102,7 +102,6 @@ Sprite::Sprite(const std::string& id):
   paused(false),
   finished(false),
   synchronize_to(nullptr),
-  intermediate_surface(nullptr),
   blink_delay(0),
   blink_is_sprite_visible(true),
   blink_next_change_date(0),
@@ -763,14 +762,14 @@ void Sprite::update() {
  * @param dst_surface
  * @param dst_position
  */
-void Sprite::draw_intermediate() const {
+/*void Sprite::draw_intermediate() const {
     get_intermediate_surface().clear();
     current_animation->draw(
         get_intermediate_surface(),
         get_origin(),
         current_direction,
         current_frame);
-}
+}*/
 
 /**
  * \brief Draws the sprite on a surface, with its current animation,
@@ -789,13 +788,18 @@ void Sprite::raw_draw(
 
   if (!is_animation_finished()
       && (blink_delay == 0 || blink_is_sprite_visible)) {
-    draw_intermediate();
+    /*draw_intermediate();
     get_intermediate_surface().set_blend_mode(get_blend_mode());
     get_intermediate_surface().draw_region(
         Rectangle(get_size()),
         std::static_pointer_cast<Surface>(dst_surface.shared_from_this()),
         dst_position - get_origin()
-    );
+    );*/
+    current_animation->draw(
+          dst_surface,
+          dst_position /*- get_origin()*/,
+          current_direction,
+          current_frame);
   }
 }
 
@@ -846,7 +850,7 @@ void Sprite::raw_draw_region(
   if (!is_animation_finished()
       && (blink_delay == 0 || blink_is_sprite_visible)) {
 
-    draw_intermediate();
+    //draw_intermediate();
 
     // If the region is bigger than the current frame, clip it.
     // Otherwise, more than the current frame could be visible.
@@ -856,12 +860,17 @@ void Sprite::raw_draw_region(
     Point dst_position2 = dst_position;
     dst_position2 += src_position.get_xy(); // Let a space for the part outside the region.
     dst_position2 -= get_origin();                // Input coordinates were relative to the origin.
-    get_intermediate_surface().set_blend_mode(get_blend_mode());
+    /*get_intermediate_surface().set_blend_mode(get_blend_mode());
     get_intermediate_surface().draw_region(
         src_position,
         std::static_pointer_cast<Surface>(dst_surface.shared_from_this()),
         dst_position2
-    );
+    );*/
+    current_animation->draw(
+          dst_surface,
+          dst_position,
+          current_direction,
+          current_frame);
   }
 }
 
@@ -884,14 +893,15 @@ void Sprite::shader_draw(
 
   if (!is_animation_finished()
       && (blink_delay == 0 || blink_is_sprite_visible)) {
-    draw_intermediate();
+    //TODO redo this
+    /*draw_intermediate();
     dst_surface.request_render().with_target([&](SDL_Renderer*){
       get_intermediate_surface().set_blend_mode(get_blend_mode());
       get_intermediate_surface().shader_draw_region(shader,
                                                     Rectangle(get_size()),
                                                     dst_surface,
                                                     dst_position-get_origin());
-    });
+    });*/
   }
 }
 
@@ -917,7 +927,8 @@ void Sprite::shader_draw_region(
   if (!is_animation_finished()
       && (blink_delay == 0 || blink_is_sprite_visible)) {
 
-    draw_intermediate();
+    //TODO redo this...
+    /*draw_intermediate();
 
     // If the region is bigger than the current frame, clip it.
     // Otherwise, more than the current frame could be visible.
@@ -931,7 +942,7 @@ void Sprite::shader_draw_region(
     dst_surface.request_render().with_target([&](SDL_Renderer*){
       get_intermediate_surface().set_blend_mode(get_blend_mode());
       get_intermediate_surface().shader_draw_region(shader,src_position,dst_surface,dst_position2);
-    });
+    });*/
   }
 }
 
@@ -940,8 +951,8 @@ void Sprite::shader_draw_region(
  * \param transition The transition effect to apply.
  */
 void Sprite::draw_transition(Transition& transition) {
-
-  transition.draw(get_intermediate_surface());
+  //TODO reinvent that
+  //transition.draw(get_intermediate_surface());
 }
 
 /**
@@ -950,6 +961,7 @@ void Sprite::draw_transition(Transition& transition) {
  * \return The surface for transitions.
  */
 Surface& Sprite::get_transition_surface() {
+  //TODO meh
   return get_intermediate_surface();
 }
 

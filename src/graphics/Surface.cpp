@@ -37,6 +37,13 @@
 
 namespace Solarus {
 
+
+Surface::SurfaceDraw Surface::draw_proxy;
+
+void Surface::SurfaceDraw::draw(Surface& dst_surface, Surface& src_surface, const Rectangle& region, const Point& destination) const {
+  dst_surface.request_render().draw_region_other(region,src_surface.get_internal_surface(),destination);
+}
+
 /**
  * \brief Creates a surface with the specified size.
  * \param width The width in pixels.
@@ -377,8 +384,10 @@ void Surface::fill_with_color(const Color& color, const Rectangle& where) {
  * \param dst_surface The destination surface.
  * \param dst_position Coordinates on the destination surface.
  */
-void Surface::raw_draw(Surface& dst_surface, const Point& dst_position) {
-  dst_surface.request_render().draw_other(*internal_surface,dst_position);
+void Surface::raw_draw(Surface& dst_surface, const Point& dst_position,
+                       const DrawProxy& proxy) {
+  //dst_surface.request_render().draw_other(*internal_surface,dst_position);
+  raw_draw_region(Rectangle(get_size()),dst_surface,dst_position,proxy);
 }
 
 /**
@@ -387,11 +396,11 @@ void Surface::raw_draw(Surface& dst_surface, const Point& dst_position) {
  * \param dst_surface The destination surface.
  * \param dst_position Coordinates on the destination surface.
  */
-void Surface::raw_draw_region(
-    const Rectangle& region,
+void Surface::raw_draw_region(const Rectangle& region,
     Surface& dst_surface,
-    const Point& dst_position) {
-  dst_surface.request_render().draw_region_other(region,*internal_surface,dst_position);
+    const Point& dst_position, const DrawProxy &proxy) {
+  proxy.draw(dst_surface,*this,region,dst_position);
+  //dst_surface.request_render().draw_region_other(region,*internal_surface,dst_position);
 }
 
 /**
@@ -438,9 +447,9 @@ void Surface::shader_draw_region(
  * \brief Draws a transition effect on this drawable object.
  * \param transition The transition effect to apply.
  */
-void Surface::draw_transition(Transition& transition) {
+/*void Surface::draw_transition(Transition& transition) {
   transition.draw(*this);
-}
+}*/
 
 /**
  * \brief Draws this software surface with a pixel filter on another software
@@ -488,9 +497,9 @@ void Surface::apply_pixel_filter(
  * are applied.
  * \return The surface for transitions.
  */
-Surface& Surface::get_transition_surface() {
+/*Surface& Surface::get_transition_surface() {
   return *this;
-}
+}*/
 
 /**
  * \brief Returns a pixel value of this surface.

@@ -47,14 +47,13 @@ class TransitionScrolling: public Transition {
     virtual bool is_finished() const override;
     virtual void notify_suspended(bool suspended) override;
     virtual void update() override;
-    virtual void draw(Surface& dst_surface) override;
+    virtual void draw(Surface& dst_surface, Surface& src_surface, const Rectangle& region, const Point& destination) const override;
 
   private:
 
     void scroll();
     Rectangle get_previous_map_dst_position(int scrolling_direction);
 
-    SurfacePtr both_maps_surface;         /**< an intermediate surface where the two map surfaces will be blitted */
     int scrolling_direction;              /**< direction of the scrolling (0 to 3) */
     uint32_t next_scroll_date;            /**< date of the next scrolling step */
 

@@ -28,6 +28,9 @@
 #include "solarus/lua/ExportableToLua.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
+
+#include "solarus/graphics/Drawable.h"
+
 #include <string>
 
 #ifdef SOLARUS_HAVE_OPENGL
@@ -41,7 +44,7 @@ namespace Solarus {
 /**
  * \brief Represents a shader for a driver and sampler-independant uses.
  */
-class Shader : public ExportableToLua {
+class Shader : public Drawable::DrawProxy, public ExportableToLua {
   public:
     constexpr static const char* POSITION_NAME = "sol_vertex";
     constexpr static const char* TEXCOORD_NAME = "sol_tex_coord";

@@ -80,7 +80,7 @@ const Rectangle& SpriteAnimationDirection::get_frame(int frame) const {
  * \param src_image the image from which the frame is extracted
  */
 void SpriteAnimationDirection::draw(Surface& dst_surface,
-    const Point& dst_position, int current_frame, Surface& src_image) {
+                                    const Point& dst_position, int current_frame, Surface& src_image, const Drawable::DrawProxy& proxy) const {
 
   const Rectangle& current_frame_rect = get_frame(current_frame);
 
@@ -88,11 +88,12 @@ void SpriteAnimationDirection::draw(Surface& dst_surface,
   Point position_top_left = dst_position;
   position_top_left -= origin;
 
-  src_image.draw_region(
-      current_frame_rect,
-      std::static_pointer_cast<Surface>(dst_surface.shared_from_this()),
-      position_top_left
-  );
+  src_image.raw_draw_region(
+        current_frame_rect,
+        dst_surface,
+        position_top_left,
+        proxy
+        );
 }
 
 /**
@@ -118,7 +119,6 @@ void SpriteAnimationDirection::enable_pixel_collisions(Surface& src_image) {
  * \brief Disables the pixel-perfect collision ability of this sprite animation direction.
  */
 void SpriteAnimationDirection::disable_pixel_collisions() {
-
   pixel_bits.clear();
 }
 

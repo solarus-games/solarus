@@ -578,9 +578,10 @@ void Game::draw(const SurfacePtr& dst_surface) {
     if (camera != nullptr) {
       const SurfacePtr& camera_surface = camera->get_surface();
       if (transition != nullptr) {
-        transition->draw(*camera_surface);
+        transition->draw(*dst_surface,*camera_surface,Rectangle(camera_surface->get_size()),Point());
+      } else { //TODO handle this case
+        camera_surface->draw(dst_surface, camera->get_position_on_screen());
       }
-      camera_surface->draw(dst_surface, camera->get_position_on_screen());
     }
 
     // Draw the built-in dialog box if any.

@@ -113,9 +113,9 @@ class Sprite: public Drawable {
 
     Rectangle clamp_region(const Rectangle& region) const;
 
-    virtual void raw_draw(Surface& dst_surface, const Point& dst_position) override;
+    virtual void raw_draw(Surface& dst_surface, const Point& dst_position, const DrawProxy& proxy) override;
     virtual void raw_draw_region(const Rectangle& region,
-        Surface& dst_surface, const Point& dst_position) override;
+        Surface& dst_surface, const Point& dst_position, const DrawProxy& proxy) override;
     virtual void shader_draw(
         const ShaderPtr& shader,
         Surface& dst_surface,
@@ -127,8 +127,8 @@ class Sprite: public Drawable {
         Surface& dst_surface,
         const Point& dst_position
         ) override;
-    virtual void draw_transition(Transition& transition) override;
-    virtual Surface& get_transition_surface() override;
+    //virtual void draw_transition(Transition& transition) override;
+    //virtual Surface& get_transition_surface() override;
 
     // Lua
     const ScopedLuaRef& get_finished_callback() const;

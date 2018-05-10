@@ -19,6 +19,10 @@
 
 #include "solarus/core/Common.h"
 #include "solarus/core/EnumInfo.h"
+#include "solarus/core/Rectangle.h"
+#include "solarus/graphics/ShaderPtr.h"
+#include "solarus/graphics/Drawable.h"
+
 #include <map>
 #include <string>
 
@@ -32,7 +36,7 @@ class Surface;
  *
  * The transitions may be applied to maps or any surface.
  */
-class SOLARUS_API Transition {
+class SOLARUS_API Transition : public Drawable::DrawProxy {
 
   public:
 
@@ -94,7 +98,7 @@ class SOLARUS_API Transition {
      * \brief Draws the transition effect on a surface.
      * \param dst_surface the surface to draw
      */
-    virtual void draw(Surface& dst_surface) = 0;
+    //virtual void draw(Surface& dst_surface, const Surface& src_surface, const Rectangle& region, const Point& destination) = 0;
 
   protected:
 

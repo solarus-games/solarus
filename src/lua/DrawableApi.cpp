@@ -269,8 +269,7 @@ int LuaContext::drawable_api_fade_in(lua_State* l) {
     }
 
     TransitionFade* transition(new TransitionFade(
-        Transition::Direction::OPENING,
-        drawable.get_transition_surface()
+        Transition::Direction::OPENING
     ));
     transition->clear_color();
     transition->set_delay(delay);
@@ -308,8 +307,7 @@ int LuaContext::drawable_api_fade_out(lua_State* l) {
     }
 
     TransitionFade* transition(new TransitionFade(
-        Transition::Direction::CLOSING,
-        drawable.get_transition_surface()
+        Transition::Direction::CLOSING
     ));
     transition->clear_color();
     transition->set_delay(delay);

@@ -31,7 +31,6 @@ namespace Solarus {
  */
 TransitionScrolling::TransitionScrolling(Transition::Direction direction):
   Transition(direction),
-  both_maps_surface(nullptr),
   scrolling_direction(0),
   next_scroll_date(0),
   dx(0),
@@ -97,9 +96,6 @@ void TransitionScrolling::start() {
     height *= 2;
     dy = (scrolling_direction == 3) ? scrolling_step : -scrolling_step;
   }
-
-  // create a surface with the two maps
-  both_maps_surface = Surface::create(width, height);
 
   // set the blitting rectangles
 
@@ -209,7 +205,7 @@ void TransitionScrolling::update() {
  * \brief Draws the transition effect on a surface.
  * \param dst_surface the surface to draw
  */
-void TransitionScrolling::draw(Surface& dst_surface) {
+void TransitionScrolling::draw(Surface& dst_surface, Surface &src_surface, const Rectangle &region, const Point &destination) const { //TODO fix
 
   if (get_direction() == Direction::CLOSING) {
     return;
@@ -220,16 +216,9 @@ void TransitionScrolling::draw(Surface& dst_surface) {
       "No previous surface defined for scrolling");
 
   // draw the old map
-  previous_surface->draw(both_maps_surface, previous_map_dst_position.get_xy());
+  previous_surface->raw_draw(dst_surface, previous_map_dst_position.get_xy()-current_scrolling_position.get_xy());
 
   // draw the new map
-  dst_surface.draw(both_maps_surface, current_map_dst_position.get_xy());
-
-  // blit both surfaces
-  both_maps_surface->draw_region(
-      current_scrolling_position,
-      std::static_pointer_cast<Surface>(dst_surface.shared_from_this())
-  );
+  src_surface.raw_draw(dst_surface, current_map_dst_position.get_xy()-current_scrolling_position.get_xy());
 }
-
 }

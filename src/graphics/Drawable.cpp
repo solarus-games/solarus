@@ -19,6 +19,7 @@
 #include "solarus/graphics/Transition.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/movements/Movement.h"
+#include "solarus/graphics/Surface.h"
 #include <lua.hpp>
 #include <utility>
 
@@ -233,13 +234,13 @@ void Drawable::draw(const SurfacePtr& dst_surface, int x, int y) {
 void Drawable::draw(const SurfacePtr& dst_surface,
     const Point& dst_position) {
 
-  if (transition != nullptr) {
-    draw_transition(*transition);
-  }
-  if(shader) {
-    shader_draw(shader,*dst_surface,dst_position);
+  if (transition) {
+    raw_draw(*dst_surface,dst_position + xy,*transition);
+  } else if(shader) { //TODO fix transition and shader combination
+    const Shader& s = *shader;
+    raw_draw(*dst_surface, dst_position + xy, (const DrawProxy&)s);
   } else {
-    raw_draw(*dst_surface, dst_position + xy);
+    raw_draw(*dst_surface, dst_position + xy,Surface::draw_proxy);
   }
 }
 
@@ -266,13 +267,12 @@ void Drawable::draw_region(
     const SurfacePtr& dst_surface,
     const Point& dst_position) {
 
-  if (transition != nullptr) {
-    draw_transition(*transition);
-  }
-  if(shader) {
-    shader_draw_region(shader,region,*dst_surface,dst_position);
+  if (transition) {
+    raw_draw_region(region, *dst_surface, dst_position + xy, *transition);
+  } else if(shader) { //TODO fix transition and shader combination
+    raw_draw_region(region, *dst_surface, dst_position + xy,(const DrawProxy&)*shader.get());
   } else {
-    raw_draw_region(region, *dst_surface, dst_position + xy);
+    raw_draw_region(region, *dst_surface, dst_position + xy,Surface::draw_proxy);
   }
 }
 

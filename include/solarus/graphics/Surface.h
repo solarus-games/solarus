@@ -51,6 +51,9 @@ class Surface: public Drawable {
   public:
     using SurfaceImpl_UniquePtr = std::unique_ptr<SurfaceImpl>;
 
+    struct SurfaceDraw : public DrawProxy {
+      virtual void draw(Surface& dst_surface, Surface& src_surface, const Rectangle& region, const Point& destination) const override;
+    };
     /**
      * \brief The base directory to use when opening image files.
      */
@@ -100,12 +103,14 @@ class Surface: public Drawable {
     // Implementation from Drawable.
     virtual void raw_draw(
         Surface& dst_surface,
-        const Point& dst_position
+        const Point& dst_position,
+        const DrawProxy& proxy = Surface::draw_proxy
     ) override;
     virtual void raw_draw_region(
         const Rectangle& region,
         Surface& dst_surface,
-        const Point& dst_position
+        const Point& dst_position,
+        const DrawProxy& proxy = Surface::draw_proxy
     ) override;
     virtual void shader_draw(
         const ShaderPtr& shader,
@@ -118,13 +123,15 @@ class Surface: public Drawable {
         Surface& dst_surface,
         const Point& dst_position
         ) override;
-    virtual void draw_transition(Transition& transition) override;
+    //virtual void draw_transition(Transition& transition) override;
     void apply_pixel_filter(
         const SoftwarePixelFilter& pixel_filter, Surface& dst_surface) const;
-    virtual Surface& get_transition_surface() override;
+    //virtual Surface& get_transition_surface() override;
     SDL_BlendMode get_sdl_blend_mode() const;
 
     const std::string& get_lua_type_name() const override;
+
+    static SurfaceDraw draw_proxy;
   private:
     uint8_t opacity;
     uint32_t get_pixel(int index) const;
@@ -134,6 +141,7 @@ class Surface: public Drawable {
     static SurfaceImpl* get_surface_from_file(
         const std::string& file_name,
         ImageDirectory base_directory);
+
 
     SurfaceImpl_UniquePtr
         internal_surface;                 /**< The SDL_Surface encapsulated. */

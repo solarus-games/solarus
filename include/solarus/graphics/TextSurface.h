@@ -105,9 +105,9 @@ class TextSurface: public Drawable {
     int get_height() const;
     virtual Size get_size() const override;
 
-    virtual void raw_draw(Surface& dst_surface, const Point& dst_position) override;
+    virtual void raw_draw(Surface& dst_surface, const Point& dst_position, const DrawProxy& proxy) override;
     virtual void raw_draw_region(const Rectangle& region,
-        Surface& dst_surface, const Point& dst_position) override;
+        Surface& dst_surface, const Point& dst_position, const DrawProxy &proxy) override;
     virtual void shader_draw(
         const ShaderPtr& shader,
         Surface& dst_surface,
@@ -119,8 +119,8 @@ class TextSurface: public Drawable {
         Surface& dst_surface,
         const Point& dst_position
         ) override;
-    virtual void draw_transition(Transition& transition) override;
-    virtual Surface& get_transition_surface() override;
+    //virtual void draw_transition(Transition& transition) override;
+    //virtual Surface& get_transition_surface() override;
 
     virtual const std::string& get_lua_type_name() const override;
 

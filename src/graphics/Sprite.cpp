@@ -778,9 +778,8 @@ void Sprite::update() {
  * \param dst_position Coordinates on the destination surface
  * (the origin will be placed at this position).
  */
-void Sprite::raw_draw(
-    Surface& dst_surface,
-    const Point& dst_position) {
+void Sprite::raw_draw(Surface& dst_surface,
+    const Point& dst_position, const DrawProxy &proxy) {
 
   if (current_animation == nullptr) {
     return;
@@ -799,7 +798,8 @@ void Sprite::raw_draw(
           dst_surface,
           dst_position /*- get_origin()*/,
           current_direction,
-          current_frame);
+          current_frame,
+          proxy);
   }
 }
 
@@ -838,10 +838,9 @@ Rectangle Sprite::clamp_region(const Rectangle& region) const {
  * \param dst_position Coordinates on the destination surface.
  * The origin point of the sprite will appear at these coordinates.
  */
-void Sprite::raw_draw_region(
-    const Rectangle& region,
+void Sprite::raw_draw_region(const Rectangle& region,
     Surface& dst_surface,
-    const Point& dst_position) {
+    const Point& dst_position, const DrawProxy &proxy) {
 
   if (current_animation == nullptr) {
     return;
@@ -856,21 +855,37 @@ void Sprite::raw_draw_region(
     // Otherwise, more than the current frame could be visible.
     Rectangle src_position = clamp_region(region);
 
-    // Calculate the destination coordinates.
-    Point dst_position2 = dst_position;
-    dst_position2 += src_position.get_xy(); // Let a space for the part outside the region.
-    dst_position2 -= get_origin();                // Input coordinates were relative to the origin.
-    /*get_intermediate_surface().set_blend_mode(get_blend_mode());
-    get_intermediate_surface().draw_region(
-        src_position,
-        std::static_pointer_cast<Surface>(dst_surface.shared_from_this()),
-        dst_position2
-    );*/
+
+    struct CropProxy : DrawProxy {
+      CropProxy(const Rectangle& r, const Point& p, const DrawProxy& n) : crop_region(r), origin(p),next(n) {}
+      void draw(Surface& dst_surface, Surface& src_surface, const Rectangle& region, const Point& destination) const override {
+        //Compute area to keep in sprite sheet
+        Rectangle crop_win = Rectangle(crop_region.get_xy()+region.get_xy(),crop_region.get_bottom_right()+region.get_xy());
+
+        //Adapt destination
+        Point dest = destination+crop_region.get_xy();
+
+        //Use given Proxy to draw result
+        next.draw(dst_surface,src_surface,crop_win&region,dest);
+      }
+      const Rectangle& crop_region;
+      const Point origin;
+      const DrawProxy& next;
+    };
+
+    //Instantiate crop proxy with current draw parameters
+    CropProxy cropProxy{
+      src_position,
+      get_origin(),
+      proxy
+    };
+
     current_animation->draw(
           dst_surface,
           dst_position,
           current_direction,
-          current_frame);
+          current_frame,
+          cropProxy);
   }
 }
 
@@ -950,20 +965,20 @@ void Sprite::shader_draw_region(
  * \brief Draws a transition effect on this drawable object.
  * \param transition The transition effect to apply.
  */
-void Sprite::draw_transition(Transition& transition) {
+/*void Sprite::draw_transition(Transition& transition) {
   //TODO reinvent that
   //transition.draw(get_intermediate_surface());
-}
+}*/
 
 /**
  * \brief Returns the surface where transitions on this drawable object
  * are applied.
  * \return The surface for transitions.
  */
-Surface& Sprite::get_transition_surface() {
+/*Surface& Sprite::get_transition_surface() {
   //TODO meh
   return get_intermediate_surface();
-}
+}*/
 
 /**
  * \brief Returns the intermediate surface used for transitions and other

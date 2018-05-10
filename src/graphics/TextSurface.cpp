@@ -539,11 +539,11 @@ void TextSurface::rebuild_ttf() {
  * \param dst_position Coordinates on the destination surface.
  */
 void TextSurface::raw_draw(Surface& dst_surface,
-    const Point& dst_position) {
+    const Point& dst_position, const DrawProxy &proxy) {
 
   if (surface != nullptr) {
     surface->set_blend_mode(get_blend_mode());
-    surface->raw_draw(dst_surface, dst_position + text_position);
+    surface->raw_draw(dst_surface, dst_position + text_position, proxy);
   }
 }
 
@@ -554,13 +554,13 @@ void TextSurface::raw_draw(Surface& dst_surface,
  * \param dst_position Coordinates on the destination surface.
  */
 void TextSurface::raw_draw_region(const Rectangle& region,
-    Surface& dst_surface, const Point& dst_position) {
+    Surface& dst_surface, const Point& dst_position, const DrawProxy& proxy) {
 
   if (surface != nullptr) {
     surface->set_blend_mode(get_blend_mode());
     surface->raw_draw_region(
         region, dst_surface,
-        dst_position + text_position);
+        dst_position + text_position, proxy);
   }
 }
 
@@ -590,7 +590,7 @@ void TextSurface::shader_draw_region(
  * \brief Draws a transition effect on this drawable object.
  * \param transition The transition effect to apply.
  */
-void TextSurface::draw_transition(Transition& transition) {
+/*void TextSurface::draw_transition(Transition& transition) {
   transition.draw(*surface);
 }
 
@@ -599,9 +599,9 @@ void TextSurface::draw_transition(Transition& transition) {
  * are applied.
  * \return The surface for transitions.
  */
-Surface& TextSurface::get_transition_surface() {
+/*Surface& TextSurface::get_transition_surface() {
   return *surface;
-}
+}*/
 
 /**
  * \brief Returns the name identifying this type in Lua.

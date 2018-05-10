@@ -36,7 +36,7 @@ public:
     int get_height() const override;
 
     void draw_other(const SurfaceImpl& texture, const Point& dst_position = Point(0,0));
-    void draw_region_other(const Rectangle &src_rect, const SurfaceImpl &region, const Point& dst_position);
+    void draw_region_other(const Rectangle &src_rect, const SurfaceImpl &texture, const Point& dst_position);
 
     RenderTexture* to_render_texture() override;
 

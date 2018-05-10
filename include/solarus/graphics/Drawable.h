@@ -43,6 +43,13 @@ class Drawable: public ExportableToLua {
 
   public:
 
+    /**
+     * @brief The DrawProxy is used to draw with various modifiers
+     */
+    struct DrawProxy {
+      virtual void draw(Surface& dst_surface, Surface& src_surface, const Rectangle& region, const Point& destination) const = 0;
+    };
+
     virtual ~Drawable();
 
     virtual Point get_origin() const;
@@ -89,7 +96,8 @@ class Drawable: public ExportableToLua {
      */
     virtual void raw_draw(
         Surface& dst_surface,
-        const Point& dst_position
+        const Point& dst_position,
+        const DrawProxy& proxy
     ) = 0;
 
     /**
@@ -106,7 +114,8 @@ class Drawable: public ExportableToLua {
     virtual void raw_draw_region(
         const Rectangle& region,
         Surface& dst_surface,
-        const Point& dst_position
+        const Point& dst_position,
+        const DrawProxy& proxy
     ) = 0;
 
     /**
@@ -152,14 +161,14 @@ class Drawable: public ExportableToLua {
      *
      * TODO Since there is get_transition_surface() now, this function can probably be removed.
      */
-    virtual void draw_transition(Transition& transition) = 0;
+    //virtual void draw_transition(Transition& transition) = 0;
 
     /**
      * \brief Returns the surface where transitions on this drawable object
      * are applied.
      * \return The surface for transitions.
      */
-    virtual Surface& get_transition_surface() = 0;
+    //virtual Surface& get_transition_surface() = 0;
 
     virtual void update();
     bool is_suspended() const;

@@ -32,7 +32,7 @@ class TransitionFade: public Transition {
 
   public:
 
-    TransitionFade(Direction direction, Surface& dst_surface);
+    TransitionFade(Direction direction);
 
     void set_delay(uint32_t delay);
 
@@ -45,7 +45,7 @@ class TransitionFade: public Transition {
     virtual bool is_finished() const override;
     virtual void notify_suspended(bool suspended) override;
     virtual void update() override;
-    virtual void draw(Surface& surface) override;
+    virtual void draw(Surface& dst_surface, Surface& src_surface, const Rectangle& region, const Point& destination) const override;
 
   private:
 
@@ -58,7 +58,6 @@ class TransitionFade: public Transition {
     uint32_t next_frame_date;
     uint32_t delay;
 
-    Surface* dst_surface;
     bool colored;
     Color transition_color;
 

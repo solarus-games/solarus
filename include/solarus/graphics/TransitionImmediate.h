@@ -39,7 +39,7 @@ class TransitionImmediate: public Transition {
     virtual bool is_finished() const override;
     virtual void notify_suspended(bool suspended) override;
     virtual void update() override;
-    virtual void draw(Surface& dst_surface) override;
+    virtual void draw(Surface& dst_surface, Surface& src_surface, const Rectangle& region, const Point& destination) const override;
 
 };
 

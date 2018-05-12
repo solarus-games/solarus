@@ -40,8 +40,8 @@ namespace Solarus {
 
 Surface::SurfaceDraw Surface::draw_proxy;
 
-void Surface::SurfaceDraw::draw(Surface& dst_surface, Surface& src_surface, const Rectangle& region, const Point& destination) const {
-  dst_surface.request_render().draw_region_other(region,src_surface.get_internal_surface(),destination);
+void Surface::SurfaceDraw::draw(Surface& dst_surface, const Surface &src_surface, const DrawInfos &params) const {
+  dst_surface.request_render().draw_other(src_surface.get_internal_surface(),params);
 }
 
 /**
@@ -51,7 +51,6 @@ void Surface::SurfaceDraw::draw(Surface& dst_surface, Surface& src_surface, cons
  */
 Surface::Surface(int width, int height, bool premultiplied):
   Drawable(),
-  opacity(255),
   internal_surface(nullptr)
 {
 
@@ -64,8 +63,7 @@ Surface::Surface(int width, int height, bool premultiplied):
 }
 
 Surface::Surface(SDL_Surface *surf, bool premultiplied)
-  : opacity(255),
-    internal_surface(new Texture(surf))
+  : internal_surface(new Texture(surf))
 {
   internal_surface->set_premultiplied(premultiplied);
   internal_surface->_parent = this;
@@ -82,7 +80,6 @@ Surface::Surface(SDL_Surface *surf, bool premultiplied)
  */
 Surface::Surface(SurfaceImpl* impl, bool premultiplied):
   Drawable(),
-  opacity(255),
   internal_surface(impl) //TODO refactor this...
 {
   internal_surface->set_premultiplied(premultiplied);
@@ -228,22 +225,6 @@ Size Surface::get_size() const {
 }
 
 /**
- * \brief Returns the opacity of this surface.
- * \return The opacity (0 to 255).
- */
-uint8_t Surface::get_opacity() const {
-  return opacity;
-}
-
-/**
- * \brief Sets the opacity of this surface.
- * \param opacity The opacity (0 to 255).
- */
-void Surface::set_opacity(uint8_t opacity) {
-  this->opacity = opacity;
-}
-
-/**
  * \brief Returns the SDL surface wrapped.
  * \return The internal SDL surface.
  */
@@ -384,72 +365,13 @@ void Surface::fill_with_color(const Color& color, const Rectangle& where) {
  * \param dst_surface The destination surface.
  * \param dst_position Coordinates on the destination surface.
  */
-void Surface::raw_draw(Surface& dst_surface, const Point& dst_position,
-                       const DrawProxy& proxy) {
-  //dst_surface.request_render().draw_other(*internal_surface,dst_position);
-  raw_draw_region(Rectangle(get_size()),dst_surface,dst_position,proxy);
+void Surface::raw_draw(Surface& dst_surface, const DrawInfos& infos) const {
+  infos.proxy.draw(dst_surface,*this,infos);
 }
 
-/**
- * \brief Draws a subrectangle of this surface on another surface.
- * \param region The subrectangle to draw in this object.
- * \param dst_surface The destination surface.
- * \param dst_position Coordinates on the destination surface.
- */
-void Surface::raw_draw_region(const Rectangle& region,
-    Surface& dst_surface,
-    const Point& dst_position, const DrawProxy &proxy) {
-  proxy.draw(dst_surface,*this,region,dst_position);
-  //dst_surface.request_render().draw_region_other(region,*internal_surface,dst_position);
+Rectangle Surface::get_region() const {
+  return Rectangle(Point(), get_size());
 }
-
-/**
- * \brief Draws this surface on another surface, using the given shader
- * \param shader The shader
- * \param dst_surface The destination surface.
- * \param dst_position Coordinates on the destination surface.
- */
-void Surface::shader_draw(
-    const ShaderPtr& shader,
-    Surface& dst_surface,
-    const Point& dst_position
-    ) {
-  shader_draw_region(shader,Rectangle(get_size()),dst_surface,dst_position);
-}
-
-/**
- * \brief Draws a subrectangle of this surface on another surface, using the given shader
- * \param shader The shader
- * \param region The subrectangle to draw in this object.
- * \param dst_surface The destination surface.
- * \param dst_position Coordinates on the destination surface.
- */
-void Surface::shader_draw_region(
-    const ShaderPtr& shader,
-    const Rectangle& region,
-    Surface& dst_surface,
-    const Point& dst_position
-    ) {
-  dst_surface.request_render().with_target([&](SDL_Renderer* r){
-    SDL_BlendMode target = get_sdl_blend_mode();
-    SDL_BlendMode current;
-    SDL_GetRenderDrawBlendMode(r,&current);
-    if(target != current) { //Blend mode need change
-      SDL_SetRenderDrawBlendMode(r,get_sdl_blend_mode());
-      SDL_RenderDrawPoint(r,-100,-100); //Draw a point offscreen to force blendmode change
-    }
-    shader->set_uniform_1f("sol_opacity",get_opacity()/256.f);
-    shader->render(*this,region,dst_surface.get_size(),dst_position);
-  });
-}
-
-/**
- * \brief Draws a transition effect on this drawable object.
- * \param transition The transition effect to apply.
- */
-/*void Surface::draw_transition(Transition& transition) {
-  transition.draw(*this);
-}*/
 
 /**
  * \brief Draws this software surface with a pixel filter on another software
@@ -588,28 +510,48 @@ uint32_t Surface::get_color_value(const Color& color) const {
   return SDL_MapRGBA(Video::get_pixel_format(), r, g, b, a);
 }
 
-/**
- * \brief Returns the blend mode as an SDL_BlendMode value.
- * \return The blend mode.
- */
-SDL_BlendMode Surface::get_sdl_blend_mode() const {
 
-  switch (get_blend_mode()) {
-
-  case BlendMode::NONE:
-    return SDL_BLENDMODE_NONE;
-
-  case BlendMode::BLEND:
-    return SDL_BLENDMODE_BLEND;
-
-  case BlendMode::ADD:
-    return SDL_BLENDMODE_ADD;
-
-  case BlendMode::MULTIPLY:
-    return SDL_BLENDMODE_MOD;
+SDL_BlendMode Surface::make_sdl_blend_mode(const SurfaceImpl& dst_surface, const SurfaceImpl& src_surface, BlendMode blend_mode) {
+  if(dst_surface.is_premultiplied()) {
+    switch(blend_mode) {
+      case BlendMode::NONE:
+        return SDL_BLENDMODE_NONE;
+      case BlendMode::MULTIPLY:
+        return SDL_BLENDMODE_MOD;
+      case BlendMode::ADD:
+        return SDL_BLENDMODE_ADD;
+      case BlendMode::BLEND:
+      default:
+        return SDL_ComposeCustomBlendMode(
+              SDL_BLENDFACTOR_SRC_ALPHA,
+              SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
+              SDL_BLENDOPERATION_ADD,
+              SDL_BLENDFACTOR_ONE,
+              SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
+              SDL_BLENDOPERATION_ADD);
+    }
+  } else {
+    //Straight destination
+    if(src_surface.is_premultiplied() && blend_mode == BlendMode::BLEND)
+      return SDL_ComposeCustomBlendMode(
+            SDL_BLENDFACTOR_ONE,
+            SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
+            SDL_BLENDOPERATION_ADD,
+            SDL_BLENDFACTOR_ONE,
+            SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
+            SDL_BLENDOPERATION_ADD);
+    switch(blend_mode) { //TODO check other modes
+      case BlendMode::NONE:
+        return SDL_BLENDMODE_NONE;
+      case BlendMode::MULTIPLY:
+        return SDL_BLENDMODE_MOD;
+      case BlendMode::ADD:
+        return SDL_BLENDMODE_ADD;
+      case BlendMode::BLEND:
+      default:
+        return SDL_BLENDMODE_BLEND;
+    }
   }
-
-  return SDL_BLENDMODE_BLEND;
 }
 
 /**

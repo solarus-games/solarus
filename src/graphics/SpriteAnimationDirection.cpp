@@ -80,7 +80,7 @@ const Rectangle& SpriteAnimationDirection::get_frame(int frame) const {
  * \param src_image the image from which the frame is extracted
  */
 void SpriteAnimationDirection::draw(Surface& dst_surface,
-                                    const Point& dst_position, int current_frame, Surface& src_image, const Drawable::DrawProxy& proxy) const {
+                                    const Point& dst_position, int current_frame, Surface& src_image, const DrawInfos &infos) const {
 
   const Rectangle& current_frame_rect = get_frame(current_frame);
 
@@ -88,12 +88,7 @@ void SpriteAnimationDirection::draw(Surface& dst_surface,
   Point position_top_left = dst_position;
   position_top_left -= origin;
 
-  src_image.raw_draw_region(
-        current_frame_rect,
-        dst_surface,
-        position_top_left,
-        proxy
-        );
+  infos.proxy.draw(dst_surface,src_image,DrawInfos(infos,current_frame_rect,position_top_left));
 }
 
 /**

@@ -142,7 +142,7 @@ int SpriteAnimation::get_next_frame(
  * \param current_frame the frame to show in this direction
  */
 void SpriteAnimation::draw(Surface& dst_surface,
-    const Point& dst_position, int current_direction, int current_frame, const Drawable::DrawProxy &proxy) const {
+    const Point& dst_position, int current_direction, int current_frame, const DrawInfos &infos) const {
 
   if (src_image == nullptr) {
     return;
@@ -157,7 +157,7 @@ void SpriteAnimation::draw(Surface& dst_surface,
     Debug::die(oss.str());
   }
   directions[current_direction].draw(dst_surface, dst_position,
-      current_frame, *src_image, proxy);
+      current_frame, *src_image, infos);
 }
 
 /**

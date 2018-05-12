@@ -62,7 +62,6 @@ Transition::~Transition() {
 Transition* Transition::create(
     Transition::Style style,
     Transition::Direction direction,
-    Surface& dst_surface,
     Game* game) {
 
   Transition* transition = nullptr;

@@ -45,7 +45,8 @@ class TransitionFade: public Transition {
     virtual bool is_finished() const override;
     virtual void notify_suspended(bool suspended) override;
     virtual void update() override;
-    virtual void draw(Surface& dst_surface, Surface& src_surface, const Rectangle& region, const Point& destination) const override;
+    virtual void draw(Surface& dst_surface, const Surface& src_surface, const DrawInfos& infos) const override;
+    virtual void finish(Drawable& target) const override;
 
   private:
 

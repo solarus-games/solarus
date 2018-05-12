@@ -58,8 +58,6 @@ class GlShader : public Shader {
 
   void render(const VertexArray &array, const Surface &texture, const glm::mat4& mvp_matrix = glm::mat4(), const glm::mat3& uv_matrix = glm::mat3()) override;
 
-  virtual void draw(Surface& dst_surface, Surface& src_surface, const Rectangle& region, const Point& destination) const override;
-
   std::string default_vertex_source() const override;
   std::string default_fragment_source() const override;
 protected:

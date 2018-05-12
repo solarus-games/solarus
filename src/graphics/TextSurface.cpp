@@ -538,14 +538,14 @@ void TextSurface::rebuild_ttf() {
  * \param dst_surface The destination surface.
  * \param dst_position Coordinates on the destination surface.
  */
-void TextSurface::raw_draw(Surface& dst_surface,
-    const Point& dst_position, const DrawProxy &proxy) {
+/*void TextSurface::raw_draw(Surface& dst_surface,
+    const Point& dst_position, const DrawInfos &infos) {
 
   if (surface != nullptr) {
     surface->set_blend_mode(get_blend_mode());
-    surface->raw_draw(dst_surface, dst_position + text_position, proxy);
+    surface->raw_draw(dst_surface, dst_position + text_position, infos);
   }
-}
+}*/
 
 /**
  * \brief Draws a subrectangle of this text surface on another surface.
@@ -553,18 +553,21 @@ void TextSurface::raw_draw(Surface& dst_surface,
  * \param dst_surface The destination surface.
  * \param dst_position Coordinates on the destination surface.
  */
-void TextSurface::raw_draw_region(const Rectangle& region,
-    Surface& dst_surface, const Point& dst_position, const DrawProxy& proxy) {
+void TextSurface::raw_draw(Surface& dst_surface,const DrawInfos& infos) const {
 
   if (surface != nullptr) {
-    surface->set_blend_mode(get_blend_mode());
-    surface->raw_draw_region(
-        region, dst_surface,
-        dst_position + text_position, proxy);
+    //surface->set_blend_mode(get_blend_mode()); //TODO remove
+    surface->raw_draw(
+        dst_surface,
+        DrawInfos(infos,infos.dst_position + text_position));
   }
 }
 
-void TextSurface::shader_draw(
+Rectangle TextSurface::get_region() const {
+  return Rectangle(Point(),get_size());
+}
+
+/*void TextSurface::shader_draw(
     const ShaderPtr& shader,
     Surface& dst_surface,
     const Point& dst_position
@@ -585,7 +588,7 @@ void TextSurface::shader_draw_region(
     surface->shader_draw_region(shader,region,dst_surface,dst_position);
   }
 }
-
+*/
 /**
  * \brief Draws a transition effect on this drawable object.
  * \param transition The transition effect to apply.

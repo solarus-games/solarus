@@ -205,7 +205,7 @@ void TransitionScrolling::update() {
  * \brief Draws the transition effect on a surface.
  * \param dst_surface the surface to draw
  */
-void TransitionScrolling::draw(Surface& dst_surface, Surface &src_surface, const Rectangle &region, const Point &destination) const { //TODO fix
+void TransitionScrolling::draw(Surface& dst_surface, const Surface &src_surface, const DrawInfos &infos) const {
 
   if (get_direction() == Direction::CLOSING) {
     return;
@@ -216,9 +216,15 @@ void TransitionScrolling::draw(Surface& dst_surface, Surface &src_surface, const
       "No previous surface defined for scrolling");
 
   // draw the old map
-  previous_surface->raw_draw(dst_surface, previous_map_dst_position.get_xy()-current_scrolling_position.get_xy());
+  infos.proxy.draw(dst_surface,*previous_surface,
+                   DrawInfos(infos,
+                             Rectangle(Point(),previous_surface->get_size()),
+                             previous_map_dst_position.get_xy()-current_scrolling_position.get_xy()));
 
   // draw the new map
-  src_surface.raw_draw(dst_surface, current_map_dst_position.get_xy()-current_scrolling_position.get_xy());
+  infos.proxy.draw(dst_surface,src_surface,
+                   DrawInfos(infos,
+                             Rectangle(Point(),src_surface.get_size()),
+                             current_map_dst_position.get_xy()-current_scrolling_position.get_xy()));
 }
 }

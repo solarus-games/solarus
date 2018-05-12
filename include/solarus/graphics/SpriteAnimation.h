@@ -50,7 +50,7 @@ class SpriteAnimation {
 
     int get_next_frame(int current_direction, int current_frame) const;
     void draw(Surface& dst_surface, const Point& dst_position,
-        int current_direction, int current_frame, const Drawable::DrawProxy& proxy) const;
+        int current_direction, int current_frame, const DrawInfos& infos) const;
 
     int get_nb_directions() const;
     const SpriteAnimationDirection& get_direction(int direction) const;

@@ -173,26 +173,26 @@ void TransitionFade::update() {
  * \brief Draws the transition effect on a surface.
  * \param dst_surface The destination surface.
  */
-void TransitionFade::draw(Surface& dst_surface, Surface &src_surface, const Rectangle &region, const Point &destination) const { //TODO fix this
+void TransitionFade::draw(Surface& dst_surface, const Surface &src_surface, const DrawInfos &infos) const { //TODO fix this
   // Draw the transition effect on the surface.
-  int alpha_impl = std::min(alpha, 255);
+  int alpha_impl = std::min((alpha*infos.opacity)/256, 255); //TODO fix alpha not being retained...
 
   if (!colored) {
-    // Set the opacity on the surface.
-    src_surface.set_opacity(alpha_impl);
-    src_surface.raw_draw_region(region,dst_surface,destination,Surface::draw_proxy);
+    // Draw surface with modified opacity
+    infos.proxy.draw(dst_surface,src_surface,DrawInfos(infos,(uint8_t)alpha_impl));
   } else {
     // Add a colored foreground surface with the appropriate opacity.
     uint8_t r, g, b, a;
     transition_color.get_components(r, g, b, a);
     // A full opaque transition corresponds to a foreground with full alpha.
     Color fade_color(r, g, b, 255 - std::min(alpha_impl, (int) a));
-    src_surface.raw_draw_region(region,dst_surface,destination,Surface::draw_proxy);
+    infos.proxy.draw(dst_surface,src_surface,infos);
     dst_surface.fill_with_color(fade_color);
   }
+}
 
-  //this->dst_surface = &dst_surface;
-
+void TransitionFade::finish(Drawable& target) const {
+  target.set_opacity(std::min((alpha*target.get_opacity())/256,255));
 }
 
 }

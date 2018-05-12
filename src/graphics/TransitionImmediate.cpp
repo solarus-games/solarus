@@ -69,8 +69,8 @@ void TransitionImmediate::update() {
  * \brief Draws the transition effect on a surface.
  * \param dst_surface the surface to draw
  */
-void TransitionImmediate::draw(Surface& dst_surface, Surface &src_surface, const Rectangle& region, const Point& destination) const {
-  Surface::draw_proxy.draw(dst_surface,src_surface,region,destination);
+void TransitionImmediate::draw(Surface& dst_surface, const Surface &src_surface, const DrawInfos &infos) const {
+  infos.proxy.draw(dst_surface,src_surface,infos);
 }
 
 }

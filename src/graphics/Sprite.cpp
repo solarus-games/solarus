@@ -778,7 +778,7 @@ void Sprite::update() {
  * \param dst_position Coordinates on the destination surface
  * (the origin will be placed at this position).
  */
-void Sprite::raw_draw(Surface& dst_surface,
+/*void Sprite::raw_draw(Surface& dst_surface,
     const Point& dst_position, const DrawProxy &proxy) {
 
   if (current_animation == nullptr) {
@@ -794,14 +794,14 @@ void Sprite::raw_draw(Surface& dst_surface,
         std::static_pointer_cast<Surface>(dst_surface.shared_from_this()),
         dst_position - get_origin()
     );*/
-    current_animation->draw(
+    /*current_animation->draw(
           dst_surface,
-          dst_position /*- get_origin()*/,
+          dst_position /*- get_origin()*//*,
           current_direction,
           current_frame,
           proxy);
   }
-}
+}*/
 
 /**
  * @brief compute region of the spritesheet to draw given crop region
@@ -838,9 +838,7 @@ Rectangle Sprite::clamp_region(const Rectangle& region) const {
  * \param dst_position Coordinates on the destination surface.
  * The origin point of the sprite will appear at these coordinates.
  */
-void Sprite::raw_draw_region(const Rectangle& region,
-    Surface& dst_surface,
-    const Point& dst_position, const DrawProxy &proxy) {
+void Sprite::raw_draw(Surface& dst_surface, const DrawInfos& infos) const {
 
   if (current_animation == nullptr) {
     return;
@@ -853,112 +851,45 @@ void Sprite::raw_draw_region(const Rectangle& region,
 
     // If the region is bigger than the current frame, clip it.
     // Otherwise, more than the current frame could be visible.
-    Rectangle src_position = clamp_region(region);
+    Rectangle src_position = clamp_region(infos.region);
 
 
     struct CropProxy : DrawProxy {
-      CropProxy(const Rectangle& r, const Point& p, const DrawProxy& n) : crop_region(r), origin(p),next(n) {}
-      void draw(Surface& dst_surface, Surface& src_surface, const Rectangle& region, const Point& destination) const override {
+      CropProxy(const Rectangle& r, const Point& p) : crop_region(r), origin(p) {}
+      void draw(Surface& dst_surface, const Surface& src_surface, const DrawInfos& infos) const override {
         //Compute area to keep in sprite sheet
-        Rectangle crop_win = Rectangle(crop_region.get_xy()+region.get_xy(),crop_region.get_bottom_right()+region.get_xy());
+        Rectangle crop_win = Rectangle(crop_region.get_xy()+infos.region.get_xy(),crop_region.get_bottom_right()+infos.region.get_xy());
 
         //Adapt destination
-        Point dest = destination+crop_region.get_xy();
+        Point dest = infos.dst_position+crop_region.get_xy();
 
         //Use given Proxy to draw result
-        next.draw(dst_surface,src_surface,crop_win&region,dest);
+        //infos.proxy.draw(dst_surface,src_surface,infos);
+        infos.proxy.draw(dst_surface,src_surface,DrawInfos(infos,crop_win&infos.region,dest));
       }
       const Rectangle& crop_region;
       const Point origin;
-      const DrawProxy& next;
     };
 
     //Instantiate crop proxy with current draw parameters
     CropProxy cropProxy{
       src_position,
-      get_origin(),
-      proxy
+      get_origin()
     };
+
+
 
     current_animation->draw(
           dst_surface,
-          dst_position,
+          infos.dst_position,
           current_direction,
           current_frame,
-          cropProxy);
+          DrawInfos(infos,DrawProxyChain<2>({cropProxy,infos.proxy})));
   }
 }
 
-/**
- * \brief Draws the sprite on a surface, with its current animation,
- * direction and frame, using the given shader
- * \param shader The shader
- * \param dst_surface The destination surface.
- * \param dst_position Coordinates on the destination surface
- * (the origin will be placed at this position).
- */
-void Sprite::shader_draw(
-    const ShaderPtr& shader,
-    Surface& dst_surface,
-    const Point& dst_position
-    ) {
-  if (current_animation == nullptr) {
-    return;
-  }
-
-  if (!is_animation_finished()
-      && (blink_delay == 0 || blink_is_sprite_visible)) {
-    //TODO redo this
-    /*draw_intermediate();
-    dst_surface.request_render().with_target([&](SDL_Renderer*){
-      get_intermediate_surface().set_blend_mode(get_blend_mode());
-      get_intermediate_surface().shader_draw_region(shader,
-                                                    Rectangle(get_size()),
-                                                    dst_surface,
-                                                    dst_position-get_origin());
-    });*/
-  }
-}
-
-/**
- * \brief Draws a subrectangle of the current frame of this sprite, using the given shader
- * \param shader The shader
- * \param region The subrectangle to draw, relative to the origin point.
- * It may be bigger than the frame: in this case it will be clipped.
- * \param dst_surface The destination surface.
- * \param dst_position Coordinates on the destination surface.
- * The origin point of the sprite will appear at these coordinates.
- */
-void Sprite::shader_draw_region(
-    const ShaderPtr& shader,
-    const Rectangle& region,
-    Surface& dst_surface,
-    const Point& dst_position
-    ) {
-  if (current_animation == nullptr) {
-    return;
-  }
-
-  if (!is_animation_finished()
-      && (blink_delay == 0 || blink_is_sprite_visible)) {
-
-    //TODO redo this...
-    /*draw_intermediate();
-
-    // If the region is bigger than the current frame, clip it.
-    // Otherwise, more than the current frame could be visible.
-    Rectangle src_position = clamp_region(region);
-
-    // Calculate the destination coordinates.
-    Point dst_position2 = dst_position;
-    dst_position2 += src_position.get_xy(); // Let a space for the part outside the region.
-    dst_position2 -= get_origin();                // Input coordinates were relative to the origin.
-    //get_intermediate_surface().set_blend_mode(get_blend_mode());
-    dst_surface.request_render().with_target([&](SDL_Renderer*){
-      get_intermediate_surface().set_blend_mode(get_blend_mode());
-      get_intermediate_surface().shader_draw_region(shader,src_position,dst_surface,dst_position2);
-    });*/
-  }
+Rectangle Sprite::get_region() const {
+  return Rectangle(-get_origin(),get_size());
 }
 
 /**

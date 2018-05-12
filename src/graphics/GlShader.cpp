@@ -353,21 +353,7 @@ void GlShader::render(const VertexArray& array, const Surface& texture, const gl
   ctx.glUseProgram(previous_program);
 }
 
-void GlShader::draw(Surface& dst_surface, Surface& src_surface, const Rectangle& region, const Point& dst_position) const {
-    dst_surface.request_render().with_target([&](SDL_Renderer* r){
-      SDL_BlendMode target = src_surface.get_sdl_blend_mode();
-      SDL_BlendMode current;
-      SDL_GetRenderDrawBlendMode(r,&current);
-      if(target != current) { //Blend mode need change
-        SDL_SetRenderDrawBlendMode(r,target);
-        SDL_RenderDrawPoint(r,-100,-100); //Draw a point offscreen to force blendmode change
-      }
-      //TODO fix this ugliness
-      GlShader* that = const_cast<GlShader*>(this);
-      that->set_uniform_1f("sol_opacity",src_surface.get_opacity()/256.f);
-      that->Shader::render(src_surface,region,dst_surface.get_size(),dst_position);
-    });
-}
+
 
 /**
  * \brief Returns the location of a uniform value in the shader program.

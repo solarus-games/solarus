@@ -59,26 +59,18 @@ SDL_Texture* RenderTexture::get_texture() const {
 }
 
 /**
- * @brief draw another surface implementation on this one
- * @param texture other surface
- * @param dst_position position where to draw the surface
- */
-void RenderTexture::draw_other(const SurfaceImpl& texture, const Point& dst_position) {
-  draw_region_other(Rectangle(0,0,texture.get_width(),texture.get_height()),texture,dst_position);
-}
-
-/**
- * @brief draw region of another surfaceimpl on this one
+ * @brief draw region of another surfaceimpl on this one //TODO update doc
  * @param src_rect source region to draw
  * @param texture source surface
  * @param dst_position position where to draw
  */
-void RenderTexture::draw_region_other(const Rectangle& src_rect, const SurfaceImpl& texture, const Point& dst_position) {
+void RenderTexture::draw_other(const SurfaceImpl& texture, const DrawInfos& infos) {
   with_target([&](SDL_Renderer* renderer){
-    Rectangle dst_rect(dst_position,src_rect.get_size());
-    SDL_SetTextureAlphaMod(texture.get_texture(),texture.parent().get_opacity());
-    SDL_SetTextureBlendMode(texture.get_texture(),make_sdl_blend_mode(texture));
-    SDL_RenderCopy(renderer,texture.get_texture(),src_rect,dst_rect);
+    Rectangle dst_rect(infos.dst_position,infos.region.get_size());
+    SDL_SetTextureAlphaMod(texture.get_texture(),infos.opacity);
+    SDL_BlendMode mode = Surface::make_sdl_blend_mode(*this,texture,infos.blend_mode);
+    SDL_SetTextureBlendMode(texture.get_texture(),mode);
+    SDL_RenderCopy(renderer,texture.get_texture(),infos.region,dst_rect);
   });
 }
 
@@ -134,49 +126,6 @@ void RenderTexture::clear() {
     SDL_SetTextureBlendMode(target.get(),SDL_BLENDMODE_BLEND);
     SDL_RenderClear(renderer);
   });
-}
-
-SDL_BlendMode RenderTexture::make_sdl_blend_mode(const SurfaceImpl& src) const {
-  if(is_premultiplied()) {
-    switch(src.parent().get_blend_mode()) {
-      case BlendMode::NONE:
-        return SDL_BLENDMODE_NONE;
-      case BlendMode::MULTIPLY:
-        return SDL_BLENDMODE_MOD;
-      case BlendMode::ADD:
-        return SDL_BLENDMODE_ADD;
-      case BlendMode::BLEND:
-      default:
-        return SDL_ComposeCustomBlendMode(
-              SDL_BLENDFACTOR_SRC_ALPHA,
-              SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
-              SDL_BLENDOPERATION_ADD,
-              SDL_BLENDFACTOR_ONE,
-              SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
-              SDL_BLENDOPERATION_ADD);
-    }
-  } else {
-    //Straight destination
-    if(src.is_premultiplied() && src.parent().get_blend_mode() == BlendMode::BLEND)
-      return SDL_ComposeCustomBlendMode(
-            SDL_BLENDFACTOR_ONE,
-            SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
-            SDL_BLENDOPERATION_ADD,
-            SDL_BLENDFACTOR_ONE,
-            SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
-            SDL_BLENDOPERATION_ADD);
-    switch(src.parent().get_blend_mode()) { //TODO check other modes
-      case BlendMode::NONE:
-        return SDL_BLENDMODE_NONE;
-      case BlendMode::MULTIPLY:
-        return SDL_BLENDMODE_MOD;
-      case BlendMode::ADD:
-        return SDL_BLENDMODE_ADD;
-      case BlendMode::BLEND:
-      default:
-        return SDL_BLENDMODE_BLEND;
-    }
-  }
 }
 
 /**

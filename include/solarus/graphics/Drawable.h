@@ -25,6 +25,7 @@
 #include "solarus/graphics/ShaderPtr.h"
 #include "solarus/lua/ExportableToLua.h"
 #include "solarus/lua/ScopedLuaRef.h"
+#include "solarus/graphics/DrawProxies.h"
 #include <memory>
 
 namespace Solarus {
@@ -42,13 +43,6 @@ class Rectangle;
 class Drawable: public ExportableToLua {
 
   public:
-
-    /**
-     * @brief The DrawProxy is used to draw with various modifiers
-     */
-    struct DrawProxy {
-      virtual void draw(Surface& dst_surface, Surface& src_surface, const Rectangle& region, const Point& destination) const = 0;
-    };
 
     virtual ~Drawable();
 
@@ -82,9 +76,12 @@ class Drawable: public ExportableToLua {
     void draw_region(const Rectangle& region, const SurfacePtr& dst_surface);
     void draw_region(const Rectangle& region,
         const SurfacePtr& dst_surface, const Point& dst_position);
+    void draw_region(const Rectangle& region,
+                     const SurfacePtr& dst_surface, const Point& dst_position, const DrawProxy& proxy);
 
     void set_shader(const ShaderPtr& shader);
     const ShaderPtr& get_shader() const;
+
     /**
      * \brief Draws this object without applying dynamic effects.
      *
@@ -96,79 +93,8 @@ class Drawable: public ExportableToLua {
      */
     virtual void raw_draw(
         Surface& dst_surface,
-        const Point& dst_position,
-        const DrawProxy& proxy
-    ) = 0;
-
-    /**
-     * \brief Draws a subrectangle of this object without applying dynamic
-     * effects.
-     *
-     * Redefine this function to draw your object onto the destination
-     * surface.
-     *
-     * \param region The subrectangle to draw in this object.
-     * \param dst_surface The destination surface.
-     * \param dst_position Coordinates on the destination surface.
-     */
-    virtual void raw_draw_region(
-        const Rectangle& region,
-        Surface& dst_surface,
-        const Point& dst_position,
-        const DrawProxy& proxy
-    ) = 0;
-
-    /**
-     * \brief Draws this object with the given shader
-     *
-     * Redefine this function to draw your object onto the destination
-     * surface.
-     * \param shader A valid shader to draw the object to
-     * \param dst_surface The destination surface.
-     * \param dst_position Coordinates on the destination surface.
-     */
-    virtual void shader_draw(
-        const ShaderPtr& shader,
-        Surface& dst_surface,
-        const Point& dst_position
-        ) = 0;
-
-    /**
-     * \brief Draws a subrectangle of this object with the given shader
-     *
-     * Redefine this function to draw your object onto the destination
-     * surface.
-     * \param shader A valid shader to draw the object to
-     * \param region The subrectangl  e to draw in this object.
-     * \param dst_surface The destination surface.
-     * \param dst_position Coordinates on the destination surface.
-     */
-    virtual void shader_draw_region(
-        const ShaderPtr& shader,
-        const Rectangle& region,
-        Surface& dst_surface,
-        const Point& dst_position
-        ) = 0;
-
-
-    /**
-     * \brief Draws a transition effect on this drawable object.
-     *
-     * Redefine this function to apply the transition effect on the surface
-     * of your object.
-     *
-     * \param transition The transition effect to apply.
-     *
-     * TODO Since there is get_transition_surface() now, this function can probably be removed.
-     */
-    //virtual void draw_transition(Transition& transition) = 0;
-
-    /**
-     * \brief Returns the surface where transitions on this drawable object
-     * are applied.
-     * \return The surface for transitions.
-     */
-    //virtual Surface& get_transition_surface() = 0;
+        const DrawInfos& infos
+    ) const = 0;
 
     virtual void update();
     bool is_suspended() const;
@@ -177,11 +103,14 @@ class Drawable: public ExportableToLua {
     BlendMode get_blend_mode() const;
     void set_blend_mode(BlendMode blend_mode);
 
+    uint8_t get_opacity() const;
+    void set_opacity(uint8_t opacity);
+
+    virtual Rectangle get_region() const = 0;
   protected:
-
     Drawable();
-
   private:
+    const DrawProxy& terminal() const;
 
     Point xy;                     /**< Current position of this object
                                    * (result of movements). */
@@ -194,7 +123,8 @@ class Drawable: public ExportableToLua {
                                    * when the transition finishes */
     bool suspended;               /**< Whether this object is suspended. */
     BlendMode blend_mode;         /**< How to draw this object on a surface. */
-    ShaderPtr shader;             /**< Optional shader used to draw the surface */
+    ShaderPtr shader;             /**< Optional shader used to draw the object */
+    uint8_t opacity = 255;              /**< Opacity of this drawable object */
 };
 
 }

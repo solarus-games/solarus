@@ -36,7 +36,7 @@ class Surface;
  *
  * The transitions may be applied to maps or any surface.
  */
-class SOLARUS_API Transition : public Drawable::DrawProxy {
+class SOLARUS_API Transition : public DrawProxy {
 
   public:
 
@@ -58,10 +58,8 @@ class SOLARUS_API Transition : public Drawable::DrawProxy {
     };
 
     virtual ~Transition();
-    static Transition* create(
-        Style style,
+    static Transition* create(Style style,
         Direction direction,
-        Surface& dst_surface,
         Game* game = nullptr);
 
     Game* get_game() const;
@@ -93,6 +91,11 @@ class SOLARUS_API Transition : public Drawable::DrawProxy {
      * \brief Updates this transition effect.
      */
     virtual void update() = 0;
+
+    /**
+     * @brief edit target Drawable to reflect transition side effects
+     */
+    virtual void finish(Drawable& target) const {(void)target;}
 
     /**
      * \brief Draws the transition effect on a surface.

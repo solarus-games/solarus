@@ -52,7 +52,7 @@ class Surface: public Drawable {
     using SurfaceImpl_UniquePtr = std::unique_ptr<SurfaceImpl>;
 
     struct SurfaceDraw : public DrawProxy {
-      virtual void draw(Surface& dst_surface, Surface& src_surface, const Rectangle& region, const Point& destination) const override;
+      virtual void draw(Surface& dst_surface, Surface& src_surface, const DrawInfos& params) const override;
     };
     /**
      * \brief The base directory to use when opening image files.

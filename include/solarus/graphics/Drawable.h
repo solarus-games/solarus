@@ -25,6 +25,7 @@
 #include "solarus/graphics/ShaderPtr.h"
 #include "solarus/lua/ExportableToLua.h"
 #include "solarus/lua/ScopedLuaRef.h"
+#include "solarus/graphics/DrawProxies.h"
 #include <memory>
 
 namespace Solarus {
@@ -42,13 +43,6 @@ class Rectangle;
 class Drawable: public ExportableToLua {
 
   public:
-
-    /**
-     * @brief The DrawProxy is used to draw with various modifiers
-     */
-    struct DrawProxy {
-      virtual void draw(Surface& dst_surface, Surface& src_surface, const Rectangle& region, const Point& destination) const = 0;
-    };
 
     virtual ~Drawable();
 

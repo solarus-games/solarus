@@ -36,7 +36,7 @@ class Surface;
  *
  * The transitions may be applied to maps or any surface.
  */
-class SOLARUS_API Transition : public Drawable::DrawProxy {
+class SOLARUS_API Transition : public DrawProxy {
 
   public:
 

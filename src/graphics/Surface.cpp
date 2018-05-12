@@ -40,8 +40,8 @@ namespace Solarus {
 
 Surface::SurfaceDraw Surface::draw_proxy;
 
-void Surface::SurfaceDraw::draw(Surface& dst_surface, Surface& src_surface, const Rectangle& region, const Point& destination) const {
-  dst_surface.request_render().draw_region_other(region,src_surface.get_internal_surface(),destination);
+void Surface::SurfaceDraw::draw(Surface& dst_surface, Surface& src_surface, const DrawInfos &params) const {
+  dst_surface.request_render().draw_region_other(params,src_surface.get_internal_surface(),destination);
 }
 
 /**

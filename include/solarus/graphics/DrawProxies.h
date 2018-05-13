@@ -12,20 +12,20 @@ struct DrawProxy;
 
 struct DrawInfos {
   //Replace params proxy
-  DrawInfos(const Rectangle& region,const Point& dst_position,
+  constexpr DrawInfos(const Rectangle& region,const Point& dst_position,
             BlendMode blend_mode, uint8_t opacity,
             const DrawProxy& proxy):
     region(region),dst_position(dst_position),
     blend_mode(blend_mode), opacity(opacity),
     proxy(proxy) {}
-  DrawInfos(const DrawInfos& other, const DrawProxy& proxy) :
+  constexpr DrawInfos(const DrawInfos& other, const DrawProxy& proxy) :
     DrawInfos(other.region,other.dst_position,other.blend_mode,other.opacity,proxy) {}
-  DrawInfos(const DrawInfos &other, const Rectangle& region,
+  constexpr DrawInfos(const DrawInfos &other, const Rectangle& region,
             const Point& dst_position) :
     DrawInfos(region,dst_position,other.blend_mode,other.opacity,other.proxy) {}
-  DrawInfos(const DrawInfos &other, const Point& dst_position) :
+  constexpr DrawInfos(const DrawInfos &other, const Point& dst_position) :
     DrawInfos(other.region,dst_position,other.blend_mode,other.opacity,other.proxy) {}
-  DrawInfos(const DrawInfos& other,uint8_t opacity):
+  constexpr DrawInfos(const DrawInfos& other,uint8_t opacity):
     DrawInfos(other.region,other.dst_position,other.blend_mode,opacity,other.proxy) {}
   //TODO more helper constructors
   const Rectangle& region;
@@ -46,8 +46,7 @@ struct DrawProxy {
 template<std::size_t N>
 struct DrawProxyChain : DrawProxy {
   using Proxies = std::array<std::reference_wrapper<const DrawProxy>,N>;
-  DrawProxyChain(const Proxies& proxies) : proxies(proxies) {
-    assert(proxies.size() > 0);
+  constexpr DrawProxyChain(const Proxies& proxies) : proxies(proxies) {
   }
 
   void draw(Surface& dst_surface, const Surface& src_surface, const DrawInfos& params) const override {
@@ -55,7 +54,7 @@ struct DrawProxyChain : DrawProxy {
   }
 private:
   struct Link : DrawProxy {
-    Link(const DrawProxyChain& pipeline, size_t index) :
+    constexpr Link(const DrawProxyChain& pipeline, size_t index) :
       pipeline(pipeline), index(index) {}
     void draw(Surface& dst_surface, const Surface& src_surface, const DrawInfos& params) const override {
       //if(index < pipeline.proxies.size())

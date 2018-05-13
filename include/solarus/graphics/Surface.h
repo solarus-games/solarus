@@ -51,9 +51,11 @@ class Surface: public Drawable {
   public:
     using SurfaceImpl_UniquePtr = std::unique_ptr<SurfaceImpl>;
 
+    /**
+     * @brief terminal DrawProxy for simple surface draw
+     */
     struct SurfaceDraw : public DrawProxy {
       virtual void draw(Surface& dst_surface, const Surface& src_surface, const DrawInfos& params) const override;
-      virtual bool is_terminal() const override {return true;}
     };
     /**
      * \brief The base directory to use when opening image files.
@@ -101,6 +103,11 @@ class Surface: public Drawable {
 
     // Implementation from Drawable.
     virtual void raw_draw(
+        Surface& dst_surface,
+        const DrawInfos& infos
+    ) const override;
+
+    virtual void raw_draw_region(
         Surface& dst_surface,
         const DrawInfos& infos
     ) const override;

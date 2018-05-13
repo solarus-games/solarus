@@ -69,29 +69,44 @@ class Drawable: public ExportableToLua {
     Transition* get_transition();
 
     // drawing with effects
-
-    void draw(const SurfacePtr& dst_surface);
-    void draw(const SurfacePtr& dst_surface, int x, int y);
-    void draw(const SurfacePtr& dst_surface, const Point& dst_position);
-    void draw_region(const Rectangle& region, const SurfacePtr& dst_surface);
+    void draw(const SurfacePtr& dst_surface) const;
+    void draw(const SurfacePtr& dst_surface, int x, int y) const;
+    void draw(const SurfacePtr& dst_surface, const Point& dst_position) const;
+    void draw(const SurfacePtr &dst_surface, const Point &dst_position, const DrawProxy& proxy) const;
+    void draw_region(const Rectangle& region, const SurfacePtr& dst_surface) const;
     void draw_region(const Rectangle& region,
-        const SurfacePtr& dst_surface, const Point& dst_position);
+        const SurfacePtr& dst_surface, const Point& dst_position) const;
     void draw_region(const Rectangle& region,
-                     const SurfacePtr& dst_surface, const Point& dst_position, const DrawProxy& proxy);
+                     const SurfacePtr& dst_surface, const Point& dst_position, const DrawProxy& proxy) const;
 
     void set_shader(const ShaderPtr& shader);
     const ShaderPtr& get_shader() const;
 
     /**
-     * \brief Draws this object without applying dynamic effects.
+     * \brief Draws this object with effect information passed
      *
      * Redefine this function to draw your object onto the destination
      * surface.
      *
+     * This version may ignore the passed infos.region parameter and draw
+     * at full size, this allow sprites to optimize drawing when no cropping
+     * is needed, as it is often the case
+     *
      * \param dst_surface The destination surface.
-     * \param dst_position Coordinates on the destination surface.
+     * \param infos draw informations bundle
      */
     virtual void raw_draw(
+        Surface& dst_surface,
+        const DrawInfos& infos
+    ) const = 0;
+
+    /**
+     * @brief Draw
+     *
+     * @param dst_surface
+     * @param infos draw information bundle
+     */
+    virtual void raw_draw_region(
         Surface& dst_surface,
         const DrawInfos& infos
     ) const = 0;

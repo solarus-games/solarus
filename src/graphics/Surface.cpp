@@ -40,6 +40,12 @@ namespace Solarus {
 
 Surface::SurfaceDraw Surface::draw_proxy;
 
+/**
+ * @brief Draw a surface on another using the given infos
+ * @param dst_surface surface on which to draw
+ * @param src_surface surface to read from
+ * @param params draw info bundle
+ */
 void Surface::SurfaceDraw::draw(Surface& dst_surface, const Surface &src_surface, const DrawInfos &params) const {
   dst_surface.request_render().draw_other(src_surface.get_internal_surface(),params);
 }
@@ -59,14 +65,12 @@ Surface::Surface(int width, int height, bool premultiplied):
 
   internal_surface.reset(new RenderTexture(width,height));
   internal_surface->set_premultiplied(premultiplied);
-  internal_surface->_parent = this;
 }
 
 Surface::Surface(SDL_Surface *surf, bool premultiplied)
   : internal_surface(new Texture(surf))
 {
   internal_surface->set_premultiplied(premultiplied);
-  internal_surface->_parent = this;
 }
 
 /**
@@ -83,7 +87,6 @@ Surface::Surface(SurfaceImpl* impl, bool premultiplied):
   internal_surface(impl) //TODO refactor this...
 {
   internal_surface->set_premultiplied(premultiplied);
-  internal_surface->_parent = this;
 }
 
 /**
@@ -307,7 +310,6 @@ RenderTexture &Surface::request_render() {
   SurfaceImpl* old = internal_surface.get();
   RenderTexture* rt = internal_surface->to_render_texture();
   if(old != rt) {
-    rt->_parent = this;
     internal_surface.reset(rt);
   }
   return *rt;
@@ -363,7 +365,16 @@ void Surface::fill_with_color(const Color& color, const Rectangle& where) {
 /**
  * \brief Draws this surface on another surface.
  * \param dst_surface The destination surface.
- * \param dst_position Coordinates on the destination surface.
+ * \param infos draw infos bundle
+ */
+void Surface::raw_draw_region(Surface& dst_surface, const DrawInfos& infos) const {
+  infos.proxy.draw(dst_surface,*this,infos);
+}
+
+/**
+ * \brief Draws this surface on another surface.
+ * \param dst_surface The destination surface.
+ * \param infos draw infos bundle
  */
 void Surface::raw_draw(Surface& dst_surface, const DrawInfos& infos) const {
   infos.proxy.draw(dst_surface,*this,infos);
@@ -510,9 +521,15 @@ uint32_t Surface::get_color_value(const Color& color) const {
   return SDL_MapRGBA(Video::get_pixel_format(), r, g, b, a);
 }
 
-
+/**
+ * @brief compute sdl blendmode to use when writing a surface onto another
+ * @param dst_surface written to surface
+ * @param src_surface read from surface
+ * @param blend_mode  solarus blend mode
+ * @return a sdl blendmode taking premultiply into account
+ */
 SDL_BlendMode Surface::make_sdl_blend_mode(const SurfaceImpl& dst_surface, const SurfaceImpl& src_surface, BlendMode blend_mode) {
-  if(dst_surface.is_premultiplied()) {
+  if(dst_surface.is_premultiplied()) { //TODO refactor this a bit
     switch(blend_mode) {
       case BlendMode::NONE:
         return SDL_BLENDMODE_NONE;

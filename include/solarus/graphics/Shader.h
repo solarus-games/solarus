@@ -87,7 +87,6 @@ class Shader : public DrawProxy, public ExportableToLua {
 
     void render(const Surface &surface, const Rectangle &region, const Size &dst_size, const Point &dst_position = Point(), bool flip_y = false);
     virtual void draw(Surface& dst_surface, const Surface &src_surface, const DrawInfos &infos) const override;
-    virtual bool is_terminal() const override {return true;}
     /**
      * @brief render the given vertex array with this shader, passing the texture and matrices as uniforms
      * @param array a vertex array

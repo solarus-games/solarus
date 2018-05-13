@@ -78,6 +78,7 @@ const Rectangle& SpriteAnimationDirection::get_frame(int frame) const {
  * (the origin point will be drawn at this position)
  * \param current_frame the frame to show
  * \param src_image the image from which the frame is extracted
+ * \param infos draw info bundle
  */
 void SpriteAnimationDirection::draw(Surface& dst_surface,
                                     const Point& dst_position, int current_frame, Surface& src_image, const DrawInfos &infos) const {

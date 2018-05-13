@@ -59,10 +59,9 @@ SDL_Texture* RenderTexture::get_texture() const {
 }
 
 /**
- * @brief draw region of another surfaceimpl on this one //TODO update doc
- * @param src_rect source region to draw
- * @param texture source surface
- * @param dst_position position where to draw
+ * @brief draw other surface impl on this one using given infos
+ * @param texture the surface to draw here
+ * @param infos draw info bundle
  */
 void RenderTexture::draw_other(const SurfaceImpl& texture, const DrawInfos& infos) {
   with_target([&](SDL_Renderer* renderer){

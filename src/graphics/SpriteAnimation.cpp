@@ -140,6 +140,7 @@ int SpriteAnimation::get_next_frame(
  * (the origin point will be drawn at this position)
  * \param current_direction the direction to show
  * \param current_frame the frame to show in this direction
+ * \param infos draw infos bundle
  */
 void SpriteAnimation::draw(Surface& dst_surface,
     const Point& dst_position, int current_direction, int current_frame, const DrawInfos &infos) const {

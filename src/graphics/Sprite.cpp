@@ -775,11 +775,9 @@ void Sprite::update() {
  * \brief Draws the sprite on a surface, with its current animation,
  * direction and frame.
  * \param dst_surface The destination surface.
- * \param dst_position Coordinates on the destination surface
- * (the origin will be placed at this position).
+ * \param infos draw infos, region is ignored in this case
  */
-/*void Sprite::raw_draw(Surface& dst_surface,
-    const Point& dst_position, const DrawProxy &proxy) {
+void Sprite::raw_draw(Surface& dst_surface,const DrawInfos& infos) const {
 
   if (current_animation == nullptr) {
     return;
@@ -787,21 +785,15 @@ void Sprite::update() {
 
   if (!is_animation_finished()
       && (blink_delay == 0 || blink_is_sprite_visible)) {
-    /*draw_intermediate();
-    get_intermediate_surface().set_blend_mode(get_blend_mode());
-    get_intermediate_surface().draw_region(
-        Rectangle(get_size()),
-        std::static_pointer_cast<Surface>(dst_surface.shared_from_this()),
-        dst_position - get_origin()
-    );*/
-    /*current_animation->draw(
+
+    current_animation->draw(
           dst_surface,
-          dst_position /*- get_origin()*//*,
+          infos.dst_position,
           current_direction,
           current_frame,
-          proxy);
+          infos);
   }
-}*/
+}
 
 /**
  * @brief compute region of the spritesheet to draw given crop region
@@ -838,8 +830,7 @@ Rectangle Sprite::clamp_region(const Rectangle& region) const {
  * \param dst_position Coordinates on the destination surface.
  * The origin point of the sprite will appear at these coordinates.
  */
-void Sprite::raw_draw(Surface& dst_surface, const DrawInfos& infos) const {
-
+void Sprite::raw_draw_region(Surface& dst_surface, const DrawInfos& infos) const {
   if (current_animation == nullptr) {
     return;
   }
@@ -876,8 +867,6 @@ void Sprite::raw_draw(Surface& dst_surface, const DrawInfos& infos) const {
       src_position,
       get_origin()
     };
-
-
 
     current_animation->draw(
           dst_surface,

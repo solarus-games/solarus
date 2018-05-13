@@ -529,35 +529,28 @@ void TextSurface::rebuild_ttf() {
 }
 
 /**
- * \brief Draws the text on a surface.
- *
- * This method blits the text at the position previously set
- * (by set_x(), set_y() or set_position())
- * plus the parameter dst_position.
- *
+ * \brief Draws this text on the given surface
+ * \param region The subrectangle to draw in this object.
  * \param dst_surface The destination surface.
- * \param dst_position Coordinates on the destination surface.
+ * \param infos draw informations.
  */
-/*void TextSurface::raw_draw(Surface& dst_surface,
-    const Point& dst_position, const DrawInfos &infos) {
-
+void TextSurface::raw_draw(Surface& dst_surface,const DrawInfos& infos) const {
   if (surface != nullptr) {
-    surface->set_blend_mode(get_blend_mode());
-    surface->raw_draw(dst_surface, dst_position + text_position, infos);
+    surface->raw_draw(
+        dst_surface,
+        DrawInfos(infos,infos.dst_position + text_position));
   }
-}*/
+}
 
 /**
  * \brief Draws a subrectangle of this text surface on another surface.
  * \param region The subrectangle to draw in this object.
  * \param dst_surface The destination surface.
- * \param dst_position Coordinates on the destination surface.
+ * \param infos drawing infos
  */
-void TextSurface::raw_draw(Surface& dst_surface,const DrawInfos& infos) const {
-
+void TextSurface::raw_draw_region(Surface& dst_surface,const DrawInfos& infos) const {
   if (surface != nullptr) {
-    //surface->set_blend_mode(get_blend_mode()); //TODO remove
-    surface->raw_draw(
+    surface->raw_draw_region(
         dst_surface,
         DrawInfos(infos,infos.dst_position + text_position));
   }
@@ -566,45 +559,6 @@ void TextSurface::raw_draw(Surface& dst_surface,const DrawInfos& infos) const {
 Rectangle TextSurface::get_region() const {
   return Rectangle(Point(),get_size());
 }
-
-/*void TextSurface::shader_draw(
-    const ShaderPtr& shader,
-    Surface& dst_surface,
-    const Point& dst_position
-    ) {
-  if (surface != nullptr) {
-    shader_draw_region(shader,Rectangle(surface->get_size()),dst_surface,dst_position);
-  }
-}
-
-void TextSurface::shader_draw_region(
-    const ShaderPtr& shader,
-    const Rectangle& region,
-    Surface& dst_surface,
-    const Point& dst_position
-    ) {
-  if (surface != nullptr) {
-    surface->set_blend_mode(get_blend_mode());
-    surface->shader_draw_region(shader,region,dst_surface,dst_position);
-  }
-}
-*/
-/**
- * \brief Draws a transition effect on this drawable object.
- * \param transition The transition effect to apply.
- */
-/*void TextSurface::draw_transition(Transition& transition) {
-  transition.draw(*surface);
-}
-
-/**
- * \brief Returns the surface where transitions on this drawable object
- * are applied.
- * \return The surface for transitions.
- */
-/*Surface& TextSurface::get_transition_surface() {
-  return *surface;
-}*/
 
 /**
  * \brief Returns the name identifying this type in Lua.

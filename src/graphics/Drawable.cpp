@@ -211,7 +211,7 @@ void Drawable::set_suspended(bool suspended) {
  * \brief Draws this object, applying dynamic effects.
  * \param dst_surface the destination surface
  */
-void Drawable::draw(const SurfacePtr& dst_surface) {
+void Drawable::draw(const SurfacePtr& dst_surface) const {
 
   draw(dst_surface, Point(0, 0));
 }
@@ -222,7 +222,7 @@ void Drawable::draw(const SurfacePtr& dst_surface) {
  * \param x x coordinate of where to draw
  * \param y y coordinate of where to draw
  */
-void Drawable::draw(const SurfacePtr& dst_surface, int x, int y) {
+void Drawable::draw(const SurfacePtr& dst_surface, int x, int y) const {
   draw(dst_surface, Point(x, y));
 }
 
@@ -233,8 +233,24 @@ void Drawable::draw(const SurfacePtr& dst_surface, int x, int y) {
  * (will be added to the position obtained by previous movements)
  */
 void Drawable::draw(const SurfacePtr& dst_surface,
-    const Point& dst_position) {
-  draw_region(get_region(),dst_surface,dst_position);
+    const Point& dst_position) const {
+  //draw_region(get_region(),dst_surface,dst_position);
+  if (transition) {
+    draw(dst_surface,dst_position,DrawProxyChain<2>({*transition,terminal()}));
+  } else {
+    draw(dst_surface, dst_position,terminal());
+  }
+}
+
+/**
+ * @brief Draws this object, applying given dynamic effects
+ * @param dst_surface the destination surface
+ * @param dst_position position on this surface
+ * @param proxy
+ */
+void Drawable::draw(const SurfacePtr &dst_surface, const Point &dst_position, const DrawProxy& proxy) const {
+  Point off_dst = dst_position + xy;
+  raw_draw(*dst_surface, DrawInfos(get_region(),off_dst,get_blend_mode(),get_opacity(),proxy));
 }
 
 /**
@@ -244,7 +260,7 @@ void Drawable::draw(const SurfacePtr& dst_surface,
  */
 void Drawable::draw_region(
     const Rectangle& region,
-    const SurfacePtr& dst_surface) {
+    const SurfacePtr& dst_surface) const {
   draw_region(region, dst_surface, Point(0, 0));
 }
 
@@ -257,7 +273,7 @@ void Drawable::draw_region(
  */
 void Drawable::draw_region(const Rectangle& region,
     const SurfacePtr& dst_surface,
-    const Point& dst_position) {
+    const Point& dst_position) const {
   if (transition) {
     draw_region(region,dst_surface,dst_position,DrawProxyChain<2>({*transition,terminal()}));
   } else {
@@ -274,9 +290,9 @@ void Drawable::draw_region(const Rectangle& region,
  */
 void Drawable::draw_region(const Rectangle& region,
     const SurfacePtr& dst_surface,
-    const Point& dst_position, const DrawProxy &proxy) {
+    const Point& dst_position, const DrawProxy &proxy) const {
   Point off_dst = dst_position + xy;
-  raw_draw(*dst_surface, DrawInfos(region,off_dst,get_blend_mode(),get_opacity(),proxy));
+  raw_draw_region(*dst_surface, DrawInfos(region,off_dst,get_blend_mode(),get_opacity(),proxy));
 }
 
 /**

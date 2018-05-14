@@ -1246,15 +1246,23 @@ void HeroSprites::set_animation_sword() {
 
   if (equipment.has_ability(Ability::SHIELD)) {
 
-    if (direction % 2 != 0) {
-      shield_sprite->set_current_direction(direction / 2);
-      shield_sprite->set_current_animation("sword");
-      shield_sprite->restart_animation();
+    shield_sprite->set_current_animation("sword");
+    if (shield_sprite->get_nb_directions() == 2) {
+      // Legacy behavior: only two directions (right is 0 and left is 1).
+      if (direction % 2 != 0) {
+        shield_sprite->set_current_direction(direction / 2);
+        shield_sprite->restart_animation();
+      }
+      else {
+        stop_displaying_shield();
+      }
     }
     else {
-      stop_displaying_shield();
+      shield_sprite->set_current_direction(direction);
+      shield_sprite->restart_animation();
     }
   }
+
   stop_displaying_trail();
 }
 

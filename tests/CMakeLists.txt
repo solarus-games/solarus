@@ -64,6 +64,7 @@ set(lua_test_maps
   "bugs/954_entity_name_nil_after_removed"
   "bugs/1076_treasure_dialog_optional"
   "bugs/1094_entity_properties"
+  "bugs/1162_custom_entity_collision_wrong_order"
 )
 
 # Build the Solarus testing library.

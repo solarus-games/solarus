@@ -396,13 +396,10 @@ void Arrow::notify_collision_with_destructible(
 }
 
 /**
- * \brief This function is called when an enemy's sprite collides with a sprite of this entity.
- * \param enemy the enemy
- * \param enemy_sprite the enemy's sprite that overlaps this entity
- * \param this_sprite the arrow sprite
+ * \copydoc Entity::notify_collision_with_enemy(Enemy&, Sprite&, Sprite&)
  */
 void Arrow::notify_collision_with_enemy(
-    Enemy& enemy, Sprite& enemy_sprite, Sprite& /* this_sprite */) {
+    Enemy& enemy, Sprite& /* this_sprite */, Sprite& enemy_sprite) {
 
   if (!overlaps(hero) && is_flying()) {
     enemy.try_hurt(EnemyAttack::ARROW, *this, &enemy_sprite);

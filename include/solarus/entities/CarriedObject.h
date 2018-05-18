@@ -97,8 +97,8 @@ class CarriedObject: public Entity {
     void notify_collision_with_stairs(Stairs& stairs, CollisionMode collision_mode) override;
     void notify_collision_with_enemy(
         Enemy& enemy,
-        Sprite& enemy_sprite,
-        Sprite& this_sprite
+        Sprite& this_sprite,
+        Sprite& enemy_sprite
     ) override;
     void notify_attacked_enemy(
         EnemyAttack attack,

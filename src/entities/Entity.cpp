@@ -3272,10 +3272,10 @@ void Entity::notify_collision_with_enemy(Enemy& /* enemy */, CollisionMode /* co
 /**
  * \brief This function is called when an enemy's sprite collides with a sprite of this entity.
  * \param enemy the enemy
- * \param enemy_sprite the enemy's sprite that overlaps a sprite of this entity
  * \param this_sprite this entity's sprite that overlaps the enemy's sprite
+ * \param enemy_sprite the enemy's sprite that overlaps a sprite of this entity
  */
-void Entity::notify_collision_with_enemy(Enemy& /* enemy */, Sprite& /* enemy_sprite */, Sprite& /* this_sprite */) {
+void Entity::notify_collision_with_enemy(Enemy& /* enemy */, Sprite& /* this_sprite */, Sprite& /* enemy_sprite */) {
 }
 
 /**

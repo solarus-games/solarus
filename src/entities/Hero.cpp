@@ -1557,7 +1557,7 @@ void Hero::notify_collision_with_enemy(Enemy& enemy, CollisionMode collision_mod
  * \copydoc Enemy::notify_collision_with_enemy(Enemy&, Sprite&, Sprite&))
  */
 void Hero::notify_collision_with_enemy(
-    Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite) {
+    Enemy& enemy, Sprite& this_sprite, Sprite& enemy_sprite) {
 
   const std::string& this_sprite_id = this_sprite.get_animation_set_id();
   if (this_sprite_id == get_hero_sprites().get_sword_sprite_id()) {

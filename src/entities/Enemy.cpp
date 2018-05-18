@@ -1005,7 +1005,7 @@ void Enemy::notify_collision(Entity& entity_overlapping, CollisionMode collision
  */
 void Enemy::notify_collision(Entity& other_entity, Sprite& this_sprite, Sprite& other_sprite) {
 
-  other_entity.notify_collision_with_enemy(*this, this_sprite, other_sprite);
+  other_entity.notify_collision_with_enemy(*this, other_sprite, this_sprite);
 }
 
 /**
@@ -1031,13 +1031,10 @@ void Enemy::notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping) {
 }
 
 /**
- * \brief This function is called when this enemy detects a collision with another enemy.
- * \param other the other enemy
- * \param other_sprite the other enemy's sprite that overlaps a sprite of this enemy
- * \param this_sprite this enemy's sprite that overlaps the other
+ * \copydoc Entity::notify_collision_with_enemy(Enemy&, Sprite&, Sprite&)
  */
 void Enemy::notify_collision_with_enemy(Enemy& other,
-    Sprite& other_sprite, Sprite& this_sprite) {
+    Sprite& this_sprite, Sprite& other_sprite) {
 
   if (is_in_normal_state()) {
     get_lua_context()->enemy_on_collision_enemy(

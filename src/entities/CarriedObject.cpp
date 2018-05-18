@@ -459,8 +459,8 @@ void CarriedObject::draw_on_map() {
  */
 void CarriedObject::notify_collision_with_enemy(
     Enemy& enemy,
-    Sprite& enemy_sprite,
-    Sprite& /* this_sprite */) {
+    Sprite& /* this_sprite */,
+    Sprite& enemy_sprite) {
 
   if (is_throwing
       && !can_explode()

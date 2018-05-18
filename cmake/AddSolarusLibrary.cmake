@@ -130,6 +130,7 @@ file(
 	include/solarus/graphics/Color.h
 	include/solarus/graphics/Drawable.h
 	include/solarus/graphics/DrawablePtr.h
+        include/solarus/graphics/DrawProxies.h
 	include/solarus/graphics/GlArbShader.h
 	include/solarus/graphics/GlShader.h
 	include/solarus/graphics/GlTextureHandle.h

@@ -395,7 +395,6 @@ void Game::update_transitions() {
       transition = std::unique_ptr<Transition>(Transition::create(
           transition_style,
           Transition::Direction::CLOSING,
-          *current_map->get_camera_surface(),
           this
       ));
       transition->start();
@@ -478,7 +477,6 @@ void Game::update_transitions() {
         transition = std::unique_ptr<Transition>(Transition::create(
             transition_style,
             Transition::Direction::OPENING,
-            *current_map->get_camera_surface(),
             this
         ));
         transition->start();
@@ -518,7 +516,6 @@ void Game::update_transitions() {
     transition = std::unique_ptr<Transition>(Transition::create(
         transition_style,
         Transition::Direction::OPENING,
-        *current_map->get_camera_surface(),
         this
     ));
 
@@ -578,9 +575,10 @@ void Game::draw(const SurfacePtr& dst_surface) {
     if (camera != nullptr) {
       const SurfacePtr& camera_surface = camera->get_surface();
       if (transition != nullptr) {
-        transition->draw(*camera_surface);
+        transition->draw(*dst_surface,*camera_surface,DrawInfos(Rectangle(camera_surface->get_size()),Point(),BlendMode::BLEND,255,Surface::draw_proxy));
+      } else { //TODO handle this case
+        camera_surface->draw(dst_surface, camera->get_position_on_screen());
       }
-      camera_surface->draw(dst_surface, camera->get_position_on_screen());
     }
 
     // Draw the built-in dialog box if any.
@@ -887,7 +885,6 @@ void Game::restart() {
     transition = std::unique_ptr<Transition>(Transition::create(
         Transition::Style::FADE,
         Transition::Direction::CLOSING,
-        *current_map->get_camera_surface(),
         this
     ));
     transition->start();

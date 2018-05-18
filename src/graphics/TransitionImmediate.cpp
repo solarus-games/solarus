@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "solarus/graphics/TransitionImmediate.h"
+#include "solarus/graphics/Surface.h"
 
 namespace Solarus {
 
@@ -68,8 +69,8 @@ void TransitionImmediate::update() {
  * \brief Draws the transition effect on a surface.
  * \param dst_surface the surface to draw
  */
-void TransitionImmediate::draw(Surface& /* dst_surface */) {
-
+void TransitionImmediate::draw(Surface& dst_surface, const Surface &src_surface, const DrawInfos &infos) const {
+  infos.proxy.draw(dst_surface,src_surface,infos);
 }
 
 }

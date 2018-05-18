@@ -22,6 +22,7 @@
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
 #include "solarus/graphics/VertexArray.h"
+#include "solarus/graphics/RenderTexture.h"
 
 #include "solarus/third_party/glm/gtc/type_ptr.hpp"
 #include "solarus/third_party/glm/gtx/transform.hpp"
@@ -262,6 +263,24 @@ void Shader::render(const Surface& surface, const Rectangle& region, const Size&
     uvm = glm::translate(uvm,glm::vec2(0,-1));
   }
   render(screen_quad,surface,viewport*dst*scale,uvm);
+}
+
+void Shader::draw(Surface& dst_surface, const Surface &src_surface, const DrawInfos &infos) const {
+    dst_surface.request_render().with_target([&](SDL_Renderer* r){
+      SDL_BlendMode target = Surface::make_sdl_blend_mode(dst_surface.get_internal_surface(),
+                                                          src_surface.get_internal_surface(),
+                                                          infos.blend_mode); //TODO fix alpha premult here
+      SDL_BlendMode current;
+      SDL_GetRenderDrawBlendMode(r,&current);
+      if(target != current) { //Blend mode need change
+        SDL_SetRenderDrawBlendMode(r,target);
+        SDL_RenderDrawPoint(r,-100,-100); //Draw a point offscreen to force blendmode change
+      }
+      //TODO fix this ugliness
+      Shader* that = const_cast<Shader*>(this);
+      that->set_uniform_1f("sol_opacity",src_surface.get_opacity()/256.f);
+      that->Shader::render(src_surface,infos.region,dst_surface.get_size(),infos.dst_position);
+    });
 }
 
 /**

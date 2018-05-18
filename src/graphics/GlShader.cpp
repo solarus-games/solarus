@@ -24,6 +24,7 @@
 #include "solarus/graphics/Surface.h"
 #include "solarus/graphics/Video.h"
 #include "solarus/graphics/ShaderContext.h"
+#include "solarus/graphics/RenderTexture.h"
 
 #include "solarus/third_party/glm/gtc/type_ptr.hpp"
 #include "solarus/third_party/glm/gtx/transform.hpp"
@@ -351,6 +352,8 @@ void GlShader::render(const VertexArray& array, const Surface& texture, const gl
   ctx.glBindBuffer(GL_ARRAY_BUFFER,previous_buffer);
   ctx.glUseProgram(previous_program);
 }
+
+
 
 /**
  * \brief Returns the location of a uniform value in the shader program.

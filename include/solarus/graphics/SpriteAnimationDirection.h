@@ -21,6 +21,7 @@
 #include "solarus/core/Debug.h"
 #include "solarus/core/PixelBits.h"
 #include "solarus/core/Rectangle.h"
+#include "solarus/graphics/Drawable.h"
 #include <vector>
 
 namespace Solarus {
@@ -51,7 +52,7 @@ class SpriteAnimationDirection {
     int get_nb_frames() const;
     const Rectangle& get_frame(int frame) const;
     void draw(Surface& dst_surface, const Point& dst_position,
-        int current_frame, Surface& src_image);
+        int current_frame, Surface& src_image, const DrawInfos &infos) const;
 
     // pixel collisions
     void enable_pixel_collisions(Surface& src_image);

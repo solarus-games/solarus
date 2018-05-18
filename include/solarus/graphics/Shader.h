@@ -28,6 +28,9 @@
 #include "solarus/lua/ExportableToLua.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/lua/LuaTools.h"
+
+#include "solarus/graphics/Drawable.h"
+
 #include <string>
 
 #ifdef SOLARUS_HAVE_OPENGL
@@ -41,7 +44,7 @@ namespace Solarus {
 /**
  * \brief Represents a shader for a driver and sampler-independant uses.
  */
-class Shader : public ExportableToLua {
+class Shader : public DrawProxy, public ExportableToLua {
   public:
     constexpr static const char* POSITION_NAME = "sol_vertex";
     constexpr static const char* TEXCOORD_NAME = "sol_tex_coord";
@@ -83,7 +86,7 @@ class Shader : public ExportableToLua {
     virtual bool set_uniform_texture(const std::string& uniform_name, const SurfacePtr& value);
 
     void render(const Surface &surface, const Rectangle &region, const Size &dst_size, const Point &dst_position = Point(), bool flip_y = false);
-
+    virtual void draw(Surface& dst_surface, const Surface &src_surface, const DrawInfos &infos) const override;
     /**
      * @brief render the given vertex array with this shader, passing the texture and matrices as uniforms
      * @param array a vertex array

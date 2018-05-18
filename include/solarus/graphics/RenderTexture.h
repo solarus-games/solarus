@@ -4,6 +4,7 @@
 #include "solarus/graphics/Color.h"
 #include "solarus/graphics/SDLPtrs.h"
 #include "solarus/graphics/Video.h"
+#include "DrawProxies.h"
 
 namespace Solarus {
 
@@ -35,8 +36,8 @@ public:
     int get_width() const override;
     int get_height() const override;
 
-    void draw_other(const SurfaceImpl& texture, const Point& dst_position = Point(0,0));
-    void draw_region_other(const Rectangle &src_rect, const SurfaceImpl &region, const Point& dst_position);
+    void draw_other(const SurfaceImpl& texture, const DrawInfos& infos);
+    //void draw_region_other(const Rectangle &src_rect, const SurfaceImpl &texture, const Point& dst_position);
 
     RenderTexture* to_render_texture() override;
 
@@ -47,7 +48,6 @@ public:
     ~RenderTexture(){
     }
 private:
-    SDL_BlendMode make_sdl_blend_mode(const SurfaceImpl &src) const;
     mutable bool surface_dirty = true; /**< is the surface not up to date*/
     mutable SDL_Surface_UniquePtr surface; /**< cpu side pixels data */
     mutable SDL_Texture_UniquePtr target; /**< gpu side pixels data */

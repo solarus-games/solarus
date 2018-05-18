@@ -62,7 +62,6 @@ Transition::~Transition() {
 Transition* Transition::create(
     Transition::Style style,
     Transition::Direction direction,
-    Surface& dst_surface,
     Game* game) {
 
   Transition* transition = nullptr;
@@ -74,7 +73,7 @@ Transition* Transition::create(
     break;
 
   case Style::FADE:
-    transition = new TransitionFade(direction, dst_surface);
+    transition = new TransitionFade(direction);
     break;
 
   case Style::SCROLLING:

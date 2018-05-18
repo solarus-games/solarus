@@ -22,7 +22,7 @@ endif()
 # Warnings and errors.
 
 # Be less pedantic in release builds for users.
-set(CMAKE_CXX_FLAGS_RELEASE "-Wno-error -Wall -Wextra -Wno-unknown-pragmas -Wno-fatal-errors ${CMAKE_CXX_FLAGS_RELEASE}")
+set(CMAKE_CXX_FLAGS_RELEASE "-Wno-error -Wall -Wextra -Wno-unknown-pragmas -Wno-fatal-errors ${CMAKE_CXX_FLAGS_RELEASE} -O3")
 
 # Be more pedantic in debug mode for developers.
 set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -pedantic ${CMAKE_CXX_FLAGS_DEBUG}")

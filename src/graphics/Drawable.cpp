@@ -19,6 +19,7 @@
 #include "solarus/graphics/Transition.h"
 #include "solarus/lua/LuaContext.h"
 #include "solarus/movements/Movement.h"
+#include "solarus/graphics/Surface.h"
 #include <lua.hpp>
 #include <utility>
 
@@ -33,7 +34,9 @@ Drawable::Drawable():
   transition(nullptr),
   transition_callback_ref(),
   suspended(false),
-  blend_mode(BlendMode::BLEND) {
+  blend_mode(BlendMode::BLEND),
+  opacity(255)
+{
 
 }
 
@@ -132,7 +135,7 @@ void Drawable::start_transition(
  * The transition is deleted and the Lua callback (if any) is canceled.
  */
 void Drawable::stop_transition() {
-
+  if(transition) transition->finish(*this);
   transition = nullptr;
   transition_callback_ref.clear();
 }
@@ -156,7 +159,7 @@ void Drawable::update() {
   if (transition != nullptr) {
     transition->update();
     if (transition->is_finished()) {
-
+      transition->finish(*this);
       transition = nullptr;
 
       if (!transition_callback_ref.is_empty()) {
@@ -208,7 +211,7 @@ void Drawable::set_suspended(bool suspended) {
  * \brief Draws this object, applying dynamic effects.
  * \param dst_surface the destination surface
  */
-void Drawable::draw(const SurfacePtr& dst_surface) {
+void Drawable::draw(const SurfacePtr& dst_surface) const {
 
   draw(dst_surface, Point(0, 0));
 }
@@ -219,8 +222,7 @@ void Drawable::draw(const SurfacePtr& dst_surface) {
  * \param x x coordinate of where to draw
  * \param y y coordinate of where to draw
  */
-void Drawable::draw(const SurfacePtr& dst_surface, int x, int y) {
-
+void Drawable::draw(const SurfacePtr& dst_surface, int x, int y) const {
   draw(dst_surface, Point(x, y));
 }
 
@@ -231,16 +233,24 @@ void Drawable::draw(const SurfacePtr& dst_surface, int x, int y) {
  * (will be added to the position obtained by previous movements)
  */
 void Drawable::draw(const SurfacePtr& dst_surface,
-    const Point& dst_position) {
-
-  if (transition != nullptr) {
-    draw_transition(*transition);
-  }
-  if(shader) {
-    shader_draw(shader,*dst_surface,dst_position);
+    const Point& dst_position) const {
+  //draw_region(get_region(),dst_surface,dst_position);
+  if (transition) {
+    draw(dst_surface,dst_position,DrawProxyChain<2>({*transition,terminal()}));
   } else {
-    raw_draw(*dst_surface, dst_position + xy);
+    draw(dst_surface, dst_position,terminal());
   }
+}
+
+/**
+ * @brief Draws this object, applying given dynamic effects
+ * @param dst_surface the destination surface
+ * @param dst_position position on this surface
+ * @param proxy
+ */
+void Drawable::draw(const SurfacePtr &dst_surface, const Point &dst_position, const DrawProxy& proxy) const {
+  Point off_dst = dst_position + xy;
+  raw_draw(*dst_surface, DrawInfos(get_region(),off_dst,get_blend_mode(),get_opacity(),proxy));
 }
 
 /**
@@ -250,7 +260,7 @@ void Drawable::draw(const SurfacePtr& dst_surface,
  */
 void Drawable::draw_region(
     const Rectangle& region,
-    const SurfacePtr& dst_surface) {
+    const SurfacePtr& dst_surface) const {
   draw_region(region, dst_surface, Point(0, 0));
 }
 
@@ -261,19 +271,28 @@ void Drawable::draw_region(
  * \param dst_position Position on this surface
  * (will be added to the position obtained by previous movements).
  */
-void Drawable::draw_region(
-    const Rectangle& region,
+void Drawable::draw_region(const Rectangle& region,
     const SurfacePtr& dst_surface,
-    const Point& dst_position) {
-
-  if (transition != nullptr) {
-    draw_transition(*transition);
-  }
-  if(shader) {
-    shader_draw_region(shader,region,*dst_surface,dst_position);
+    const Point& dst_position) const {
+  if (transition) {
+    draw_region(region,dst_surface,dst_position,DrawProxyChain<2>({*transition,terminal()}));
   } else {
-    raw_draw_region(region, *dst_surface, dst_position + xy);
+    draw_region(region, dst_surface, dst_position,terminal());
   }
+}
+
+/**
+ * \brief Draws a subrectangle of this object, applying dynamic effects.
+ * \param region The rectangle to draw in this object.
+ * \param dst_surface The destination surface
+ * \param dst_position Position on this surface
+ * (will be added to the position obtained by previous movements).
+ */
+void Drawable::draw_region(const Rectangle& region,
+    const SurfacePtr& dst_surface,
+    const Point& dst_position, const DrawProxy &proxy) const {
+  Point off_dst = dst_position + xy;
+  raw_draw_region(*dst_surface, DrawInfos(region,off_dst,get_blend_mode(),get_opacity(),proxy));
 }
 
 /**
@@ -306,6 +325,29 @@ BlendMode Drawable::get_blend_mode() const {
  */
 void Drawable::set_blend_mode(BlendMode blend_mode) {
   this->blend_mode = blend_mode;
+}
+
+/**
+ * @brief Get object opacity
+ * @return the opacity
+ */
+uint8_t Drawable::get_opacity() const {
+  return opacity;
+}
+
+/**
+ * @brief Sets object's opacity
+ * @param the opacity
+ */
+void Drawable::set_opacity(uint8_t opacity) {
+  this->opacity = opacity;
+}
+
+const DrawProxy& Drawable::terminal() const {
+  if(shader)
+    return (const DrawProxy&)(*shader);
+  else
+    return Surface::draw_proxy;
 }
 
 }

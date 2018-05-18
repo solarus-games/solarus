@@ -12,9 +12,6 @@ void SurfaceImpl::upload_surface() {
                     );
 }
 
-const Surface& SurfaceImpl::parent() const {
-    return *_parent;
-}
 
 SurfaceImpl::~SurfaceImpl() {
 

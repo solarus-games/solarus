@@ -16,7 +16,6 @@ class Surface;
  */
 class SurfaceImpl
 {
-    friend class Surface;
 public:
     /**
      * @brief get the underlying SDL_Texture
@@ -48,12 +47,6 @@ public:
     virtual int get_height() const = 0;
 
     /**
-     * @brief access SurfaceImpl parent
-     * @return parent reference
-     */
-    const Surface& parent() const;
-
-    /**
      * @brief upload potentially modified surface
      *
      * When modifying pixels of the Surface, we have
@@ -75,7 +68,6 @@ public:
     bool is_premultiplied() const;
     void set_premultiplied(bool a_premultiplied);
 private:
-    Surface* _parent; /**< pointer to owning surface */
     bool premultiplied = false;
 };
 

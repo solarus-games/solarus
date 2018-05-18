@@ -102,7 +102,6 @@ Sprite::Sprite(const std::string& id):
   paused(false),
   finished(false),
   synchronize_to(nullptr),
-  intermediate_surface(nullptr),
   blink_delay(0),
   blink_is_sprite_visible(true),
   blink_next_change_date(0),
@@ -763,25 +762,22 @@ void Sprite::update() {
  * @param dst_surface
  * @param dst_position
  */
-void Sprite::draw_intermediate() const {
+/*void Sprite::draw_intermediate() const {
     get_intermediate_surface().clear();
     current_animation->draw(
         get_intermediate_surface(),
         get_origin(),
         current_direction,
         current_frame);
-}
+}*/
 
 /**
  * \brief Draws the sprite on a surface, with its current animation,
  * direction and frame.
  * \param dst_surface The destination surface.
- * \param dst_position Coordinates on the destination surface
- * (the origin will be placed at this position).
+ * \param infos draw infos, region is ignored in this case
  */
-void Sprite::raw_draw(
-    Surface& dst_surface,
-    const Point& dst_position) {
+void Sprite::raw_draw(Surface& dst_surface,const DrawInfos& infos) const {
 
   if (current_animation == nullptr) {
     return;
@@ -789,13 +785,13 @@ void Sprite::raw_draw(
 
   if (!is_animation_finished()
       && (blink_delay == 0 || blink_is_sprite_visible)) {
-    draw_intermediate();
-    get_intermediate_surface().set_blend_mode(get_blend_mode());
-    get_intermediate_surface().draw_region(
-        Rectangle(get_size()),
-        std::static_pointer_cast<Surface>(dst_surface.shared_from_this()),
-        dst_position - get_origin()
-    );
+
+    current_animation->draw(
+          dst_surface,
+          infos.dst_position,
+          current_direction,
+          current_frame,
+          infos);
   }
 }
 
@@ -834,11 +830,7 @@ Rectangle Sprite::clamp_region(const Rectangle& region) const {
  * \param dst_position Coordinates on the destination surface.
  * The origin point of the sprite will appear at these coordinates.
  */
-void Sprite::raw_draw_region(
-    const Rectangle& region,
-    Surface& dst_surface,
-    const Point& dst_position) {
-
+void Sprite::raw_draw_region(Surface& dst_surface, const DrawInfos& infos) const {
   if (current_animation == nullptr) {
     return;
   }
@@ -846,112 +838,67 @@ void Sprite::raw_draw_region(
   if (!is_animation_finished()
       && (blink_delay == 0 || blink_is_sprite_visible)) {
 
-    draw_intermediate();
+    //draw_intermediate();
 
     // If the region is bigger than the current frame, clip it.
     // Otherwise, more than the current frame could be visible.
-    Rectangle src_position = clamp_region(region);
+    Rectangle src_position = clamp_region(infos.region);
 
-    // Calculate the destination coordinates.
-    Point dst_position2 = dst_position;
-    dst_position2 += src_position.get_xy(); // Let a space for the part outside the region.
-    dst_position2 -= get_origin();                // Input coordinates were relative to the origin.
-    get_intermediate_surface().set_blend_mode(get_blend_mode());
-    get_intermediate_surface().draw_region(
-        src_position,
-        std::static_pointer_cast<Surface>(dst_surface.shared_from_this()),
-        dst_position2
-    );
+
+    struct CropProxy : DrawProxy {
+      CropProxy(const Rectangle& r, const Point& p) : crop_region(r), origin(p) {}
+      void draw(Surface& dst_surface, const Surface& src_surface, const DrawInfos& infos) const override {
+        //Compute area to keep in sprite sheet
+        Rectangle crop_win = Rectangle(crop_region.get_xy()+infos.region.get_xy(),crop_region.get_bottom_right()+infos.region.get_xy());
+
+        //Adapt destination
+        Point dest = infos.dst_position+crop_region.get_xy();
+
+        //Use given Proxy to draw result
+        //infos.proxy.draw(dst_surface,src_surface,infos);
+        infos.proxy.draw(dst_surface,src_surface,DrawInfos(infos,crop_win&infos.region,dest));
+      }
+      const Rectangle& crop_region;
+      const Point origin;
+    };
+
+    //Instantiate crop proxy with current draw parameters
+    CropProxy cropProxy{
+      src_position,
+      get_origin()
+    };
+
+    current_animation->draw(
+          dst_surface,
+          infos.dst_position,
+          current_direction,
+          current_frame,
+          DrawInfos(infos,DrawProxyChain<2>({cropProxy,infos.proxy})));
   }
 }
 
-/**
- * \brief Draws the sprite on a surface, with its current animation,
- * direction and frame, using the given shader
- * \param shader The shader
- * \param dst_surface The destination surface.
- * \param dst_position Coordinates on the destination surface
- * (the origin will be placed at this position).
- */
-void Sprite::shader_draw(
-    const ShaderPtr& shader,
-    Surface& dst_surface,
-    const Point& dst_position
-    ) {
-  if (current_animation == nullptr) {
-    return;
-  }
-
-  if (!is_animation_finished()
-      && (blink_delay == 0 || blink_is_sprite_visible)) {
-    draw_intermediate();
-    dst_surface.request_render().with_target([&](SDL_Renderer*){
-      get_intermediate_surface().set_blend_mode(get_blend_mode());
-      get_intermediate_surface().shader_draw_region(shader,
-                                                    Rectangle(get_size()),
-                                                    dst_surface,
-                                                    dst_position-get_origin());
-    });
-  }
-}
-
-/**
- * \brief Draws a subrectangle of the current frame of this sprite, using the given shader
- * \param shader The shader
- * \param region The subrectangle to draw, relative to the origin point.
- * It may be bigger than the frame: in this case it will be clipped.
- * \param dst_surface The destination surface.
- * \param dst_position Coordinates on the destination surface.
- * The origin point of the sprite will appear at these coordinates.
- */
-void Sprite::shader_draw_region(
-    const ShaderPtr& shader,
-    const Rectangle& region,
-    Surface& dst_surface,
-    const Point& dst_position
-    ) {
-  if (current_animation == nullptr) {
-    return;
-  }
-
-  if (!is_animation_finished()
-      && (blink_delay == 0 || blink_is_sprite_visible)) {
-
-    draw_intermediate();
-
-    // If the region is bigger than the current frame, clip it.
-    // Otherwise, more than the current frame could be visible.
-    Rectangle src_position = clamp_region(region);
-
-    // Calculate the destination coordinates.
-    Point dst_position2 = dst_position;
-    dst_position2 += src_position.get_xy(); // Let a space for the part outside the region.
-    dst_position2 -= get_origin();                // Input coordinates were relative to the origin.
-    //get_intermediate_surface().set_blend_mode(get_blend_mode());
-    dst_surface.request_render().with_target([&](SDL_Renderer*){
-      get_intermediate_surface().set_blend_mode(get_blend_mode());
-      get_intermediate_surface().shader_draw_region(shader,src_position,dst_surface,dst_position2);
-    });
-  }
+Rectangle Sprite::get_region() const {
+  return Rectangle(-get_origin(),get_size());
 }
 
 /**
  * \brief Draws a transition effect on this drawable object.
  * \param transition The transition effect to apply.
  */
-void Sprite::draw_transition(Transition& transition) {
-
-  transition.draw(get_intermediate_surface());
-}
+/*void Sprite::draw_transition(Transition& transition) {
+  //TODO reinvent that
+  //transition.draw(get_intermediate_surface());
+}*/
 
 /**
  * \brief Returns the surface where transitions on this drawable object
  * are applied.
  * \return The surface for transitions.
  */
-Surface& Sprite::get_transition_surface() {
+/*Surface& Sprite::get_transition_surface() {
+  //TODO meh
   return get_intermediate_surface();
-}
+}*/
 
 /**
  * \brief Returns the intermediate surface used for transitions and other

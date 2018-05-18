@@ -17,6 +17,7 @@
 #include "solarus/core/Debug.h"
 #include "solarus/entities/EnemyReaction.h"
 #include "solarus/graphics/Sprite.h"
+#include <sstream>
 
 namespace Solarus {
 
@@ -51,31 +52,53 @@ void EnemyReaction::set_default_reaction() {
 /**
  * \brief Sets how the enemy reacts when the sprite that receives the attack
  * has no specific reaction.
- * \param reaction the reaction to set
- * \param life_lost number of life points to remove (only for reaction HURT)
+ * \param reaction The reaction to set.
+ * \param life_lost Number of life points to remove (only for reaction HURT).
+ * \param callback Lua function to call (only for reaction LUA_CALLBACK).
  */
-void EnemyReaction::set_general_reaction(ReactionType reaction, int life_lost) {
+void EnemyReaction::set_general_reaction(ReactionType reaction, int life_lost, const ScopedLuaRef& callback) {
 
   general_reaction.type = reaction;
   if (reaction == ReactionType::HURT) {
+    if (life_lost < 0) {
+      std::ostringstream oss;
+      oss << "Invalid amount of life: " << life_lost;
+      Debug::die(oss.str());
+    }
     general_reaction.life_lost = life_lost;
+  }
+  else if (reaction == ReactionType::LUA_CALLBACK) {
+    Debug::check_assertion(!callback.is_empty(), "Missing enemy reaction callback");
+    general_reaction.callback = callback;
   }
 }
 
 /**
  * \brief Makes the enemy reacts differently when the attack is received by a particular sprite.
- * \param sprite a sprite of the enemy (if nullptr, this is equivalent to set_general_reaction)
- * \param reaction the reaction to make when this specific sprites receives an attack
- * \param life_lost number of life points to remove (only for reaction HURT)
+ * \param sprite A sprite of the enemy (if nullptr, this is equivalent to set_general_reaction).
+ * \param reaction The reaction to make when this specific sprites receives an attack.
+ * \param life_lost Number of life points to remove (only for reaction HURT).
+ * \param callback Lua function to call (only for reaction LUA_CALLBACK).
  */
-void EnemyReaction::set_sprite_reaction(const Sprite* sprite, ReactionType reaction, int life_lost) {
+void EnemyReaction::set_sprite_reaction(const Sprite* sprite, ReactionType reaction, int life_lost, const ScopedLuaRef& callback) {
 
   if (sprite == nullptr) {
     set_general_reaction(reaction, life_lost);
   }
   else {
     sprite_reactions[sprite].type = reaction;
-    sprite_reactions[sprite].life_lost = life_lost;
+    if (reaction == ReactionType::HURT) {
+      if (life_lost < 0) {
+        std::ostringstream oss;
+        oss << "Invalid amount of life: " << life_lost;
+        Debug::die(oss.str());
+      }
+      sprite_reactions[sprite].life_lost = life_lost;
+    }
+    else if (reaction == ReactionType::LUA_CALLBACK) {
+      Debug::check_assertion(!callback.is_empty(), "Missing enemy reaction callback");
+      sprite_reactions[sprite].callback = callback;
+    }
   }
 }
 

@@ -4792,6 +4792,10 @@ int LuaContext::enemy_api_get_attack_consequence(lua_State* l) {
       // Return the life damage.
       lua_pushinteger(l, reaction.life_lost);
     }
+    else if (reaction.type == EnemyReaction::ReactionType::LUA_CALLBACK) {
+      // Return the callback.
+      reaction.callback.push();
+    }
     else {
       // Return a string.
       push_string(l, enum_to_name(reaction.type));
@@ -4821,10 +4825,17 @@ int LuaContext::enemy_api_set_attack_consequence(lua_State* l) {
       }
       enemy.set_attack_consequence(attack, EnemyReaction::ReactionType::HURT, life_points);
     }
-    else {
+    else if (lua_isstring(l, 3)) {
       EnemyReaction::ReactionType reaction = LuaTools::check_enum<EnemyReaction::ReactionType>(
           l, 3);
       enemy.set_attack_consequence(attack, reaction);
+    }
+    else if (lua_isfunction(l, 3)) {
+      ScopedLuaRef callback = LuaTools::check_function(l, 3);
+      enemy.set_attack_consequence(attack, EnemyReaction::ReactionType::LUA_CALLBACK, 0, callback);
+    }
+    else {
+      LuaTools::type_error(l, 3, "number, string or function");
     }
 
     return 0;
@@ -4847,6 +4858,10 @@ int LuaContext::enemy_api_get_attack_consequence_sprite(lua_State* l) {
     if (reaction.type == EnemyReaction::ReactionType::HURT) {
       // Return the life damage.
       lua_pushinteger(l, reaction.life_lost);
+    }
+    else if (reaction.type == EnemyReaction::ReactionType::LUA_CALLBACK) {
+      // Return the callback.
+      reaction.callback.push();
     }
     else {
       // Return a string.
@@ -4878,10 +4893,17 @@ int LuaContext::enemy_api_set_attack_consequence_sprite(lua_State* l) {
       }
       enemy.set_attack_consequence_sprite(sprite, attack, EnemyReaction::ReactionType::HURT, life_points);
     }
-    else {
+    else if (lua_isstring(l, 4)) {
       EnemyReaction::ReactionType reaction = LuaTools::check_enum<EnemyReaction::ReactionType>(
           l, 4);
       enemy.set_attack_consequence_sprite(sprite, attack, reaction);
+    }
+    else if (lua_isfunction(l, 4)) {
+      ScopedLuaRef callback = LuaTools::check_function(l, 4);
+      enemy.set_attack_consequence_sprite(sprite, attack, EnemyReaction::ReactionType::LUA_CALLBACK, 0, callback);
+    }
+    else {
+      LuaTools::type_error(l, 3, "number, string or function");
     }
 
     return 0;

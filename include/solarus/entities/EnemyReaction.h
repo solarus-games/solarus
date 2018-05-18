@@ -19,6 +19,7 @@
 
 #include "solarus/core/Common.h"
 #include "solarus/core/EnumInfo.h"
+#include "solarus/lua/ScopedLuaRef.h"
 #include <map>
 #include <string>
 
@@ -39,37 +40,42 @@ class SOLARUS_API EnemyReaction {
      * \brief Types of reactions to an attack.
      */
     enum class ReactionType {
-      HURT,              /**< the enemy is hurt and loses some life points */
-      IGNORED,           /**< nothing happens */
-      PROTECTED,         /**< the attack is stopped */
-      IMMOBILIZED,       /**< the enemy is temporarily immobilized */
-      CUSTOM             /**< the enemy's script decides what to do */
+      HURT,              /**< The enemy is hurt and loses some life points. */
+      IGNORED,           /**< Nothing happens. */
+      PROTECTED,         /**< The attack is stopped. */
+      IMMOBILIZED,       /**< The enemy is temporarily immobilized. */
+      CUSTOM,            /**< enemy:on_custom_attack_received is called */
+      LUA_CALLBACK       /**< A Lua function is called. */
     };
 
     /**
      * \brief Represents a reaction to an attack.
      */
     struct Reaction {
-      ReactionType type; /**< type of reaction */
-      int life_lost;     /**< number of life points lost (possibly zero) */
+      ReactionType type;      /**< Type of reaction. */
+      int life_lost;          /**< Number of life points lost, possibly zero
+                               * (with reaction type CUSTOM). */
+      ScopedLuaRef callback;  /**< Lua function to call
+                               * (with reaction type LUA_CALLBACK). */
 
       Reaction() :
         type(ReactionType::IGNORED),
-        life_lost(0) {
+        life_lost(0),
+        callback() {
       }
     };
 
     EnemyReaction();
 
     void set_default_reaction();
-    void set_general_reaction(ReactionType reaction, int life_lost = 0);
-    void set_sprite_reaction(const Sprite* sprite, ReactionType reaction, int life_lost = 0);
+    void set_general_reaction(ReactionType reaction, int life_lost = 0, const ScopedLuaRef& callback = ScopedLuaRef());
+    void set_sprite_reaction(const Sprite* sprite, ReactionType reaction, int life_lost = 0, const ScopedLuaRef& callback = ScopedLuaRef());
     const Reaction& get_reaction(const Sprite* sprite) const;
 
   private:
 
-    Reaction general_reaction;                             /**< reaction to make unless sprite-specific override */
-    std::map<const Sprite*, Reaction> sprite_reactions;    /**< sprite-specific reaction (overrides the default one) */
+    Reaction general_reaction;                             /**< Reaction to make unless there are sprite-specific overrides. */
+    std::map<const Sprite*, Reaction> sprite_reactions;    /**< Sprite-specific reaction (overrides the default one). */
 
 };
 

@@ -222,6 +222,7 @@ class SOLARUS_API Entity: public ExportableToLua {
     bool is_visible() const;
     void set_visible(bool visible);
     void set_animation_ignore_suspend(bool ignore_suspend);
+    void update_sprite(Sprite& sprite);
 
     // Movement.
     const std::shared_ptr<Movement>& get_movement();

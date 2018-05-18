@@ -575,8 +575,8 @@ void Game::draw(const SurfacePtr& dst_surface) {
     if (camera != nullptr) {
       const SurfacePtr& camera_surface = camera->get_surface();
       if (transition != nullptr) {
-        transition->draw(*dst_surface,*camera_surface,DrawInfos(Rectangle(camera_surface->get_size()),Point(),BlendMode::BLEND,255,Surface::draw_proxy));
-      } else { //TODO handle this case
+        transition->draw(*dst_surface,*camera_surface,DrawInfos(Rectangle(camera_surface->get_size()),camera->get_position_on_screen(),BlendMode::BLEND,255,Surface::draw_proxy));
+      } else {
         camera_surface->draw(dst_surface, camera->get_position_on_screen());
       }
     }

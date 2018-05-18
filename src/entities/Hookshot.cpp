@@ -311,13 +311,10 @@ void Hookshot::notify_obstacle_reached() {
 }
 
 /**
- * \brief This function is called when an enemy's sprite collides with a sprite of this entity.
- * \param enemy the enemy
- * \param enemy_sprite the enemy's sprite that overlaps the hero
- * \param this_sprite the arrow sprite
+ * \copydoc Entity::notify_collision_with_enemy(Enemy&, Sprite&, Sprite&)
  */
 void Hookshot::notify_collision_with_enemy(
-    Enemy& enemy, Sprite& enemy_sprite, Sprite& /* this_sprite */) {
+    Enemy& enemy, Sprite& /* this_sprite */, Sprite& enemy_sprite) {
 
   if (!overlaps(get_hero())) {
     enemy.try_hurt(EnemyAttack::HOOKSHOT, *this, &enemy_sprite);

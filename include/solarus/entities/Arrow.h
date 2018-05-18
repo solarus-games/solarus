@@ -63,7 +63,7 @@ class Arrow: public Entity {
     virtual void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) override;
     virtual void notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode) override;
     virtual void notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode) override;
-    virtual void notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite) override;
+    virtual void notify_collision_with_enemy(Enemy& enemy, Sprite& this_sprite, Sprite& enemy_sprite) override;
     virtual void notify_attacked_enemy(
         EnemyAttack attack,
         Enemy& victim,

@@ -130,12 +130,9 @@ void Explosion::notify_collision_with_sensor(Sensor& sensor, CollisionMode colli
 }
 
 /**
- * \brief This function is called when an enemy's sprite collides with a sprite of this entity
- * \param enemy the enemy
- * \param enemy_sprite the enemy's sprite that overlaps a sprite of this entity
- * \param this_sprite this entity's sprite that overlaps the enemy's sprite
+ * \copydoc Entity::notify_collision_with_enemy(Enemy&, Sprite&, Sprite&)
  */
-void Explosion::notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& /* this_sprite */) {
+void Explosion::notify_collision_with_enemy(Enemy& enemy, Sprite& /* this_sprite */, Sprite& enemy_sprite) {
 
   try_attack_enemy(enemy, enemy_sprite);
 }

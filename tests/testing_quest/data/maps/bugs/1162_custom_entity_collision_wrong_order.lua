@@ -2,28 +2,20 @@ local map = ...
 
 function map:on_started()
 
-  local collision_detected_by_block = false
-  local collision_detected_by_chest = false
+  local collision_count = 0
 
-  block:add_collision_test("sprite", function(me, other, my_sprite, other_sprite)
-    collision_detected_by_block = true
-    assert(me == block)
-    assert(other == chest)
-    assert(my_sprite == me:get_sprite())
-    assert(other_sprite == other:get_sprite())
-  end)
-
-  chest:add_collision_test("sprite", function(me, other, my_sprite, other_sprite)
-    collision_detected_by_chest = true
-    assert(me == chest)
-    assert(other == block)
+  custom_entity:add_collision_test("sprite", function(me, other, my_sprite, other_sprite)
+    collision_count = collision_count + 1
+    assert(me == custom_entity)
+    assert(other == enemy)
+    assert(my_sprite ~= other:get_sprite())
+    assert(other_sprite ~= me:get_sprite())
     assert(my_sprite == me:get_sprite())
     assert(other_sprite == other:get_sprite())
   end)
 
   sol.timer.start(map, 1000, function()
--- TODO    assert(collision_detected_by_block)
---    assert(collision_detected_by_chest)
+    assert(collision_count >= 2)
     sol.main.exit()
   end)
 end

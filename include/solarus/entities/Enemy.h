@@ -130,12 +130,14 @@ class Enemy: public Entity {
     void set_attack_consequence(
         EnemyAttack attack,
         EnemyReaction::ReactionType reaction,
-        int life_lost = 0);
+        int life_lost = 0,
+        const ScopedLuaRef& callback = ScopedLuaRef());
     void set_attack_consequence_sprite(
         const Sprite& sprite,
         EnemyAttack attack,
         EnemyReaction::ReactionType reaction,
-        int life_lost = 0);
+        int life_lost = 0,
+        const ScopedLuaRef& callback = ScopedLuaRef());
     void set_no_attack_consequences();
     void set_no_attack_consequences_sprite(const Sprite& sprite);
     void set_default_attack_consequences();

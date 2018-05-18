@@ -40,8 +40,6 @@
 #include "solarus/movements/FallingHeight.h"
 #include "solarus/movements/StraightMovement.h"
 #include <memory>
-#include <sstream>
-#include <iostream>
 
 namespace Solarus {
 
@@ -671,14 +669,10 @@ EnemyReaction::Reaction Enemy::get_attack_consequence(
 void Enemy::set_attack_consequence(
     EnemyAttack attack,
     EnemyReaction::ReactionType reaction,
-    int life_lost) {
+    int life_lost,
+    const ScopedLuaRef& callback) {
 
-  if (life_lost < 0) {
-    std::ostringstream oss;
-    oss << "Invalid amount of life: " << life_lost;
-    Debug::die(oss.str());
-  }
-  attack_reactions[attack].set_general_reaction(reaction, life_lost);
+  attack_reactions[attack].set_general_reaction(reaction, life_lost, callback);
 }
 
 /**
@@ -692,14 +686,10 @@ void Enemy::set_attack_consequence_sprite(
     const Sprite& sprite,
     EnemyAttack attack,
     EnemyReaction::ReactionType reaction,
-    int life_lost) {
+    int life_lost,
+    const ScopedLuaRef& callback) {
 
-  if (life_lost < 0) {
-    std::ostringstream oss;
-    oss << "Invalid amount of life: " << life_lost;
-    Debug::die(oss.str());
-  }
-  attack_reactions[attack].set_sprite_reaction(&sprite, reaction, life_lost);
+  attack_reactions[attack].set_sprite_reaction(&sprite, reaction, life_lost, callback);
 }
 
 /**
@@ -1221,7 +1211,7 @@ void Enemy::try_hurt(EnemyAttack attack, Entity& source, Sprite* this_sprite) {
       break;
 
     case EnemyReaction::ReactionType::CUSTOM:
-      // custom attack (defined in the script)
+      // Lua event enemy:on_custom_attack_received.
       if (is_in_normal_state()) {
         custom_attack(attack, this_sprite);
       }
@@ -1231,6 +1221,18 @@ void Enemy::try_hurt(EnemyAttack attack, Entity& source, Sprite* this_sprite) {
         invulnerable = false;
       }
       break;
+
+  case EnemyReaction::ReactionType::LUA_CALLBACK:
+    // Lua callback.
+    if (is_in_normal_state()) {
+      reaction.callback.call("Enemy reaction callback");
+    }
+    else {
+      // no attack was made: notify the source correctly
+      reaction.type = EnemyReaction::ReactionType::IGNORED;
+      invulnerable = false;
+    }
+    break;
 
     case EnemyReaction::ReactionType::HURT:
 
@@ -1550,9 +1552,6 @@ bool Enemy::is_immobilized() const {
 
 /**
  * \brief This function is called when the enemy is attacked by a custom effect attack.
- *
- * Redefine this function to handle the attack.
- *
  * \param attack the attack
  * \param this_sprite the sprite of this enemy subject to the attack, or nullptr
  * if the attack does not come from a pixel-precise collision test

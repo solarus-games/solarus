@@ -62,6 +62,7 @@ set(lua_test_maps
   "bugs/945_flying_enemies_fall_in_hole"
   "bugs/946_reused_movement_callback"
   "bugs/954_entity_name_nil_after_removed"
+  "bugs/1062_enemy_set_attack_consequence_callback"
   "bugs/1076_treasure_dialog_optional"
   "bugs/1094_entity_properties"
   "bugs/1162_custom_entity_collision_wrong_order"

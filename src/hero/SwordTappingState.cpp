@@ -202,20 +202,20 @@ void Hero::SwordTappingState::notify_attacked_enemy(
     EnemyReaction::Reaction& result,
     bool /* killed */) {
 
-  if (result.type != EnemyReaction::ReactionType::IGNORED && attack == EnemyAttack::SWORD) {
+  if (attack == EnemyAttack::SWORD &&
+      victim.get_push_hero_on_sword() &&
+      result.type != EnemyReaction::ReactionType::IGNORED &&
+      result.type != EnemyReaction::ReactionType::LUA_CALLBACK) {
 
-    if (victim.get_push_hero_on_sword()) {
-
-      Hero& hero = get_entity();
-      double angle = victim.get_angle(hero, victim_sprite, nullptr);
-      std::shared_ptr<StraightMovement> movement =
-          std::make_shared<StraightMovement>(false, true);
-      movement->set_max_distance(24);
-      movement->set_speed(120);
-      movement->set_angle(angle);
-      hero.set_movement(movement);
-      get_sprites().set_animation_walking_normal();
-    }
+    Hero& hero = get_entity();
+    double angle = victim.get_angle(hero, victim_sprite, nullptr);
+    std::shared_ptr<StraightMovement> movement =
+        std::make_shared<StraightMovement>(false, true);
+    movement->set_max_distance(24);
+    movement->set_speed(120);
+    movement->set_angle(angle);
+    hero.set_movement(movement);
+    get_sprites().set_animation_walking_normal();
   }
 }
 

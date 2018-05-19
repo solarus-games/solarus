@@ -96,10 +96,10 @@ void create_window() {
   Debug::check_assertion(context.main_window == nullptr, "Window already exists");
 
   // Set OpenGL as the default renderer driver when available, to avoid using Direct3d.
-  SDL_SetHintWithPriority(SDL_HINT_RENDER_DRIVER, "opengl", SDL_HINT_OVERRIDE);
+  SDL_SetHintWithPriority(SDL_HINT_RENDER_DRIVER, "opengl", SDL_HINT_DEFAULT);
 
   // Set the default OpenGL built-in shader (nearest).
-  SDL_SetHint(SDL_HINT_RENDER_OPENGL_SHADERS, "0");
+  SDL_SetHint(SDL_HINT_RENDER_OPENGL_SHADERS, "1");
 
   std::string title = std::string("Solarus ") + SOLARUS_VERSION;
   context.main_window = SDL_CreateWindow(
@@ -129,8 +129,7 @@ void create_window() {
   Debug::check_assertion(context.main_renderer != nullptr,
       std::string("Cannot create the renderer: ") + SDL_GetError());
 
-  // Allow blending mode for direct drawing primitives.
-  SDL_SetRenderDrawBlendMode(context.main_renderer, SDL_BLENDMODE_BLEND);
+
 
   // Get the first renderer format which supports alpha channel and is not a unique format.
   SDL_RendererInfo renderer_info;
@@ -143,6 +142,9 @@ void create_window() {
       break;
     }
   }
+
+  Logger::info("SDL Renderer : " + std::string(renderer_info.name));
+
   context.rgba_format = SDL_AllocFormat(SDL_PIXELFORMAT_ABGR8888);
 
   Debug::check_assertion(context.pixel_format != nullptr, "No compatible pixel format");
@@ -399,6 +401,8 @@ void render(const SurfacePtr& quest_surface) {
     SDL_SetRenderDrawColor(context.main_renderer, 0, 0, 0, 255);
     SDL_RenderSetClipRect(context.main_renderer, nullptr);
     SDL_RenderClear(context.main_renderer);
+    //Set blending mode to none to simply replace any on_screen material
+    SDL_SetTextureBlendMode(surface_to_render->get_internal_surface().get_texture(),SDL_BLENDMODE_NONE);
     SDL_RenderCopy(context.main_renderer, surface_to_render->get_internal_surface().get_texture(), nullptr, nullptr);
     SDL_RenderPresent(context.main_renderer);
   }

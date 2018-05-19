@@ -25,7 +25,7 @@ endif()
 set(CMAKE_CXX_FLAGS_RELEASE "-Wno-error -Wall -Wextra -Wno-unknown-pragmas -Wno-fatal-errors ${CMAKE_CXX_FLAGS_RELEASE} -O3")
 
 # Be more pedantic in debug mode for developers.
-set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -pedantic ${CMAKE_CXX_FLAGS_DEBUG}")
+set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -pedantic ${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
 
 # Platform-specific flags.
 if(WIN32)

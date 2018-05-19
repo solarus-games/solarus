@@ -1,7 +1,6 @@
 #include "solarus/graphics/RenderTexture.h"
 #include "solarus/graphics/Surface.h"
 #include "solarus/graphics/Shader.h"
-#include "solarus/core/Debug.h"
 
 namespace Solarus {
 
@@ -66,10 +65,10 @@ SDL_Texture* RenderTexture::get_texture() const {
 void RenderTexture::draw_other(const SurfaceImpl& texture, const DrawInfos& infos) {
   with_target([&](SDL_Renderer* renderer){
     Rectangle dst_rect(infos.dst_position,infos.region.get_size());
-    SDL_SetTextureAlphaMod(texture.get_texture(),infos.opacity);
     SDL_BlendMode mode = Surface::make_sdl_blend_mode(*this,texture,infos.blend_mode);
-    SDL_SetTextureBlendMode(texture.get_texture(),mode);
-    SDL_RenderCopy(renderer,texture.get_texture(),infos.region,dst_rect);
+    CHECK_SDL(SDL_SetTextureBlendMode(texture.get_texture(),mode));
+    CHECK_SDL(SDL_SetTextureAlphaMod(texture.get_texture(),infos.opacity));
+    CHECK_SDL(SDL_RenderCopy(renderer,texture.get_texture(),infos.region,dst_rect));
   });
 }
 
@@ -80,12 +79,12 @@ SDL_Surface *RenderTexture::get_surface() const {
   if (surface_dirty) {
     with_target([&](SDL_Renderer* renderer){
       Rectangle rect(0,0,get_width(),get_height());
-      SDL_RenderReadPixels(renderer,
+      CHECK_SDL(SDL_RenderReadPixels(renderer,
                            rect,
                            Video::get_rgba_format()->format,
                            surface->pixels,
                            surface->pitch
-                           );
+                           ));
     });
     surface_dirty = false;
   }
@@ -110,9 +109,9 @@ void RenderTexture::fill_with_color(const Color& color, const Rectangle& where, 
   with_target([&](SDL_Renderer* renderer){
     Uint8 r,g,b,a;
     color.get_components(r,g,b,a);
-    SDL_SetRenderDrawColor(renderer,r,g,b,a);
-    SDL_SetRenderDrawBlendMode(renderer,mode);
-    SDL_RenderFillRect(renderer,rect);
+    CHECK_SDL(SDL_SetRenderDrawColor(renderer,r,g,b,a));
+    CHECK_SDL(SDL_SetRenderDrawBlendMode(renderer,mode));
+    CHECK_SDL(SDL_RenderFillRect(renderer,rect));
   });
 }
 
@@ -121,9 +120,9 @@ void RenderTexture::fill_with_color(const Color& color, const Rectangle& where, 
  */
 void RenderTexture::clear() {
   with_target([&](SDL_Renderer* renderer){
-    SDL_SetRenderDrawColor(renderer,0,0,0,0);
-    SDL_SetTextureBlendMode(target.get(),SDL_BLENDMODE_BLEND);
-    SDL_RenderClear(renderer);
+    CHECK_SDL(SDL_SetRenderDrawColor(renderer,0,0,0,0));
+    CHECK_SDL(SDL_SetTextureBlendMode(target.get(),SDL_BLENDMODE_BLEND));
+    CHECK_SDL(SDL_RenderClear(renderer));
   });
 }
 

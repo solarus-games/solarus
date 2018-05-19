@@ -11,10 +11,13 @@
 namespace Solarus {
 
 #ifdef DEBUG
-#define SOLARUS_CHECK_SDL(expr) if((expr) < 0) Debug::error(std::string(SDL_GetError()) + "! " + __FILE__ + ":" + std::to_string(__LINE__));
+#define SOLARUS_CHECK_SDL_HIGHER(expr,bound) if((expr) < bound) Debug::error(std::string(SDL_GetError()) + "! " + __FILE__ + ":" + std::to_string(__LINE__));
 #else
-#define SOLARUS_CHECK_SDL(expr) expr
+#define SOLARUS_CHECK_SDL_HIGHER(expr,bound) expr
 #endif
+
+#define SOLARUS_CHECK_SDL(expr) SOLARUS_CHECK_SDL_HIGHER(expr,0)
+
 
 /**
  * @brief SurfaceImpl representing mutable surface data

@@ -66,7 +66,7 @@ void RenderTexture::draw_other(const SurfaceImpl& texture, const DrawInfos& info
   with_target([&](SDL_Renderer* renderer){
     Rectangle dst_rect(infos.dst_position,infos.region.get_size());
     SDL_BlendMode mode = Surface::make_sdl_blend_mode(*this,texture,infos.blend_mode);
-    SOLARUS_CHECK_SDL(SDL_SetTextureBlendMode(texture.get_texture(),mode));
+    SOLARUS_CHECK_SDL_HIGHER(SDL_SetTextureBlendMode(texture.get_texture(),mode),-1);
     SOLARUS_CHECK_SDL(SDL_SetTextureAlphaMod(texture.get_texture(),infos.opacity));
     SOLARUS_CHECK_SDL(SDL_RenderCopy(renderer,texture.get_texture(),infos.region,dst_rect));
   });

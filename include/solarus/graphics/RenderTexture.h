@@ -4,9 +4,20 @@
 #include "solarus/graphics/Color.h"
 #include "solarus/graphics/SDLPtrs.h"
 #include "solarus/graphics/Video.h"
+#include "solarus/core/Debug.h"
 #include "DrawProxies.h"
 
+
 namespace Solarus {
+
+#ifdef DEBUG
+#define SOLARUS_CHECK_SDL_HIGHER(expr,bound) if((expr) < bound) Debug::error(std::string(SDL_GetError()) + "! " + __FILE__ + ":" + std::to_string(__LINE__));
+#else
+#define SOLARUS_CHECK_SDL_HIGHER(expr,bound) expr
+#endif
+
+#define SOLARUS_CHECK_SDL(expr) SOLARUS_CHECK_SDL_HIGHER(expr,0)
+
 
 /**
  * @brief SurfaceImpl representing mutable surface data
@@ -29,7 +40,7 @@ public:
     void with_target(Func closure) const {
       surface_dirty = true;
       auto renderer = Video::get_renderer();
-      SDL_SetRenderTarget(renderer,target.get());
+      SOLARUS_CHECK_SDL(SDL_SetRenderTarget(renderer,target.get()));
       closure(renderer);
     }
 

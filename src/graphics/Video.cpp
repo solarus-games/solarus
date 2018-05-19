@@ -388,19 +388,17 @@ void render(const SurfacePtr& quest_surface) {
     surface_to_render = context.scaled_surface;
   }
 
+  SDL_SetRenderTarget(context.main_renderer,nullptr);
+  SDL_SetRenderDrawColor(context.main_renderer, 0, 0, 0, 255);
+  SDL_RenderSetClipRect(context.main_renderer, nullptr);
+  SDL_RenderClear(context.main_renderer);
   if (context.current_shader != nullptr) {
     // OpenGL rendering with the current shader.
-    SDL_SetRenderTarget(get_renderer(),nullptr);
-    SDL_RenderClear(get_renderer());
     context.current_shader->render(*quest_surface,Rectangle(quest_surface->get_size()),quest_surface->get_size(),Point(),true);
     SDL_GL_SwapWindow(Video::get_window());
   }
   else {
     // SDL rendering.
-    SDL_SetRenderTarget(context.main_renderer,nullptr);
-    SDL_SetRenderDrawColor(context.main_renderer, 0, 0, 0, 255);
-    SDL_RenderSetClipRect(context.main_renderer, nullptr);
-    SDL_RenderClear(context.main_renderer);
     //Set blending mode to none to simply replace any on_screen material
     SDL_SetTextureBlendMode(surface_to_render->get_internal_surface().get_texture(),SDL_BLENDMODE_NONE);
     SDL_RenderCopy(context.main_renderer, surface_to_render->get_internal_surface().get_texture(), nullptr, nullptr);

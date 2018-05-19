@@ -11,9 +11,9 @@
 namespace Solarus {
 
 #ifdef DEBUG
-#define CHECK_SDL(expr) if((expr) < 0) Debug::error(std::string(SDL_GetError()) + "! " + __FILE__ + ":" + std::to_string(__LINE__));
+#define SOLARUS_CHECK_SDL(expr) if((expr) < 0) Debug::error(std::string(SDL_GetError()) + "! " + __FILE__ + ":" + std::to_string(__LINE__));
 #else
-#define CHECK_SDL(expr) expr
+#define SOLARUS_CHECK_SDL(expr) expr
 #endif
 
 /**
@@ -37,7 +37,7 @@ public:
     void with_target(Func closure) const {
       surface_dirty = true;
       auto renderer = Video::get_renderer();
-      CHECK_SDL(SDL_SetRenderTarget(renderer,target.get()));
+      SOLARUS_CHECK_SDL(SDL_SetRenderTarget(renderer,target.get()));
       closure(renderer);
     }
 

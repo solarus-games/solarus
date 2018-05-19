@@ -66,9 +66,9 @@ void RenderTexture::draw_other(const SurfaceImpl& texture, const DrawInfos& info
   with_target([&](SDL_Renderer* renderer){
     Rectangle dst_rect(infos.dst_position,infos.region.get_size());
     SDL_BlendMode mode = Surface::make_sdl_blend_mode(*this,texture,infos.blend_mode);
-    CHECK_SDL(SDL_SetTextureBlendMode(texture.get_texture(),mode));
-    CHECK_SDL(SDL_SetTextureAlphaMod(texture.get_texture(),infos.opacity));
-    CHECK_SDL(SDL_RenderCopy(renderer,texture.get_texture(),infos.region,dst_rect));
+    SOLARUS_CHECK_SDL(SDL_SetTextureBlendMode(texture.get_texture(),mode));
+    SOLARUS_CHECK_SDL(SDL_SetTextureAlphaMod(texture.get_texture(),infos.opacity));
+    SOLARUS_CHECK_SDL(SDL_RenderCopy(renderer,texture.get_texture(),infos.region,dst_rect));
   });
 }
 
@@ -79,7 +79,7 @@ SDL_Surface *RenderTexture::get_surface() const {
   if (surface_dirty) {
     with_target([&](SDL_Renderer* renderer){
       Rectangle rect(0,0,get_width(),get_height());
-      CHECK_SDL(SDL_RenderReadPixels(renderer,
+      SOLARUS_CHECK_SDL(SDL_RenderReadPixels(renderer,
                            rect,
                            Video::get_rgba_format()->format,
                            surface->pixels,
@@ -109,9 +109,9 @@ void RenderTexture::fill_with_color(const Color& color, const Rectangle& where, 
   with_target([&](SDL_Renderer* renderer){
     Uint8 r,g,b,a;
     color.get_components(r,g,b,a);
-    CHECK_SDL(SDL_SetRenderDrawColor(renderer,r,g,b,a));
-    CHECK_SDL(SDL_SetRenderDrawBlendMode(renderer,mode));
-    CHECK_SDL(SDL_RenderFillRect(renderer,rect));
+    SOLARUS_CHECK_SDL(SDL_SetRenderDrawColor(renderer,r,g,b,a));
+    SOLARUS_CHECK_SDL(SDL_SetRenderDrawBlendMode(renderer,mode));
+    SOLARUS_CHECK_SDL(SDL_RenderFillRect(renderer,rect));
   });
 }
 
@@ -120,9 +120,9 @@ void RenderTexture::fill_with_color(const Color& color, const Rectangle& where, 
  */
 void RenderTexture::clear() {
   with_target([&](SDL_Renderer* renderer){
-    CHECK_SDL(SDL_SetRenderDrawColor(renderer,0,0,0,0));
-    CHECK_SDL(SDL_SetTextureBlendMode(target.get(),SDL_BLENDMODE_BLEND));
-    CHECK_SDL(SDL_RenderClear(renderer));
+    SOLARUS_CHECK_SDL(SDL_SetRenderDrawColor(renderer,0,0,0,0));
+    SOLARUS_CHECK_SDL(SDL_SetTextureBlendMode(target.get(),SDL_BLENDMODE_BLEND));
+    SOLARUS_CHECK_SDL(SDL_RenderClear(renderer));
   });
 }
 

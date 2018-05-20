@@ -23,6 +23,7 @@ Engine changes
 * Fix possible compilation error when HAVE_UNISTD_H has no value (#1084).
 * Fix hero:on_movement_changed() not called (#1095).
 * Fix hero shield sprite directions in animation sword (#1185).
+* Fix removed entity still drawn during scrolling transition (#1193).
 * Fix sprite parameters order in custom entity collision callback (#1162).
 * Fix scripts failing to load if a directory exists with the same name (#1100).
 * Improve Lua error messages.

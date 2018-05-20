@@ -1,0 +1,58 @@
+properties{
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  min_layer = 0,
+  max_layer = 2,
+  tileset = "castle",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  pattern = "3",
+}
+
+tile{
+  layer = 0,
+  x = 0,
+  y = 32,
+  width = 224,
+  height = 32,
+  pattern = "67",
+}
+
+custom_entity{
+  name = "entity",
+  layer = 0,
+  x = 24,
+  y = 93,
+  width = 16,
+  height = 16,
+  direction = 0,
+  sprite = "entities/shadow",
+}
+
+destination{
+  name = "destination",
+  layer = 0,
+  x = 8,
+  y = 53,
+  direction = 1,
+}
+
+teletransporter{
+  layer = 0,
+  x = -16,
+  y = 0,
+  width = 16,
+  height = 240,
+  transition = "scrolling",
+  destination_map = "bugs/1193_entity_drawn_after_removed/map_2",
+  destination = "_side",
+}
+

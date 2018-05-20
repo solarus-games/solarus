@@ -1055,7 +1055,7 @@ void Entities::add_entity(const EntityPtr& entity) {
 
 /**
  * \brief Removes an entity from the map and schedules it to be destroyed.
- * \param entity the entity to remove
+ * \param entity The entity to remove.
  */
 void Entities::remove_entity(Entity& entity) {
 
@@ -1233,19 +1233,13 @@ void Entities::draw() {
     for (const EntityPtr& entity : entities_in_camera) {
       int layer = entity->get_layer();
       Debug::check_assertion(map.is_valid_layer(layer), "Invalid layer");
-      if (entity->is_enabled() &&
-          entity->is_visible()) {
-        entities_to_draw[layer].push_back(entity);
-      }
+      entities_to_draw[layer].push_back(entity);
     }
 
     // Add entities displayed even when out of the camera.
     for (int layer = map.get_min_layer(); layer <= map.get_max_layer(); ++layer) {
       for (const EntityPtr& entity : entities_drawn_not_at_their_position[layer]) {
-        if (entity->is_enabled() &&
-            entity->is_visible()) {
-          entities_to_draw[layer].push_back(entity);
-        }
+        entities_to_draw[layer].push_back(entity);
       }
 
       // Sort them and remove duplicates.
@@ -1280,7 +1274,11 @@ void Entities::draw() {
 
     // Draw dynamic entities, ordered by their data structure.
     for (const EntityPtr& entity: entities_to_draw[layer]) {
-      entity->draw_on_map();
+      if (!entity->is_being_removed() &&
+          entity->is_enabled() &&
+          entity->is_visible()) {
+        entity->draw_on_map();
+      }
     }
   }
 

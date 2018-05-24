@@ -678,14 +678,6 @@ bool Sprite::test_collision(const Sprite& other, int x1, int y1, int x2, int y2)
  */
 void Sprite::update() {
 
-  std::cout << "Anim " << get_animation_set_id()<< std::endl;
-  std::cout << "Finished " << finished << std::endl;
-  std::cout << "Suspended " << is_suspended() << std::endl;
-  std::cout << "Paused " << paused << std::endl;
-  std::cout << "Frame delay " << get_frame_delay() << std::endl;
-  std::cout << "Next frame date " << next_frame_date << std::endl;
-  std::cout << "Now " << System::now() << std::endl << std::endl;
-
   Drawable::update();
 
   if (is_suspended() || paused) {

@@ -3476,13 +3476,15 @@ void Entity::update() {
   // Update the sprites.
   if (sprites.size() == 1) {
     // Special case just to avoid a copy of the vector.
-    update_sprite(*sprites[0].sprite);
+    if (!sprites[0].removed) {
+      update_sprite(*sprites[0].sprite);
+    }
   } else {
     // Iterate on a copy because the list might change during the iteration.
     std::vector<NamedSprite> sprites = this->sprites;
     for (const NamedSprite& named_sprite: sprites) {
       if (named_sprite.removed) {
-        return;
+        continue;
       }
       update_sprite(*named_sprite.sprite);
     }

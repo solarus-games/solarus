@@ -9,7 +9,7 @@ include_directories(SYSTEM
     "${CMAKE_SOURCE_DIR}/include/solarus/third_party"
     "${CMAKE_SOURCE_DIR}/include/solarus/third_party/snes_spc"
 )
-message("LuaJIT ${LUA_INCLUDE_DIR}")
+
 # External include paths, marked as system ones to disable their warnings.
 include_directories(SYSTEM
         "${MODPLUG_INCLUDE_DIRS}"  # Before SDL2 because we want the sndfile.h of ModPlug.

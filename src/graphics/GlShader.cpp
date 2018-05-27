@@ -113,7 +113,7 @@ bool GlShader::initialize() {
 #else
 #define SDL_PROC(ret,func,params) \
   do { \
-  ctx.func = reinterpret_cast<ret(*)params>(SDL_GL_GetProcAddress(#func)); \
+  ctx.func = reinterpret_cast<APIENTRY ret(*)params>(SDL_GL_GetProcAddress(#func)); \
   if ( ! ctx.func ) { \
   Debug::warning(std::string("Couldn't load GLES2 function" #func)+  SDL_GetError()); \
   return false; \

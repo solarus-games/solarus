@@ -87,6 +87,7 @@ class Shader : public DrawProxy, public ExportableToLua {
 
     void render(const Surface &surface, const Rectangle &region, const Size &dst_size, const Point &dst_position = Point(), bool flip_y = false);
     virtual void draw(Surface& dst_surface, const Surface &src_surface, const DrawInfos &infos) const override;
+
     /**
      * @brief render the given vertex array with this shader, passing the texture and matrices as uniforms
      * @param array a vertex array
@@ -97,12 +98,14 @@ class Shader : public DrawProxy, public ExportableToLua {
     virtual void render(const VertexArray &array, const Surface &texture, const glm::mat4& mvp_matrix = glm::mat4(), const glm::mat3& uv_matrix = glm::mat3()) = 0;
 
     const std::string& get_lua_type_name() const override;
+
   protected:
     void set_valid(bool valid);
     void set_error(const std::string& error);
     void set_data(const ShaderData& data);
     virtual void load();  // TODO make pure virtual
     static VertexArray screen_quad; /**< The quad used to draw surfaces with shaders*/
+
   private:
 
     const std::string shader_id;  /**< The id of the shader (filename without extension). */

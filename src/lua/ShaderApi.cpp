@@ -173,7 +173,7 @@ int LuaContext::shader_api_get_vertex_file(lua_State* l) {
 
     const Shader& shader = *check_shader(l, 1);
 
-    push_string(l, shader.get_data().get_vertex_source());
+    push_string(l, shader.get_data().get_vertex_file());
     return 1;
   });
 }
@@ -189,7 +189,7 @@ int LuaContext::shader_api_get_fragment_file(lua_State* l) {
 
     const Shader& shader = *check_shader(l, 1);
 
-    push_string(l, shader.get_data().get_fragment_source());
+    push_string(l, shader.get_data().get_fragment_file());
     return 1;
   });
 }

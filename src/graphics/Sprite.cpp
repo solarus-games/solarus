@@ -35,6 +35,7 @@
 #include <limits>
 #include <memory>
 #include <sstream>
+#include <iostream>
 
 namespace Solarus {
 

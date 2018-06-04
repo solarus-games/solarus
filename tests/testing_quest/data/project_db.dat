@@ -4,6 +4,9 @@ map{ id = "bugs/1062_enemy_set_attack_consequence_callback", description = "#106
 map{ id = "bugs/1076_treasure_dialog_optional", description = "#1076: Treasure dialog should be optional" }
 map{ id = "bugs/1094_entity_properties", description = "#1094: Entity user-defined properties" }
 map{ id = "bugs/1162_custom_entity_collision_wrong_order", description = "#1162: Wrong sprite order in custom entity collision callback" }
+map{ id = "bugs/1193_entity_drawn_after_removed/map_1", description = "#1193: Entity still drawn after removed" }
+map{ id = "bugs/1193_entity_drawn_after_removed/map_2", description = "Destination map" }
+map{ id = "bugs/1195_enemy_dying_animation_never_finishes", description = "#1195: Enemy dying animation never finishes" }
 map{ id = "bugs/486_diagonal_dynamic_tiles", description = "#486: Wrong obstacles with diagonal dynamic tiles" }
 map{ id = "bugs/496_stream_speed_0", description = "#496: Allow streams to have a speed of zero" }
 map{ id = "bugs/526_get_entities_same_region", description = "#526: map:get_entities_in_same_region()" }

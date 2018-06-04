@@ -1,14 +1,9 @@
 # - Find modplug
 # Find the native modplug includes and libraries
 #
-#  MODPLUG_INCLUDE_DIR - where to find modplug.h, etc.
-#  MODPLUG_LIBRARIES   - List of libraries when using libmodplug.
-#  MODPLUG_FOUND       - True if modplug found.
-
-if(MODPLUG_INCLUDE_DIR)
-    # Already in cache, be silent
-    set(MODPLUG_FIND_QUIETLY TRUE)
-endif(MODPLUG_INCLUDE_DIR)
+#  MODPLUG_INCLUDE_DIRS - where to find modplug.h, etc.
+#  MODPLUG_LIBRARIES    - List of libraries when using libmodplug.
+#  MODPLUG_FOUND        - True if modplug found.
 
 find_path(MODPLUG_INCLUDE_DIR modplug.h
     HINTS /usr/local/angstrom/arm/arm-angstrom-linux-gnueabi/usr
@@ -16,16 +11,16 @@ find_path(MODPLUG_INCLUDE_DIR modplug.h
 
 find_library(MODPLUG_LIBRARY NAMES modplug)
 
-# Handle the QUIETLY and REQUIRED arguments and set MODPLUG_FOUND to TRUE if
-# all listed variables are TRUE.
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(MODPLUG DEFAULT_MSG
-    MODPLUG_INCLUDE_DIR MODPLUG_LIBRARY)
+find_package_handle_standard_args(MODPLUG
+    FOUND_VAR MODPLUG_FOUND
+    REQUIRED_VARS
+        MODPLUG_INCLUDE_DIR
+        MODPLUG_LIBRARY)
 
 if(MODPLUG_FOUND)
-  set(MODPLUG_LIBRARIES ${MODPLUG_LIBRARY})
-else(MODPLUG_FOUND)
-  set(MODPLUG_LIBRARIES)
-endif(MODPLUG_FOUND)
+    set(MODPLUG_INCLUDE_DIRS ${MODPLUG_INCLUDE_DIR})
+    set(MODPLUG_LIBRARIES ${MODPLUG_LIBRARY})
+endif()
 
 mark_as_advanced(MODPLUG_INCLUDE_DIR MODPLUG_LIBRARY)

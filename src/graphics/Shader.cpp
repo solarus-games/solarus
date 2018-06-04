@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "solarus/core/Logger.h"
 #include "solarus/core/QuestFiles.h"
 #include "solarus/core/System.h"
 #include "solarus/graphics/Shader.h"
@@ -102,25 +103,33 @@ const ShaderData& Shader::get_data() const {
 }
 
 /**
- * @brief Returns the vertex source of the data or the default vertex source
- * @return the vertex source
+ * @brief Returns the vertex source of the data or the default vertex source.
+ * @return The vertex source.
  */
 std::string Shader::get_vertex_source() const {
-  const std::string& ds = get_data().get_vertex_source();
-  if(ds != "") {
-    return ds;
+
+  const std::string& file_name = "shaders/" + get_data().get_vertex_file();
+  if (file_name != "") {
+    if (QuestFiles::data_file_exists(file_name)) {
+      return QuestFiles::data_file_read(file_name);
+    }
+    Logger::error("Cannot find vertex shader file '" + file_name + "'");
   }
   return default_vertex_source();
 }
 
 /**
- * @brief Returns the fragment source of the data or the default fragment source
- * @return The fragment source
+ * @brief Returns the fragment source of the data or the default fragment source.
+ * @return The fragment source.
  */
 std::string Shader::get_fragment_source() const {
-  const std::string& ds = get_data().get_fragment_source();
-  if(ds != "") {
-    return ds;
+
+  const std::string& file_name = "shaders/" + get_data().get_fragment_file();
+  if (file_name != "") {
+    if (QuestFiles::data_file_exists(file_name)) {
+      return QuestFiles::data_file_read(file_name);
+    }
+    Logger::error("Cannot find fragment shader file '" + file_name + "'");
   }
   return default_fragment_source();
 }

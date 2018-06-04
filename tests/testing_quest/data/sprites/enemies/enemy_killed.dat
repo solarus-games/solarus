@@ -3,6 +3,6 @@ animation{
   src_image = "todo.png",
   frame_delay = 100,
   directions = {
-    { x = 0, y = 0, frame_width = 16, frame_height = 16, origin_x = 0, origin_y = 0 },
+    { x = 0, y = 0, frame_width = 16, frame_height = 16, origin_x = 8, origin_y = 13 },
   },
 }

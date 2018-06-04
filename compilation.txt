@@ -112,7 +112,7 @@ set the CMake variable SOLARUS_USE_LUAJIT to OFF at the configuration step.
 - About ModPlug:
 
 We maintain a fork of libmodplug 0.8.8.4 here:
-https://github.com/christopho/libmodplug
+https://github.com/christopho/liibmodplug
 Previous versions of libmodplug cause compilation problems as well as issues
 like .it musics that do not correctly loop.
 
@@ -130,26 +130,25 @@ qtbase5-dev qttools5-dev qttools5-dev-tools libglm-dev
 2.2  Windows users:
 -------------------
 
-Install a C++ compiler if you don't have one.
+Install a C++ compiler, Git and CMake.
 Solarus compiles fine with the MinGW compiler: http://www.mingw.org/
 and probably with other compilers too.
 
-Download the binary version of each one of the development libraries listed
+We recommend QtCreator, which includes Qt libraries, MinGW, 
+as well as Git and CMake integration.
+
+The directory libraries/win32/mingw32 of Solarus contains headers and compiled
+binaries of all required libraries that Solarus need other than Qt.
+They all work at least with the MinGW32 compiler.
+
+If you want other versions of these dependencies of if you don't
+use the MinGW32 toolchain, you can
+download the header files and the binaries of all libraries listed
 above, on their official websites.
-Install the header files (the .h files) in your compiler's include directory.
-With the MinGW compiler for example, this may be something like
-C:\MinGW\include.
-Similarly, install the static library files (the .lib or .a files)
-in your compiler's lib directory.
-This may be something like C:\MinGW\lib.
-Install the dynamic library files (the .dll files) in your compiler's bin
-directory
-This may be something like C:\MinGW\bin.
+For some of them you have to compile the binary libraries yourself.
 
-The directory libraries/win32 of Solarus contains some required static and
-dynamic libraries that might be hard to find as binaries on websites
-(especially ModPlug). They all work at least with the MinGW compiler.
-
+In any case, you will then need to tell CMake the location of these
+dependencies.
 
 2.3  Mac OS X users:
 --------------------

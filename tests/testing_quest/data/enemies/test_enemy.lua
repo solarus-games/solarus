@@ -7,4 +7,5 @@ function enemy:on_created()
 
   sprite = enemy:create_sprite("enemies/test_enemy")
   enemy:set_size(16, 16)
+  enemy:set_origin(8, 13)
 end

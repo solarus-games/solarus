@@ -338,11 +338,6 @@ void GlShader::render(const VertexArray& array, const Surface& texture, const gl
     ctx.glBufferData(GL_ARRAY_BUFFER,array.vertex_count()*sizeof(Vertex),array.data(),GL_DYNAMIC_DRAW);
     array.buffer_dirty = false;
   }
-
-  const Size& output_size = Video::get_output_size();
-  set_uniform_1i(Shader::TIME_NAME, System::now());
-  set_uniform_2f(Shader::OUTPUT_SIZE_NAME, output_size.width, output_size.height);
-
   ctx.glUniformMatrix4fv(get_uniform_location(Shader::MVP_MATRIX_NAME),1,GL_FALSE,glm::value_ptr(mvp_matrix));
 
   glm::mat3 uvm = uv_matrix;

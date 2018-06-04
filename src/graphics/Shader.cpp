@@ -262,6 +262,11 @@ void Shader::render(const Surface& surface, const Rectangle& region, const Size&
     uvm = glm::scale(uvm,glm::vec2(1,-1));
     uvm = glm::translate(uvm,glm::vec2(0,-1));
   }
+  //Set input size
+  const Size& size = flip_y ? Video::get_output_size() : dst_size;
+  set_uniform_1i(Shader::TIME_NAME, System::now());
+  set_uniform_2f(Shader::OUTPUT_SIZE_NAME, size.width, size.height);
+  set_uniform_2f(Shader::INPUT_SIZE_NAME, region.get_width(), region.get_height());
   render(screen_quad,surface,viewport*dst*scale,uvm);
 }
 
@@ -278,7 +283,7 @@ void Shader::draw(Surface& dst_surface, const Surface &src_surface, const DrawIn
       }
       //TODO fix this ugliness
       Shader* that = const_cast<Shader*>(this);
-      that->set_uniform_1f("sol_opacity",src_surface.get_opacity()/256.f);
+      that->set_uniform_1f(OPACITY_NAME,src_surface.get_opacity()/256.f);
       that->Shader::render(src_surface,infos.region,dst_surface.get_size(),infos.dst_position);
     });
 }

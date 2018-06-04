@@ -245,6 +245,40 @@ int LuaContext::drawable_api_get_shader(lua_State* l) {
 }
 
 /**
+ * \brief Implementation of drawable:get_opacity().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::drawable_api_get_opacity(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    const Drawable& drawable = *check_drawable(l, 1);
+
+    uint8_t opacity = drawable.get_opacity();
+
+    lua_pushinteger(l, opacity);
+    return 1;
+  });
+}
+
+/**
+ * \brief Implementation of drawable:set_opacity().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::drawable_api_set_opacity(lua_State* l) {
+
+  return LuaTools::exception_boundary_handle(l, [&] {
+    Drawable& drawable = *check_drawable(l, 1);
+    uint8_t opacity = (uint8_t) LuaTools::check_int(l, 2);
+
+    drawable.set_opacity(opacity);
+
+    return 0;
+  });
+}
+
+/**
  * \brief Implementation of drawable:fade_in().
  * \param l the Lua context that is calling this function
  * \return number of values to return to Lua

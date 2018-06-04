@@ -43,8 +43,6 @@ void LuaContext::register_surface_module() {
       { "get_size", surface_api_get_size },
       { "clear", surface_api_clear },
       { "fill_color", surface_api_fill_color },
-      { "get_opacity", surface_api_get_opacity },
-      { "set_opacity", surface_api_set_opacity },
       { "get_pixels", surface_api_get_pixels },
       { "set_pixels", surface_api_set_pixels },
       { "draw", drawable_api_draw },
@@ -53,6 +51,8 @@ void LuaContext::register_surface_module() {
       { "set_blend_mode", drawable_api_set_blend_mode },
       { "set_shader", drawable_api_set_shader},
       { "get_shader", drawable_api_get_shader},
+      { "get_opacity", drawable_api_get_opacity },
+      { "set_opacity", drawable_api_set_opacity},
       { "fade_in", drawable_api_fade_in },
       { "fade_out", drawable_api_fade_out },
       { "get_xy", drawable_api_get_xy },
@@ -196,40 +196,6 @@ int LuaContext::surface_api_fill_color(lua_State* l) {
     else {
       surface.fill_with_color(color);
     }
-
-    return 0;
-  });
-}
-
-/**
- * \brief Implementation of surface:get_opacity().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::surface_api_get_opacity(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    const Surface& surface = *check_surface(l, 1);
-
-    uint8_t opacity = surface.get_opacity();
-
-    lua_pushinteger(l, opacity);
-    return 1;
-  });
-}
-
-/**
- * \brief Implementation of surface:set_opacity().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::surface_api_set_opacity(lua_State* l) {
-
-  return LuaTools::exception_boundary_handle(l, [&] {
-    Surface& surface = *check_surface(l, 1);
-    uint8_t opacity = (uint8_t) LuaTools::check_int(l, 2);
-
-    surface.set_opacity(opacity);
 
     return 0;
   });

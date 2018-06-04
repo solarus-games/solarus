@@ -55,6 +55,7 @@ class Shader : public DrawProxy, public ExportableToLua {
     constexpr static const char* INPUT_SIZE_NAME = "sol_input_size";
     constexpr static const char* OUTPUT_SIZE_NAME = "sol_output_size";
     constexpr static const char* TIME_NAME = "sol_time";
+    constexpr static const char* OPACITY_NAME = "sol_opacity";
 
     explicit Shader(const std::string& shader_id);
     virtual ~Shader();

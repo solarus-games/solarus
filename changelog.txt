@@ -1,4 +1,4 @@
-__________________________
+___________________________
 
 Solarus 1.6.0 (in progress)
 ___________________________
@@ -7,6 +7,7 @@ Engine changes
 --------------
 
 * Solarus 1.5 quests are still supported by Solarus 1.6.
+* Add support of OpenGL shaders (#394) by stdgregwar, Vlag and Christopho.
 * Maps can now use multiple tilesets (#1174).
 * Treasure dialogs are now optional (#1076).
 * Don't center the hero on non-blocking streams (#1063).
@@ -49,6 +50,7 @@ Changes that do not introduce incompatibilities:
 * Add methods entity:get_layer() and entity:set_layer().
 * Add optional callback parameter to enemy:set_attack_consequence() (#1062).
 * Add methods enemy:get/set_attacking_collision_mode() (#1066).
+* Add methods get/set_opacity() to sprite and text_surface (#702) by stdgregwar.
 * Add a method sprite:get_frame_src_xy() (#1093).
 * sprite:get_num_frames() can now optionally take an animation and direction.
 * sprite:get_frame_delay() can now optionally take an animation.
@@ -62,7 +64,7 @@ Data files format changes
 -------------------------
 
 * Maps: add support of custom properties for entities (#1094).
-* Maps: add property tileset to tiles and dynamic tiles (#1174). 
+* Maps: add property tileset to tiles and dynamic tiles (#1174).
 * Tilesets: add support of border sets (autotiles) (#1069).
 * Make the tileset entities image optional (#884).
 
@@ -1037,4 +1039,3 @@ hookshot, they are activated instead
 solarus-0.9.0 (2011-12-23)
 
 * Initial release of Solarus without quest data
-

@@ -394,10 +394,6 @@ void GlArbShader::render(const VertexArray& array, const Surface& texture, const
   GLhandleARB previous_program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
   glUseProgramObjectARB(program);
 
-  const Size& output_size = Video::get_output_size();
-  set_uniform_1i(Shader::TIME_NAME, System::now());
-  set_uniform_2f(Shader::OUTPUT_SIZE_NAME, output_size.width, output_size.height);
-
   glm::mat4 mvp = mvp_matrix; //TODO do more than identity
   glUniformMatrix4fvARB(get_uniform_location(Shader::MVP_MATRIX_NAME),1,GL_FALSE,glm::value_ptr(mvp));
 
@@ -421,7 +417,6 @@ void GlArbShader::render(const VertexArray& array, const Surface& texture, const
     glActiveTextureARB(GL_TEXTURE0_ARB + texture_unit);
     SDL_GL_BindTexture(kvp.second.surface->get_internal_surface().get_texture(),nullptr,nullptr);
   }
-
   glDrawArrays((GLenum)array.get_primitive_type(),0,array.vertex_count());
 
   for (const auto& kvp : uniform_textures) {

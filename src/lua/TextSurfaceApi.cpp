@@ -87,6 +87,8 @@ void LuaContext::register_text_surface_module() {
       { "set_blend_mode", drawable_api_set_blend_mode },
       { "set_shader", drawable_api_set_shader},
       { "get_shader", drawable_api_get_shader},
+      { "get_opacity", drawable_api_get_opacity},
+      { "set_opacity", drawable_api_set_opacity},
       { "fade_in", drawable_api_fade_in },
       { "fade_out", drawable_api_fade_out },
       { "get_xy", drawable_api_get_xy },

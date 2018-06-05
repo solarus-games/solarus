@@ -489,7 +489,9 @@ void Game::update_transitions() {
             Transition::Direction::OPENING,
             this
         ));
-        if(needs_previous_surface) transition->set_previous_surface(previous_map_surface.get());
+        if(needs_previous_surface) {
+          transition->set_previous_surface(previous_map_surface.get());
+        }
         transition->start();
         next_map = nullptr;
       }

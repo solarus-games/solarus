@@ -81,6 +81,7 @@ map{ id = "teletransportation_tests/start_scrolling", description = "Start by sc
 map{ id = "teletransportation_tests/start_scrolling_carrying", description = "Start by scrolling while carrying" }
 map{ id = "teletransportation_tests/start_scrolling_jumping", description = "Start by scrolling while jumping" }
 map{ id = "teletransportation_tests/start_scrolling_running", description = "Start by scrolling while running" }
+map{ id = "teletransportation_tests/start_scrolling_same_map", description = "Scroll to the other side of the same map" }
 map{ id = "teletransportation_tests/start_scrolling_sword_charged", description = "Start by scrolling while the sword is charged" }
 map{ id = "traversable", description = "Traversable test area" }
 

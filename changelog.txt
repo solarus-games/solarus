@@ -28,6 +28,7 @@ Engine changes
 * Fix sprite parameters order in custom entity collision callback (#1162).
 * Fix scripts failing to load if a directory exists with the same name (#1100).
 * Improve Lua error messages.
+* Fix scrolling to the same map that was crashing the engine (#924)
 
 Solarus launcher GUI changes
 ----------------------------

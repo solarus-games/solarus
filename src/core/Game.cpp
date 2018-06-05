@@ -471,6 +471,16 @@ void Game::update_transitions() {
         get_savegame().set_string(Savegame::KEY_STARTING_POINT, destination_name);
       }
 
+      // before closing the map, draw it on a backup surface for transition effects
+      // that want to display both maps at the same time
+      if (needs_previous_surface && current_map->get_camera() != nullptr) {
+        previous_map_surface = Surface::create(
+            current_map->get_camera()->get_size()
+        );
+        current_map->draw();
+        current_map->get_camera_surface()->draw(previous_map_surface);
+      }
+
       if (next_map == current_map) {
         // same map
         hero->place_on_destination(*current_map, previous_map_location);
@@ -479,23 +489,15 @@ void Game::update_transitions() {
             Transition::Direction::OPENING,
             this
         ));
+        if(needs_previous_surface) {
+          transition->set_previous_surface(previous_map_surface.get());
+        }
         transition->start();
         next_map = nullptr;
       }
       else {
-
         // change the map
         current_map->leave();
-
-        // before closing the map, draw it on a backup surface for transition effects
-        // that want to display both maps at the same time
-        if (needs_previous_surface && current_map->get_camera() != nullptr) {
-          previous_map_surface = Surface::create(
-              current_map->get_camera()->get_size()
-          );
-          current_map->draw();
-          current_map->get_camera_surface()->draw(previous_map_surface);
-        }
 
         // set the next map
         current_map->unload();

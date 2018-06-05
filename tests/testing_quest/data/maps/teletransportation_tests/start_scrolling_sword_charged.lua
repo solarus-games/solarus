@@ -13,6 +13,10 @@ function map:on_opening_transition_finished()
   hero:assert_state_ground_animation("sword loading", "traversable", "sword_loading_stopped")
 end
 
-function end_sensor:on_activated()
-  sol.main.exit()
+function go_right_sensor:on_activated()
+  hero:freeze()
+  hero:unfreeze()
+
+  game:simulate_command_released("down")
+  game:simulate_command_pressed("right")
 end

@@ -325,7 +325,9 @@ void Teletransporter::transport_hero(Hero& hero) {
   }
 
   get_game().set_current_map(destination_map_id, name, transition_style);
+  transporting_hero = false;
   hero.set_xy(hero_x, hero_y);
+
 }
 
 }

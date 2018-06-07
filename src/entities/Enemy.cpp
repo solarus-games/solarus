@@ -1193,8 +1193,14 @@ void Enemy::try_hurt(EnemyAttack attack, Entity& source, Sprite* this_sprite) {
     return;
   }
 
-  invulnerable = true;
-  vulnerable_again_date = System::now() + 500;
+  if (reaction.type != EnemyReaction::ReactionType::LUA_CALLBACK) {
+      // Make the enemy invulnerable for a while except if the reaction
+      // is a callback, in which case the user decides what to do.
+      // Ideally, ReactionType::CUSTOM should not make the enemy invulnerable
+      // either, but we don't want to break the behavior of existing scripts.
+      invulnerable = true;
+      vulnerable_again_date = System::now() + 500;
+  }
 
   switch (reaction.type) {
 

@@ -9,3 +9,5 @@ function enemy:on_created()
   enemy:set_size(16, 16)
   enemy:set_origin(8, 13)
 end
+
+-- No more behavior on purpose, this enemy is used as a blank enemy in unit tests.

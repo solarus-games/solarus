@@ -4,6 +4,7 @@ map{ id = "bugs/1062_enemy_set_attack_consequence_callback", description = "#106
 map{ id = "bugs/1076_treasure_dialog_optional", description = "#1076: Treasure dialog should be optional" }
 map{ id = "bugs/1094_entity_properties", description = "#1094: Entity user-defined properties" }
 map{ id = "bugs/1162_custom_entity_collision_wrong_order", description = "#1162: Wrong sprite order in custom entity collision callback" }
+map{ id = "bugs/1181_hurt_enemy_after_custom_attack", description = "#1181: enemy:hurt() does not work after a custom attack" }
 map{ id = "bugs/1193_entity_drawn_after_removed/map_1", description = "#1193: Entity still drawn after removed" }
 map{ id = "bugs/1193_entity_drawn_after_removed/map_2", description = "Destination map" }
 map{ id = "bugs/1195_enemy_dying_animation_never_finishes", description = "#1195: Enemy dying animation never finishes" }
